@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
@@ -14,13 +14,15 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
-import { signUp } from "@/lib/auth-client";
+import { signIn, signUp, useSession } from "@/lib/auth-client";
 import { registerSchema, type RegisterFormData } from "@/lib/validation";
 
 export default function RegisterPage() {
   const router = useRouter();
 
+  const { data: session, isLoading: sessionLoading } = useSession();
   const [isLoading, setIsLoading] = useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const form = useForm<RegisterFormData>({
@@ -62,6 +64,40 @@ export default function RegisterPage() {
     }
   }
 
+  async function onGoogleSignUp() {
+    setError(null);
+    setIsGoogleLoading(true);
+    try {
+      const result = await signIn.social({
+        provider: "google",
+        callbackURL: "/dashboard",
+      });
+
+      if (result?.error) {
+        setError(result.error.message || "Google sign-in failed");
+        return;
+      }
+
+      if (result?.url) {
+        window.location.href = result.url;
+      } else {
+        router.push("/dashboard");
+        router.refresh();
+      }
+    } catch (err) {
+      console.error("Google sign-up error:", err);
+      setError("Unable to continue with Google. Please try again.");
+    } finally {
+      setIsGoogleLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    if (!sessionLoading && session?.session) {
+      router.replace("/dashboard");
+    }
+  }, [session, sessionLoading, router]);
+
   return (
     <div className="min-h-screen bg-white flex flex-col">
       <Navbar />
@@ -96,7 +132,7 @@ export default function RegisterPage() {
                             <Input
                               placeholder="Your full name"
                               className="pl-10"
-                              disabled={isLoading}
+                              disabled={isLoading || isGoogleLoading}
                               {...field}
                             />
                           </div>
@@ -119,7 +155,7 @@ export default function RegisterPage() {
                               type="email"
                               placeholder="you@example.com"
                               className="pl-10"
-                              disabled={isLoading}
+                              disabled={isLoading || isGoogleLoading}
                               {...field}
                             />
                           </div>
@@ -142,7 +178,7 @@ export default function RegisterPage() {
                               type="password"
                               placeholder="At least 8 characters"
                               className="pl-10"
-                              disabled={isLoading}
+                              disabled={isLoading || isGoogleLoading}
                               {...field}
                             />
                           </div>
@@ -163,6 +199,31 @@ export default function RegisterPage() {
                         <UserPlus className="mr-2 h-4 w-4" />
                         Create account
                       </>
+                    )}
+                  </Button>
+
+                  <div className="relative py-2 text-center text-xs text-muted-foreground">
+                    <span className="px-2 bg-card relative z-10">or continue with</span>
+                    <div className="absolute inset-0 flex items-center">
+                      <div className="w-full border-t" />
+                    </div>
+                  </div>
+
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full"
+                    size="lg"
+                    disabled={isLoading || isGoogleLoading}
+                    onClick={onGoogleSignUp}
+                  >
+                    {isGoogleLoading ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Connecting to Google...
+                      </>
+                    ) : (
+                      "Continue with Google"
                     )}
                   </Button>
                 </form>

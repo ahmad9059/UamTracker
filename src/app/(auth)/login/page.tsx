@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, Suspense } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
@@ -15,7 +15,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
 
-import { signIn } from "@/lib/auth-client";
+import { signIn, useSession } from "@/lib/auth-client";
 import { loginSchema, type LoginFormData } from "@/lib/validation";
 
 function LoginForm() {
@@ -23,7 +23,9 @@ function LoginForm() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
 
+  const { data: session, isLoading: sessionLoading } = useSession();
   const [isLoading, setIsLoading] = useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const form = useForm<LoginFormData>({
@@ -58,6 +60,42 @@ function LoginForm() {
       setIsLoading(false);
     }
   }
+
+  async function onGoogleSignIn() {
+    setError(null);
+    setIsGoogleLoading(true);
+    try {
+      const result = await signIn.social({
+        provider: "google",
+        callbackURL: callbackUrl,
+      });
+
+      if (result?.error) {
+        setError(result.error.message || "Google sign-in failed");
+        return;
+      }
+
+      // Some adapters handle redirect internally; ensure navigation as fallback
+      if (result?.url) {
+        window.location.href = result.url;
+      } else {
+        router.push(callbackUrl);
+        router.refresh();
+      }
+    } catch (err) {
+      console.error("Google sign-in error:", err);
+      setError("Unable to sign in with Google. Please try again.");
+    } finally {
+      setIsGoogleLoading(false);
+    }
+  }
+
+  // Redirect away from login when already authenticated
+  useEffect(() => {
+    if (!sessionLoading && session?.session) {
+      router.replace(callbackUrl);
+    }
+  }, [session, sessionLoading, router, callbackUrl]);
 
   return (
     <Card className="glass-card shadow-xl border-border/50">
@@ -134,6 +172,31 @@ function LoginForm() {
                   <LogIn className="mr-2 h-4 w-4" />
                   Sign in
                 </>
+              )}
+            </Button>
+
+            <div className="relative py-2 text-center text-xs text-muted-foreground">
+              <span className="px-2 bg-card relative z-10">or continue with</span>
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t" />
+              </div>
+            </div>
+
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full"
+              size="lg"
+              disabled={isLoading || isGoogleLoading}
+              onClick={onGoogleSignIn}
+            >
+              {isGoogleLoading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Connecting to Google...
+                </>
+              ) : (
+                "Continue with Google"
               )}
             </Button>
           </form>
