@@ -18,13 +18,11 @@ export function Navbar() {
             <Link href="/" className="flex items-center gap-3 group">
               <div className="relative">
                 <div className="absolute inset-0 bg-primary/20 rounded-lg blur-lg group-hover:bg-primary/30 transition-all" />
-                <div className="relative bg-gradient-to-br from-primary to-primary/80 p-2 rounded-lg">
-                  <Image 
+                <div className="relative w-10 h-10 rounded-lg shadow-sm overflow-hidden">
+                  <img 
                     src="/icon.svg" 
                     alt="MNS University Logo" 
-                    width={24} 
-                    height={24}
-                    className="brightness-0 invert"
+                    className="w-full h-full object-cover"
                   />
                 </div>
               </div>

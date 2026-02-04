@@ -174,8 +174,158 @@ async function main() {
 
   console.log(`Created semester: ${semester3.name}`);
 
+  // Semester 4 - Spring 2025
+  const semester4 = await prisma.semester.create({
+    data: {
+      name: "Spring 2025",
+      userId: user.id,
+      courses: {
+        create: [
+          {
+            name: "Operating Systems",
+            creditHours: 3,
+            totalMarks: 100,
+            obtainedMarks: 84,
+          },
+          {
+            name: "Software Engineering",
+            creditHours: 3,
+            totalMarks: 100,
+            obtainedMarks: 79,
+          },
+          {
+            name: "Computer Networks",
+            creditHours: 3,
+            totalMarks: 100,
+            obtainedMarks: 86,
+          },
+          {
+            name: "Probability & Statistics",
+            creditHours: 3,
+            totalMarks: 100,
+            obtainedMarks: 71,
+          },
+          {
+            name: "Professional Ethics",
+            creditHours: 2,
+            totalMarks: 100,
+            obtainedMarks: 88,
+          },
+          {
+            name: "Database Lab",
+            creditHours: 1,
+            totalMarks: 40,
+            obtainedMarks: 34,
+          },
+        ],
+      },
+    },
+  });
+
+  console.log(`Created semester: ${semester4.name}`);
+
+  // Semester 5 - Fall 2025
+  const semester5 = await prisma.semester.create({
+    data: {
+      name: "Fall 2025",
+      userId: user.id,
+      courses: {
+        create: [
+          {
+            name: "Artificial Intelligence",
+            creditHours: 3,
+            totalMarks: 100,
+            obtainedMarks: 91,
+          },
+          {
+            name: "Web Development",
+            creditHours: 3,
+            totalMarks: 100,
+            obtainedMarks: 94,
+          },
+          {
+            name: "Theory of Automata",
+            creditHours: 3,
+            totalMarks: 100,
+            obtainedMarks: 76,
+          },
+          {
+            name: "Information Security",
+            creditHours: 3,
+            totalMarks: 100,
+            obtainedMarks: 83,
+          },
+          {
+            name: "Numerical Computing",
+            creditHours: 3,
+            totalMarks: 100,
+            obtainedMarks: 69,
+          },
+          {
+            name: "Web Development Lab",
+            creditHours: 1,
+            totalMarks: 40,
+            obtainedMarks: 37,
+          },
+        ],
+      },
+    },
+  });
+
+  console.log(`Created semester: ${semester5.name}`);
+
+  // Semester 6 - Spring 2026
+  const semester6 = await prisma.semester.create({
+    data: {
+      name: "Spring 2026",
+      userId: user.id,
+      courses: {
+        create: [
+          {
+            name: "Machine Learning",
+            creditHours: 3,
+            totalMarks: 100,
+            obtainedMarks: 87,
+          },
+          {
+            name: "Mobile App Development",
+            creditHours: 3,
+            totalMarks: 100,
+            obtainedMarks: 90,
+          },
+          {
+            name: "Compiler Construction",
+            creditHours: 3,
+            totalMarks: 100,
+            obtainedMarks: 74,
+          },
+          {
+            name: "Cloud Computing",
+            creditHours: 3,
+            totalMarks: 100,
+            obtainedMarks: 82,
+          },
+          {
+            name: "Final Year Project I",
+            creditHours: 3,
+            totalMarks: 100,
+            obtainedMarks: 85,
+          },
+          {
+            name: "Mobile App Lab",
+            creditHours: 1,
+            totalMarks: 40,
+            obtainedMarks: 36,
+          },
+        ],
+      },
+    },
+  });
+
+  console.log(`Created semester: ${semester6.name}`);
+
   console.log("\n✅ Seed completed successfully!");
-  console.log("Created 3 semesters with 6 courses each for Computer Science degree.");
+  console.log("Created 6 semesters with 6 courses each for Computer Science degree.");
 }
 
 main()

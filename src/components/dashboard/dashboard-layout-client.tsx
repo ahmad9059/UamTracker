@@ -11,10 +11,17 @@ import {
   ChevronRight,
   Bell,
   Search,
+  PanelLeft,
+  PanelLeftClose,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -37,6 +44,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
   SidebarInset,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -78,24 +86,32 @@ const navigationItems = [
 
 function AppSidebar({ session }: { session: any }) {
   const pathname = usePathname();
+  const { open, setOpen, isMobile, state } = useSidebar();
   const userInitials = session.user.name
     ? session.user.name.split(" ").map((n: string) => n[0]).join("").toUpperCase().slice(0, 2)
     : session.user.email?.slice(0, 2).toUpperCase() || "U";
 
+  const handleLogoClick = (e: React.MouseEvent) => {
+    // If sidebar is collapsed, expand it
+    if (state === "collapsed") {
+      e.preventDefault();
+      setOpen(true);
+    }
+    // Otherwise, allow normal navigation to /dashboard
+  };
+
   return (
     <Sidebar variant="inset" collapsible="icon">
-      <SidebarHeader>
+      <SidebarHeader className="border-b border-sidebar-border">
         <SidebarMenu>
-          <SidebarMenuItem>
+          <SidebarMenuItem className="relative">
             <SidebarMenuButton size="lg" asChild>
-              <Link href="/dashboard" className="group">
-                <div className="flex aspect-square size-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/80 shadow-soft group-hover:shadow-medium transition-all group-hover:scale-105 p-1.5">
-                  <Image 
+              <Link href="/dashboard" className="group" onClick={handleLogoClick}>
+                <div className="flex aspect-square size-8 items-center justify-center rounded-lg overflow-hidden shadow-sm group-hover:shadow-md transition-all">
+                  <img 
                     src="/icon.svg" 
                     alt="MNS University Logo" 
-                    width={24} 
-                    height={24}
-                    className="brightness-0 invert"
+                    className="w-full h-full object-cover"
                   />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
@@ -108,6 +124,15 @@ function AppSidebar({ session }: { session: any }) {
                 </div>
               </Link>
             </SidebarMenuButton>
+            {/* Toggle Button */}
+            <SidebarTrigger className="absolute right-2 top-1/2 -translate-y-1/2 h-6 w-6 p-0 hover:bg-sidebar-accent rounded-md group-data-[state=collapsed]/sidebar-wrapper:opacity-0">
+              {open ? (
+                <PanelLeftClose className="h-4 w-4" />
+              ) : (
+                <PanelLeft className="h-4 w-4" />
+              )}
+              <span className="sr-only">Toggle Sidebar</span>
+            </SidebarTrigger>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
@@ -141,7 +166,7 @@ function AppSidebar({ session }: { session: any }) {
         ))}
       </SidebarContent>
 
-      <SidebarFooter>
+      <SidebarFooter className="border-t border-sidebar-border">
         <SidebarMenu>
           <SidebarMenuItem>
             <DropdownMenu>
@@ -150,9 +175,12 @@ function AppSidebar({ session }: { session: any }) {
                   size="lg"
                   className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                 >
-                  <div className="flex aspect-square size-9 items-center justify-center rounded-full bg-gradient-to-br from-primary/20 to-primary/10 text-primary font-bold text-sm border-2 border-primary/20">
-                    {userInitials}
-                  </div>
+                  <Avatar size="default">
+                    <AvatarImage src={session.user.image || undefined} alt={session.user.name || "User"} />
+                    <AvatarFallback className="bg-primary text-primary-foreground font-semibold">
+                      {userInitials}
+                    </AvatarFallback>
+                  </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
                     <span className="truncate font-semibold">
                       {session.user.name || "User"}
@@ -222,7 +250,7 @@ export default function DashboardLayoutClient({
   return (
     <TooltipProvider>
       <SidebarProvider defaultOpen={true}>
-        <div className="min-h-screen bg-background relative overflow-hidden flex w-full">
+        <div className="relative flex min-h-screen w-full bg-background">
           {/* Subtle background decoration */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
             <div className="absolute -top-32 -left-32 w-[500px] h-[500px] rounded-full bg-gradient-to-br from-primary/5 via-primary/2 to-transparent blur-3xl" />
@@ -235,8 +263,6 @@ export default function DashboardLayoutClient({
             {/* Enhanced Header */}
             <header className="sticky top-0 z-40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border">
               <div className="flex h-16 items-center gap-4 px-6">
-                <SidebarTrigger className="-ml-1" />
-                <Separator orientation="vertical" className="h-6" />
 
                 {/* Search Bar */}
                 <div className="flex-1 max-w-2xl">
@@ -245,7 +271,7 @@ export default function DashboardLayoutClient({
                     <Input
                       type="search"
                       placeholder="Search courses, semesters..."
-                      className="pl-10 bg-muted/30 border-none focus-visible:ring-1 focus-visible:ring-border h-10 rounded-lg"
+                      className="pl-10 bg-muted/50 border-muted focus-visible:ring-1 focus-visible:ring-primary/20 h-10 rounded-lg"
                     />
                   </div>
                 </div>
@@ -272,9 +298,12 @@ export default function DashboardLayoutClient({
                         variant="ghost"
                         className="h-9 rounded-lg hover:bg-muted px-2 gap-2"
                       >
-                        <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-semibold text-sm">
-                          {userInitials}
-                        </div>
+                        <Avatar size="default">
+                          <AvatarImage src={session.user.image || undefined} alt={session.user.name || "User"} />
+                          <AvatarFallback className="bg-primary text-primary-foreground font-semibold text-xs">
+                            {userInitials}
+                          </AvatarFallback>
+                        </Avatar>
                         <span className="text-sm font-semibold hidden lg:block">
                           {session.user.name || "User"}
                         </span>

@@ -582,3 +582,27 @@
     opacity: 0.5;
   }
 }
+
+/* Sidebar active state enhancements */
+[data-sidebar="menu-button"][data-active="true"] {
+  background-color: oklch(0.68 0.14 200 / 0.15);
+  color: var(--sidebar-primary);
+  font-weight: 600;
+}
+
+[data-sidebar="menu-button"][data-active="true"]:hover {
+  background-color: oklch(0.68 0.14 200 / 0.2);
+}
+
+[data-sidebar="menu-button"]:not([data-active="true"]):hover {
+  background-color: var(--sidebar-accent);
+}
+
+/* Icon alignment in sidebar */
+[data-sidebar="menu-button"] svg {
+  color: currentColor;
+}
+
+[data-sidebar="menu-button"][data-active="true"] svg {
+  color: var(--sidebar-primary);
+}
