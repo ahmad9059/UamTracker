@@ -13,7 +13,7 @@ export type CourseWithQP = CourseInput & {
   qualityPoint: number;
   grade: Grade;
   percentage: number;
-  weightedQP: number; // qualityPoint * creditHours
+  weightedQP: number; // equals qualityPoint (QP already weighted by credit hours)
 };
 
 // GPA calculation result
@@ -63,7 +63,7 @@ export function calculateGPA(courses: CourseInput[]): GPAResult {
       course.obtainedMarks,
       course.totalMarks
     );
-    const weightedQP = qualityPoint * course.creditHours;
+    const weightedQP = qualityPoint; // table already includes credit weighting
 
     return {
       ...course,

@@ -34,6 +34,13 @@ type CalculatorCourse = {
   obtainedMarks: string;
 };
 
+type CGPASemester = {
+  id: string;
+  name: string;
+  creditHours: string;
+  gpa: string;
+};
+
 const creditToTotalMarks = (credit: string | number): TotalMarksType | null => {
   const num = typeof credit === "number" ? credit : parseFloat(credit);
   if (!Number.isFinite(num)) return null;
@@ -61,6 +68,11 @@ export default function CalculatorPage() {
   ]);
   const [result, setResult] = useState<GPAResult>(emptyResult);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [semesters, setSemesters] = useState<CGPASemester[]>([
+    { id: uuidv4(), name: "Semester 1", creditHours: "", gpa: "" },
+  ]);
+  const [cgpa, setCgpa] = useState(0);
+  const [cgpaErrors, setCgpaErrors] = useState<Record<string, string>>({});
 
   const calculateResult = useCallback(() => {
     const newErrors: Record<string, string> = {};
@@ -111,6 +123,51 @@ export default function CalculatorPage() {
   useEffect(() => {
     calculateResult();
   }, [calculateResult]);
+
+  const calculateCgpa = useCallback(() => {
+    const newErrors: Record<string, string> = {};
+    const valid = semesters.filter((s) => {
+      const ch = parseFloat(s.creditHours);
+      const g = parseFloat(s.gpa);
+
+      if (!s.creditHours || !s.gpa) return false;
+      if (isNaN(ch) || ch <= 0) {
+        newErrors[`${s.id}-ch`] = "Credit hours must be positive";
+        return false;
+      }
+      if (isNaN(g) || g < 0 || g > 4) {
+        newErrors[`${s.id}-gpa`] = "GPA must be between 0 and 4";
+        return false;
+      }
+      return true;
+    });
+
+    setCgpaErrors(newErrors);
+
+    if (valid.length === 0) {
+      setCgpa(0);
+      return;
+    }
+
+    const totalQualityPoints = valid.reduce(
+      (sum, s) => sum + parseFloat(s.gpa) * parseFloat(s.creditHours),
+      0
+    );
+    const totalCreditHours = valid.reduce(
+      (sum, s) => sum + parseFloat(s.creditHours),
+      0
+    );
+
+    setCgpa(
+      totalCreditHours > 0
+        ? Math.round((totalQualityPoints / totalCreditHours) * 100) / 100
+        : 0
+    );
+  }, [semesters]);
+
+  useEffect(() => {
+    calculateCgpa();
+  }, [calculateCgpa]);
 
   const addCourse = () => {
     setCourses([
@@ -179,6 +236,29 @@ export default function CalculatorPage() {
 
         return updated;
       })
+    );
+  };
+
+  const addSemester = () => {
+    const nextNumber = semesters.length + 1;
+    setSemesters([
+      ...semesters,
+      { id: uuidv4(), name: `Semester ${nextNumber}`, creditHours: "", gpa: "" },
+    ]);
+  };
+
+  const removeSemester = (id: string) => {
+    if (semesters.length === 1) return;
+    setSemesters(semesters.filter((s) => s.id !== id));
+  };
+
+  const updateSemester = (
+    id: string,
+    field: keyof CGPASemester,
+    value: string
+  ) => {
+    setSemesters((prev) =>
+      prev.map((sem) => (sem.id === id ? { ...sem, [field]: value } : sem))
     );
   };
 
@@ -334,6 +414,112 @@ export default function CalculatorPage() {
                   <Plus className="h-4 w-4 mr-2" />
                   Add Course
                 </Button>
+              </CardContent>
+            </Card>
+
+            {/* CGPA Section */}
+            <Card className="glass-card shadow-soft border-border/50">
+              <CardHeader className="pb-3">
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <TrendingUp className="h-5 w-5 text-primary" />
+                  CGPA Calculator
+                </CardTitle>
+                <CardDescription>
+                  CGPA = (Sum of quality points from all semesters) / (Sum of credit hours from all semesters)
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {semesters.map((sem, index) => (
+                  <div
+                    key={sem.id}
+                    className="grid grid-cols-12 gap-3 items-start p-4 bg-accent/40 rounded-lg border border-border/50"
+                  >
+                    <div className="col-span-12 sm:col-span-3">
+                      <label className="text-xs text-muted-foreground mb-1 block">
+                        Semester
+                      </label>
+                      <Input
+                        value={sem.name}
+                        onChange={(e) =>
+                          updateSemester(sem.id, "name", e.target.value)
+                        }
+                        placeholder={`Semester ${index + 1}`}
+                      />
+                    </div>
+
+                    <div className="col-span-6 sm:col-span-3">
+                      <label className="text-xs text-muted-foreground mb-1 block">
+                        Credit Hours
+                      </label>
+                      <Input
+                        type="number"
+                        min="0"
+                        step="0.5"
+                        value={sem.creditHours}
+                        onChange={(e) =>
+                          updateSemester(sem.id, "creditHours", e.target.value)
+                        }
+                        className={cgpaErrors[`${sem.id}-ch`] ? "border-red-500" : ""}
+                        placeholder="15"
+                      />
+                      {cgpaErrors[`${sem.id}-ch`] && (
+                        <span className="text-xs text-red-500">
+                          {cgpaErrors[`${sem.id}-ch`]}
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="col-span-6 sm:col-span-3">
+                      <label className="text-xs text-muted-foreground mb-1 block">
+                        GPA
+                      </label>
+                      <Input
+                        type="number"
+                        min="0"
+                        max="4"
+                        step="0.01"
+                        value={sem.gpa}
+                        onChange={(e) =>
+                          updateSemester(sem.id, "gpa", e.target.value)
+                        }
+                        className={cgpaErrors[`${sem.id}-gpa`] ? "border-red-500" : ""}
+                        placeholder="3.5"
+                      />
+                      {cgpaErrors[`${sem.id}-gpa`] && (
+                        <span className="text-xs text-red-500">
+                          {cgpaErrors[`${sem.id}-gpa`]}
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="col-span-12 sm:col-span-3 flex items-end justify-end">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => removeSemester(sem.id)}
+                        disabled={semesters.length === 1}
+                        className="text-muted-foreground hover:text-destructive"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+
+                <Button variant="outline" onClick={addSemester} className="w-full font-semibold">
+                  <Plus className="h-4 w-4 mr-2" />
+                  Add Semester
+                </Button>
+
+                <div className="p-4 rounded-lg bg-primary/5 border border-primary/20">
+                  <div className="text-sm font-semibold text-primary">Your CGPA</div>
+                  <div className="text-4xl font-bold text-primary mt-1">
+                    {cgpa.toFixed(2)}
+                  </div>
+                  <div className="text-xs text-muted-foreground mt-1">
+                    CGPA uses the formula: Σ(total quality points) / Σ(total credit hours)
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </div>

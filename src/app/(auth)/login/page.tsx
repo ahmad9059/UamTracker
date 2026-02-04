@@ -16,6 +16,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
 
 import { signIn, useSession } from "@/lib/auth-client";
+import Image from "next/image";
 import { loginSchema, type LoginFormData } from "@/lib/validation";
 
 function LoginForm() {
@@ -196,7 +197,16 @@ function LoginForm() {
                   Connecting to Google...
                 </>
               ) : (
-                "Continue with Google"
+                <>
+                  <Image
+                    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/google/google-original.svg"
+                    alt="Google"
+                    width={18}
+                    height={18}
+                    className="mr-2"
+                  />
+                  Continue with Google
+                </>
               )}
             </Button>
           </form>

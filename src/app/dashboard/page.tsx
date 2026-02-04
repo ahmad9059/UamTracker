@@ -135,12 +135,14 @@ export default async function DashboardPage() {
                   <div className="mt-4 mb-5">
                     <div className="flex items-center justify-between text-xs mb-2">
                       <span className="text-muted-foreground font-medium">GPA Progress</span>
-                      <span className="font-bold gradient-text">{((semester.gpa / 4) * 100).toFixed(0)}%</span>
+                      <span className="font-bold gradient-text">
+                        {Math.min((semester.gpa / 4) * 100, 100).toFixed(0)}%
+                      </span>
                     </div>
                     <div className="h-2 bg-muted/50 rounded-full overflow-hidden">
                       <div
                         className="h-full bg-gradient-to-r from-primary to-primary/80 rounded-full transition-all duration-700 shadow-sm"
-                        style={{ width: `${(semester.gpa / 4) * 100}%` }}
+                        style={{ width: `${Math.min((semester.gpa / 4) * 100, 100)}%` }}
                       />
                     </div>
                   </div>

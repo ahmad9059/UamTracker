@@ -1,130 +1,201 @@
-// MNS-University Quality Point Tables
-// Maps obtained marks to quality points and grades for each total marks type
+// MNS-University Quality Point Table (per-mark, weighted by credit hours)
+// Source: data/MNSUAM-CGPA.md
 
 export type TotalMarksType = 20 | 40 | 60 | 80 | 100;
-
 export type Grade = "A" | "B" | "C" | "D" | "F";
 
-export type QualityPointEntry = {
-  minMarks: number;
-  maxMarks: number;
-  qualityPoint: number;
-  grade: Grade;
+type MarkQuality = { qualityPoint: number; grade: Grade };
+
+const VALID_TOTAL_MARKS_LIST: TotalMarksType[] = [20, 40, 60, 80, 100];
+
+type TableInput =
+  | { marks: number; grade: Grade; qp: number }
+  | { range: [number, number]; grade: Grade; qp: number };
+
+const buildTable = (total: TotalMarksType, inputs: TableInput[]): MarkQuality[] => {
+  const table: MarkQuality[] = Array.from({ length: total + 1 }, () => ({
+    qualityPoint: 0,
+    grade: "F",
+  }));
+
+  inputs.forEach((entry) => {
+    if ("marks" in entry) {
+      table[entry.marks] = { qualityPoint: entry.qp, grade: entry.grade };
+    } else {
+      const [start, end] = entry.range;
+      for (let m = start; m <= end; m++) {
+        table[m] = { qualityPoint: entry.qp, grade: entry.grade };
+      }
+    }
+  });
+
+  return table;
 };
 
-// Quality Points for marks out of 20
-// D: 40-49% (8-9), C: 50-64% (10-12), B: 65-79% (13-15), A: 80-100% (16-20)
-export const QUALITY_POINTS_20: QualityPointEntry[] = [
-  { minMarks: 0, maxMarks: 7, qualityPoint: 0.0, grade: "F" },
-  { minMarks: 8, maxMarks: 8, qualityPoint: 1.0, grade: "D" },
-  { minMarks: 9, maxMarks: 9, qualityPoint: 1.5, grade: "D" },
-  { minMarks: 10, maxMarks: 10, qualityPoint: 2.0, grade: "C" },
-  { minMarks: 11, maxMarks: 11, qualityPoint: 2.3, grade: "C" },
-  { minMarks: 12, maxMarks: 12, qualityPoint: 2.7, grade: "C" },
-  { minMarks: 13, maxMarks: 13, qualityPoint: 3.0, grade: "B" },
-  { minMarks: 14, maxMarks: 14, qualityPoint: 3.3, grade: "B" },
-  { minMarks: 15, maxMarks: 15, qualityPoint: 3.7, grade: "B" },
-  { minMarks: 16, maxMarks: 16, qualityPoint: 4.0, grade: "A" },
-  { minMarks: 17, maxMarks: 17, qualityPoint: 4.0, grade: "A" },
-  { minMarks: 18, maxMarks: 18, qualityPoint: 4.0, grade: "A" },
-  { minMarks: 19, maxMarks: 19, qualityPoint: 4.0, grade: "A" },
-  { minMarks: 20, maxMarks: 20, qualityPoint: 4.0, grade: "A" },
-];
+// Per-mark QP tables (values already multiplied by credit hours)
+const TABLE_20 = buildTable(20, [
+  { marks: 8, grade: "D", qp: 1.0 },
+  { marks: 9, grade: "D", qp: 1.5 },
+  { marks: 10, grade: "C", qp: 2.0 },
+  { marks: 11, grade: "C", qp: 2.33 },
+  { marks: 12, grade: "C", qp: 2.67 },
+  { marks: 13, grade: "C", qp: 3.0 },
+  { marks: 14, grade: "B", qp: 3.33 },
+  { marks: 15, grade: "B", qp: 3.67 },
+  { range: [16, 20], grade: "A", qp: 4.0 },
+]);
 
-// Quality Points for marks out of 40
-// D: 40-49% (16-19), C: 50-64% (20-25), B: 65-79% (26-31), A: 80-100% (32-40)
-export const QUALITY_POINTS_40: QualityPointEntry[] = [
-  { minMarks: 0, maxMarks: 15, qualityPoint: 0.0, grade: "F" },
-  { minMarks: 16, maxMarks: 17, qualityPoint: 1.0, grade: "D" },
-  { minMarks: 18, maxMarks: 19, qualityPoint: 1.5, grade: "D" },
-  { minMarks: 20, maxMarks: 21, qualityPoint: 2.0, grade: "C" },
-  { minMarks: 22, maxMarks: 23, qualityPoint: 2.3, grade: "C" },
-  { minMarks: 24, maxMarks: 25, qualityPoint: 2.7, grade: "C" },
-  { minMarks: 26, maxMarks: 27, qualityPoint: 3.0, grade: "B" },
-  { minMarks: 28, maxMarks: 29, qualityPoint: 3.3, grade: "B" },
-  { minMarks: 30, maxMarks: 31, qualityPoint: 3.7, grade: "B" },
-  { minMarks: 32, maxMarks: 40, qualityPoint: 4.0, grade: "A" },
-];
+const TABLE_40 = buildTable(40, [
+  { marks: 16, grade: "D", qp: 2.0 },
+  { marks: 17, grade: "D", qp: 2.5 },
+  { marks: 18, grade: "D", qp: 3.0 },
+  { marks: 19, grade: "C", qp: 3.5 },
+  { marks: 20, grade: "C", qp: 4.0 },
+  { marks: 21, grade: "C", qp: 4.33 },
+  { marks: 22, grade: "B", qp: 4.67 },
+  { marks: 23, grade: "B", qp: 5.0 },
+  { marks: 24, grade: "B", qp: 5.33 },
+  { marks: 25, grade: "B", qp: 5.67 },
+  { marks: 26, grade: "C", qp: 6.0 },
+  { marks: 27, grade: "C", qp: 6.33 },
+  { marks: 28, grade: "B", qp: 6.67 },
+  { marks: 29, grade: "B", qp: 7.0 },
+  { marks: 30, grade: "B", qp: 7.33 },
+  { marks: 31, grade: "B", qp: 7.67 },
+  { range: [32, 40], grade: "A", qp: 8.0 },
+]);
 
-// Quality Points for marks out of 60
-// D: 40-49% (24-29), C: 50-64% (30-38), B: 65-79% (39-47), A: 80-100% (48-60)
-export const QUALITY_POINTS_60: QualityPointEntry[] = [
-  { minMarks: 0, maxMarks: 23, qualityPoint: 0.0, grade: "F" },
-  { minMarks: 24, maxMarks: 26, qualityPoint: 1.0, grade: "D" },
-  { minMarks: 27, maxMarks: 29, qualityPoint: 1.5, grade: "D" },
-  { minMarks: 30, maxMarks: 32, qualityPoint: 2.0, grade: "C" },
-  { minMarks: 33, maxMarks: 35, qualityPoint: 2.3, grade: "C" },
-  { minMarks: 36, maxMarks: 38, qualityPoint: 2.7, grade: "C" },
-  { minMarks: 39, maxMarks: 41, qualityPoint: 3.0, grade: "B" },
-  { minMarks: 42, maxMarks: 44, qualityPoint: 3.3, grade: "B" },
-  { minMarks: 45, maxMarks: 47, qualityPoint: 3.7, grade: "B" },
-  { minMarks: 48, maxMarks: 60, qualityPoint: 4.0, grade: "A" },
-];
+const TABLE_60 = buildTable(60, [
+  { marks: 24, grade: "D", qp: 3.0 },
+  { marks: 25, grade: "D", qp: 3.5 },
+  { marks: 26, grade: "D", qp: 4.0 },
+  { marks: 27, grade: "C", qp: 4.5 },
+  { marks: 28, grade: "C", qp: 5.0 },
+  { marks: 29, grade: "C", qp: 5.5 },
+  { marks: 30, grade: "B", qp: 6.0 },
+  { marks: 31, grade: "B", qp: 6.33 },
+  { marks: 32, grade: "B", qp: 6.67 },
+  { marks: 33, grade: "B", qp: 7.0 },
+  { marks: 34, grade: "C", qp: 7.33 },
+  { marks: 35, grade: "C", qp: 7.67 },
+  { marks: 36, grade: "B", qp: 8.0 },
+  { marks: 37, grade: "B", qp: 8.33 },
+  { marks: 38, grade: "C", qp: 8.67 },
+  { marks: 39, grade: "B", qp: 9.0 },
+  { marks: 40, grade: "A", qp: 9.33 },
+  { marks: 41, grade: "A", qp: 9.67 },
+  { marks: 42, grade: "A", qp: 10.0 },
+  { marks: 43, grade: "B", qp: 10.33 },
+  { marks: 44, grade: "B", qp: 10.67 },
+  { marks: 45, grade: "A", qp: 11.0 },
+  { marks: 46, grade: "A", qp: 11.33 },
+  { marks: 47, grade: "A", qp: 11.67 },
+  { range: [48, 60], grade: "A", qp: 12.0 },
+]);
 
-// Quality Points for marks out of 80
-// D: 40-49% (32-39), C: 50-64% (40-51), B: 65-79% (52-63), A: 80-100% (64-80)
-export const QUALITY_POINTS_80: QualityPointEntry[] = [
-  { minMarks: 0, maxMarks: 31, qualityPoint: 0.0, grade: "F" },
-  { minMarks: 32, maxMarks: 35, qualityPoint: 1.0, grade: "D" },
-  { minMarks: 36, maxMarks: 39, qualityPoint: 1.5, grade: "D" },
-  { minMarks: 40, maxMarks: 43, qualityPoint: 2.0, grade: "C" },
-  { minMarks: 44, maxMarks: 47, qualityPoint: 2.3, grade: "C" },
-  { minMarks: 48, maxMarks: 51, qualityPoint: 2.7, grade: "C" },
-  { minMarks: 52, maxMarks: 55, qualityPoint: 3.0, grade: "B" },
-  { minMarks: 56, maxMarks: 59, qualityPoint: 3.3, grade: "B" },
-  { minMarks: 60, maxMarks: 63, qualityPoint: 3.7, grade: "B" },
-  { minMarks: 64, maxMarks: 80, qualityPoint: 4.0, grade: "A" },
-];
+const TABLE_80 = buildTable(80, [
+  { marks: 32, grade: "D", qp: 4.0 },
+  { marks: 33, grade: "D", qp: 4.5 },
+  { marks: 34, grade: "D", qp: 5.0 },
+  { marks: 35, grade: "C", qp: 5.5 },
+  { marks: 36, grade: "C", qp: 6.0 },
+  { marks: 37, grade: "C", qp: 6.5 },
+  { marks: 38, grade: "B", qp: 7.0 },
+  { marks: 39, grade: "B", qp: 7.5 },
+  { marks: 40, grade: "B", qp: 8.0 },
+  { marks: 41, grade: "A", qp: 8.33 },
+  { marks: 42, grade: "A", qp: 8.67 },
+  { marks: 43, grade: "A", qp: 9.0 },
+  { marks: 44, grade: "C", qp: 9.33 },
+  { marks: 45, grade: "C", qp: 9.67 },
+  { marks: 46, grade: "B", qp: 10.0 },
+  { marks: 47, grade: "B", qp: 10.33 },
+  { marks: 48, grade: "A", qp: 10.67 },
+  { marks: 49, grade: "A", qp: 11.0 },
+  { marks: 50, grade: "A", qp: 11.33 },
+  { marks: 51, grade: "C", qp: 11.67 },
+  { marks: 52, grade: "C", qp: 12.0 },
+  { marks: 53, grade: "B", qp: 12.33 },
+  { marks: 54, grade: "B", qp: 12.67 },
+  { marks: 55, grade: "B", qp: 13.0 },
+  { marks: 56, grade: "A", qp: 13.33 },
+  { marks: 57, grade: "A", qp: 13.67 },
+  { marks: 58, grade: "B", qp: 14.0 },
+  { marks: 59, grade: "B", qp: 14.33 },
+  { marks: 60, grade: "A", qp: 14.67 },
+  { marks: 61, grade: "A", qp: 15.0 },
+  { marks: 62, grade: "A", qp: 15.33 },
+  { marks: 63, grade: "A", qp: 15.67 },
+  { range: [64, 80], grade: "A", qp: 16.0 },
+]);
 
-// Quality Points for marks out of 100
-// D: 40-49% (40-49), C: 50-64% (50-64), B: 65-79% (65-79), A: 80-100% (80-100)
-export const QUALITY_POINTS_100: QualityPointEntry[] = [
-  { minMarks: 0, maxMarks: 39, qualityPoint: 0.0, grade: "F" },
-  { minMarks: 40, maxMarks: 44, qualityPoint: 1.0, grade: "D" },
-  { minMarks: 45, maxMarks: 49, qualityPoint: 1.5, grade: "D" },
-  { minMarks: 50, maxMarks: 54, qualityPoint: 2.0, grade: "C" },
-  { minMarks: 55, maxMarks: 59, qualityPoint: 2.3, grade: "C" },
-  { minMarks: 60, maxMarks: 64, qualityPoint: 2.7, grade: "C" },
-  { minMarks: 65, maxMarks: 69, qualityPoint: 3.0, grade: "B" },
-  { minMarks: 70, maxMarks: 74, qualityPoint: 3.3, grade: "B" },
-  { minMarks: 75, maxMarks: 79, qualityPoint: 3.7, grade: "B" },
-  { minMarks: 80, maxMarks: 100, qualityPoint: 4.0, grade: "A" },
-];
+const TABLE_100 = buildTable(100, [
+  { marks: 40, grade: "D", qp: 5.0 },
+  { marks: 41, grade: "D", qp: 5.5 },
+  { marks: 42, grade: "D", qp: 6.0 },
+  { marks: 43, grade: "C", qp: 6.5 },
+  { marks: 44, grade: "C", qp: 7.0 },
+  { marks: 45, grade: "C", qp: 7.5 },
+  { marks: 46, grade: "B", qp: 8.0 },
+  { marks: 47, grade: "B", qp: 8.5 },
+  { marks: 48, grade: "B", qp: 9.0 },
+  { marks: 49, grade: "A", qp: 9.5 },
+  { marks: 50, grade: "A", qp: 10.0 },
+  { marks: 51, grade: "A", qp: 10.33 },
+  { marks: 52, grade: "C", qp: 10.67 },
+  { marks: 53, grade: "C", qp: 11.0 },
+  { marks: 54, grade: "B", qp: 11.33 },
+  { marks: 55, grade: "B", qp: 11.67 },
+  { marks: 56, grade: "A", qp: 12.0 },
+  { marks: 57, grade: "A", qp: 12.33 },
+  { marks: 58, grade: "B", qp: 12.67 },
+  { marks: 59, grade: "B", qp: 13.0 },
+  { marks: 60, grade: "A", qp: 13.33 },
+  { marks: 61, grade: "A", qp: 13.67 },
+  { marks: 62, grade: "A", qp: 14.0 },
+  { marks: 63, grade: "A", qp: 14.33 },
+  { marks: 64, grade: "A", qp: 14.67 },
+  { marks: 65, grade: "A", qp: 15.0 },
+  { marks: 66, grade: "B", qp: 15.33 },
+  { marks: 67, grade: "B", qp: 15.67 },
+  { marks: 68, grade: "B", qp: 16.0 },
+  { marks: 69, grade: "B", qp: 16.33 },
+  { marks: 70, grade: "B", qp: 16.67 },
+  { marks: 71, grade: "A", qp: 17.0 },
+  { marks: 72, grade: "A", qp: 17.33 },
+  { marks: 73, grade: "A", qp: 17.67 },
+  { marks: 74, grade: "A", qp: 18.0 },
+  { marks: 75, grade: "A", qp: 18.33 },
+  { marks: 76, grade: "A", qp: 18.67 },
+  { marks: 77, grade: "A", qp: 19.0 },
+  { marks: 78, grade: "A", qp: 19.33 },
+  { marks: 79, grade: "A", qp: 19.67 },
+  { range: [80, 100], grade: "A", qp: 20.0 },
+]);
 
-// Map total marks type to its quality point table
-export const QUALITY_POINT_TABLES: Record<TotalMarksType, QualityPointEntry[]> = {
-  20: QUALITY_POINTS_20,
-  40: QUALITY_POINTS_40,
-  60: QUALITY_POINTS_60,
-  80: QUALITY_POINTS_80,
-  100: QUALITY_POINTS_100,
+export const QUALITY_POINT_TABLES: Record<TotalMarksType, MarkQuality[]> = {
+  20: TABLE_20,
+  40: TABLE_40,
+  60: TABLE_60,
+  80: TABLE_80,
+  100: TABLE_100,
 };
 
-// Valid total marks values
-export const VALID_TOTAL_MARKS: TotalMarksType[] = [20, 40, 60, 80, 100];
+export const VALID_TOTAL_MARKS = VALID_TOTAL_MARKS_LIST;
 
 /**
- * Get quality point, grade, and percentage for given marks and total
+ * Get quality point, grade, and percentage for given marks and total.
+ * Marks are rounded to the nearest integer to match the official per-mark table.
  */
 export function getQualityPoint(
   obtainedMarks: number,
   totalMarks: TotalMarksType
 ): { qualityPoint: number; grade: Grade; percentage: number } {
-  // Calculate percentage
-  const percentage = (obtainedMarks / totalMarks) * 100;
+  const mark = Math.max(0, Math.min(totalMarks, Math.round(obtainedMarks)));
+  const percentage = (mark / totalMarks) * 100;
 
-  // Get the appropriate table
   const table = QUALITY_POINT_TABLES[totalMarks];
-
-  // Find the matching entry
-  const entry = table.find(
-    (e) => obtainedMarks >= e.minMarks && obtainedMarks <= e.maxMarks
-  );
-
-  // If no entry found (shouldn't happen with valid input), return failing grade
-  if (!entry) {
-    return { qualityPoint: 0.0, grade: "F", percentage };
-  }
+  const entry = table[mark] ?? { qualityPoint: 0, grade: "F" };
 
   return {
     qualityPoint: entry.qualityPoint,
@@ -133,9 +204,6 @@ export function getQualityPoint(
   };
 }
 
-/**
- * Check if total marks is a valid value
- */
 export function isValidTotalMarks(marks: number): marks is TotalMarksType {
-  return VALID_TOTAL_MARKS.includes(marks as TotalMarksType);
+  return VALID_TOTAL_MARKS_LIST.includes(marks as TotalMarksType);
 }

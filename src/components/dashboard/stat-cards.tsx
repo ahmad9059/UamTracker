@@ -15,6 +15,9 @@ export function StatCards({
   totalQualityPoints,
   semesterCount,
 }: StatCardsProps) {
+  const clamp = (value: number, min: number, max: number) =>
+    Math.max(min, Math.min(max, value));
+
   const getGPAStatus = (gpa: number) => {
     if (gpa >= 3.5) return { label: "Excellent", color: "text-emerald-600" };
     if (gpa >= 3.0) return { label: "Good", color: "text-blue-600" };
@@ -22,17 +25,20 @@ export function StatCards({
     return { label: "Needs Work", color: "text-red-600" };
   };
 
-  const gpaStatus = getGPAStatus(cgpa);
-  const gpaProgress = (cgpa / 4.0) * 100;
-  const creditProgress = Math.min((totalCreditHours / 130) * 100, 100);
-  const semesterProgress = Math.min((semesterCount / 8) * 100, 100);
+  const safeCgpa = clamp(cgpa, 0, 4);
+  const gpaStatus = getGPAStatus(safeCgpa);
+  const gpaProgress = clamp((safeCgpa / 4.0) * 100, 0, 100);
+  const creditProgress = clamp((totalCreditHours / 130) * 100, 0, 100);
+  const maxQp = Math.max(totalCreditHours * 4, 1); // avoid div/0
+  const qualityProgress = clamp((totalQualityPoints / maxQp) * 100, 0, 100);
+  const semesterProgress = clamp((semesterCount / 8) * 100, 0, 100);
 
   const stats = [
     {
       icon: Award,
       iconBg: "from-primary/20 to-primary/10",
       iconColor: "text-primary",
-      value: cgpa.toFixed(2),
+      value: safeCgpa.toFixed(2),
       change: gpaStatus.label,
       changeColor: gpaStatus.color,
       label: "Cumulative GPA",
@@ -61,7 +67,7 @@ export function StatCards({
       changeColor: "text-chart-3",
       label: "Quality Points",
       sublabel: "Accumulated",
-      progress: Math.min((totalQualityPoints / 520) * 100, 100),
+      progress: qualityProgress,
       progressColor: "bg-gradient-to-r from-chart-3 to-chart-3/80",
     },
     {
