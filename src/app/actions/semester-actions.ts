@@ -154,6 +154,7 @@ export async function getSemesterWithCourses(semesterId: string) {
       creditHours: course.creditHours,
       totalMarks: course.totalMarks as TotalMarksType,
       obtainedMarks: course.obtainedMarks,
+      isAudit: course.isAudit,
     }));
 
     // Process semester data with GPA calculation
@@ -210,6 +211,7 @@ export async function getAllSemesters() {
         creditHours: course.creditHours,
         totalMarks: course.totalMarks as TotalMarksType,
         obtainedMarks: course.obtainedMarks,
+        isAudit: course.isAudit,
       })),
     }));
 

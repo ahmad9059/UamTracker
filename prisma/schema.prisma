@@ -82,6 +82,7 @@ model Course {
   creditHours   Float
   totalMarks    Int
   obtainedMarks Float
+  isAudit       Boolean  @default(false)
   semesterId    String
   semester      Semester @relation(fields: [semesterId], references: [id], onDelete: Cascade)
   createdAt     DateTime @default(now())

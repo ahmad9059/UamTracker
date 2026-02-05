@@ -24,6 +24,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Switch } from "@/components/ui/switch";
 
 import { createCourse } from "@/app/actions/course-actions";
 import { type TotalMarksType, VALID_TOTAL_MARKS } from "@/lib/quality-points";
@@ -42,12 +43,14 @@ export function AddCourseDialog({ semesterId }: AddCourseDialogProps) {
   const [creditHours, setCreditHours] = useState("");
   const [totalMarks, setTotalMarks] = useState<TotalMarksType>(100);
   const [obtainedMarks, setObtainedMarks] = useState("");
+  const [isAudit, setIsAudit] = useState(false);
 
   function resetForm() {
     setName("");
     setCreditHours("");
     setTotalMarks(100);
     setObtainedMarks("");
+    setIsAudit(false);
     setError(null);
   }
 
@@ -57,24 +60,26 @@ export function AddCourseDialog({ semesterId }: AddCourseDialogProps) {
     setError(null);
 
     const creditHoursNum = parseFloat(creditHours);
-    const obtainedMarksNum = parseFloat(obtainedMarks);
+    const obtainedMarksNum = parseFloat(obtainedMarks || "0");
 
-    if (isNaN(creditHoursNum) || creditHoursNum <= 0) {
-      setError("Credit hours must be a positive number");
-      setIsLoading(false);
-      return;
-    }
+    if (!isAudit) {
+      if (isNaN(creditHoursNum) || creditHoursNum <= 0) {
+        setError("Credit hours must be a positive number");
+        setIsLoading(false);
+        return;
+      }
 
-    if (isNaN(obtainedMarksNum) || obtainedMarksNum < 0) {
-      setError("Obtained marks must be 0 or greater");
-      setIsLoading(false);
-      return;
-    }
+      if (isNaN(obtainedMarksNum) || obtainedMarksNum < 0) {
+        setError("Obtained marks must be 0 or greater");
+        setIsLoading(false);
+        return;
+      }
 
-    if (obtainedMarksNum > totalMarks) {
-      setError(`Obtained marks cannot exceed ${totalMarks}`);
-      setIsLoading(false);
-      return;
+      if (obtainedMarksNum > totalMarks) {
+        setError(`Obtained marks cannot exceed ${totalMarks}`);
+        setIsLoading(false);
+        return;
+      }
     }
 
     const result = await createCourse(semesterId, {
@@ -82,6 +87,7 @@ export function AddCourseDialog({ semesterId }: AddCourseDialogProps) {
       creditHours: creditHoursNum,
       totalMarks,
       obtainedMarks: obtainedMarksNum,
+      isAudit,
     });
 
     if (!result.success) {
@@ -134,18 +140,40 @@ export function AddCourseDialog({ semesterId }: AddCourseDialogProps) {
               />
             </div>
 
+            <div className="flex items-center justify-between rounded-lg border border-border/60 bg-muted/20 px-3 py-2.5">
+              <div>
+                <p className="text-sm font-medium">Audit / Pass Course</p>
+                <p className="text-xs text-muted-foreground">No GPA impact. Shows grade as P (Pass).</p>
+              </div>
+              <Switch
+                checked={isAudit}
+                onCheckedChange={(checked) => {
+                  setIsAudit(checked);
+                  if (checked) {
+                    setCreditHours("0");
+                    setObtainedMarks("0");
+                  } else {
+                    setCreditHours("");
+                    setObtainedMarks("");
+                  }
+                }}
+                disabled={isLoading}
+                aria-label="Mark as audit course"
+              />
+            </div>
+
             <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-2">
                 <Label htmlFor="creditHours">Credit Hours</Label>
                 <Input
                   id="creditHours"
                   type="number"
-                  placeholder="3"
+                  placeholder={isAudit ? "0 (audit)" : "3"}
                   min="0"
                   step="0.5"
                   value={creditHours}
                   onChange={(e) => setCreditHours(e.target.value)}
-                  disabled={isLoading}
+                  disabled={isLoading || isAudit}
                 />
               </div>
 
@@ -175,7 +203,7 @@ export function AddCourseDialog({ semesterId }: AddCourseDialogProps) {
               <Input
                 id="obtainedMarks"
                 type="number"
-                placeholder={`0 - ${totalMarks}`}
+                placeholder={isAudit ? `0 - ${totalMarks}` : `0 - ${totalMarks}`}
                 min="0"
                 max={totalMarks}
                 step="0.5"
@@ -190,7 +218,14 @@ export function AddCourseDialog({ semesterId }: AddCourseDialogProps) {
             <Button type="button" variant="outline" onClick={() => setOpen(false)} disabled={isLoading}>
               Cancel
             </Button>
-            <Button type="submit" disabled={isLoading || !name.trim() || !creditHours || !obtainedMarks}>
+            <Button
+              type="submit"
+              disabled={
+                isLoading ||
+                !name.trim() ||
+                (!isAudit && (!creditHours || !obtainedMarks))
+              }
+            >
               {isLoading ? (
                 <>
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />

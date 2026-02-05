@@ -51,6 +51,8 @@ export default async function SemesterPage({ params }: PageProps) {
         return "bg-gradient-to-br from-chart-4/20 to-chart-4/10 text-chart-4 border border-chart-4/20";
       case "D":
         return "bg-gradient-to-br from-chart-5/20 to-chart-5/10 text-chart-5 border border-chart-5/20";
+      case "P":
+        return "bg-gradient-to-br from-emerald-400/20 to-emerald-500/10 text-emerald-600 border border-emerald-400/30";
       default:
         return "bg-gradient-to-br from-destructive/20 to-destructive/10 text-destructive border border-destructive/20";
     }
@@ -202,7 +204,14 @@ export default async function SemesterPage({ params }: PageProps) {
                         key={course.id} 
                         className="hover:bg-primary/5 transition-colors border-border"
                       >
-                        <TableCell className="font-semibold text-foreground">{course.name}</TableCell>
+                        <TableCell className="font-semibold text-foreground">
+                          <div className="flex flex-col">
+                            <span>{course.name}</span>
+                            {course.isAudit && (
+                              <span className="text-xs text-muted-foreground mt-0.5">Audit / Pass (no GPA impact)</span>
+                            )}
+                          </div>
+                        </TableCell>
                         <TableCell className="text-center">
                           <div className="inline-flex items-center justify-center px-3 py-1.5 bg-muted/50 rounded-lg text-sm font-medium">
                             {course.creditHours}

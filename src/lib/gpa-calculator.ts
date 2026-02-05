@@ -6,6 +6,7 @@ export type CourseInput = {
   creditHours: number;
   totalMarks: TotalMarksType;
   obtainedMarks: number;
+  isAudit?: boolean; // Audit/Pass course, excluded from GPA
 };
 
 // Course with calculated quality point info
@@ -13,7 +14,8 @@ export type CourseWithQP = CourseInput & {
   qualityPoint: number;
   grade: Grade;
   percentage: number;
-  weightedQP: number; // equals qualityPoint (QP already weighted by credit hours)
+  weightedQP: number; // equals qualityPoint (QP already weighted by credit hours, but zeroed for audit)
+  isAudit: boolean;
 };
 
 // GPA calculation result
@@ -57,42 +59,37 @@ export function calculateGPA(courses: CourseInput[]): GPAResult {
     };
   }
 
-  // Ignore non-GPA courses (creditHours <= 0)
-  const gpaCourses = courses.filter((course) => course.creditHours > 0);
+  // Process each course to get quality points (audit courses are excluded from GPA totals)
+  const processedCourses: CourseWithQP[] = courses.map((course) => {
+    const isAudit = Boolean(course.isAudit);
 
-  if (gpaCourses.length === 0) {
-    return {
-      gpa: 0,
-      totalQualityPoints: 0,
-      totalCreditHours: 0,
-      courses: [],
-    };
-  }
-
-  // Process each course to get quality points
-  const processedCourses: CourseWithQP[] = gpaCourses.map((course) => {
     const { qualityPoint, grade, percentage } = getQualityPoint(
       course.obtainedMarks,
       course.totalMarks
     );
-    const weightedQP = qualityPoint; // table already includes credit weighting
 
     return {
       ...course,
+      isAudit,
       qualityPoint,
-      grade,
+      grade: isAudit ? "P" : grade,
       percentage,
-      weightedQP,
+      weightedQP: isAudit ? 0 : qualityPoint, // exclude audit courses from GPA sums
     };
   });
 
+  // Only include non-audit courses with credit hours > 0 in GPA math
+  const gpaCourses = processedCourses.filter(
+    (course) => !course.isAudit && course.creditHours > 0
+  );
+
   // Calculate totals
-  const totalCreditHours = processedCourses.reduce(
+  const totalCreditHours = gpaCourses.reduce(
     (sum, course) => sum + course.creditHours,
     0
   );
 
-  const totalQualityPoints = processedCourses.reduce(
+  const totalQualityPoints = gpaCourses.reduce(
     (sum, course) => sum + course.weightedQP,
     0
   );
@@ -201,6 +198,8 @@ export type ValidationResult = {
  */
 export function validateCourseInput(course: CourseInput): ValidationResult {
   const errors: string[] = [];
+
+  const isAudit = Boolean(course.isAudit);
 
   // Validate credit hours
   if (course.creditHours <= 0) {

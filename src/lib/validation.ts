@@ -4,6 +4,7 @@ import { VALID_TOTAL_MARKS, type TotalMarksType } from "./quality-points";
 // Course input schema
 export const courseSchema = z.object({
   name: z.string().min(1, "Course name is required").max(100, "Course name too long"),
+  isAudit: z.boolean().optional().default(false),
   creditHours: z
     .number({ message: "Credit hours must be a number" })
     .positive("Credit hours must be positive")
@@ -17,16 +18,19 @@ export const courseSchema = z.object({
   obtainedMarks: z
     .number({ message: "Obtained marks must be a number" })
     .min(0, "Obtained marks cannot be negative"),
-}).refine(
-  (data) => data.obtainedMarks <= data.totalMarks,
-  {
-    message: "Obtained marks cannot exceed total marks",
-    path: ["obtainedMarks"],
+}).superRefine((data, ctx) => {
+  if (data.obtainedMarks > data.totalMarks) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Obtained marks cannot exceed total marks",
+      path: ["obtainedMarks"],
+    });
   }
-);
+});
 
 // Course input schema for public calculator (name optional)
 export const publicCourseSchema = z.object({
+  isAudit: z.boolean().optional().default(false),
   creditHours: z
     .number({ message: "Credit hours must be a number" })
     .positive("Credit hours must be positive")
@@ -40,13 +44,15 @@ export const publicCourseSchema = z.object({
   obtainedMarks: z
     .number({ message: "Obtained marks must be a number" })
     .min(0, "Obtained marks cannot be negative"),
-}).refine(
-  (data) => data.obtainedMarks <= data.totalMarks,
-  {
-    message: "Obtained marks cannot exceed total marks",
-    path: ["obtainedMarks"],
+}).superRefine((data, ctx) => {
+  if (data.obtainedMarks > data.totalMarks) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Obtained marks cannot exceed total marks",
+      path: ["obtainedMarks"],
+    });
   }
-);
+});
 
 // Semester schema
 export const semesterSchema = z.object({

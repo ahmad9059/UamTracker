@@ -2,7 +2,7 @@
 // Source: data/GPA.md
 
 export type TotalMarksType = 20 | 40 | 60 | 80 | 100;
-export type Grade = "A" | "B" | "C" | "D" | "F";
+export type Grade = "A" | "B" | "C" | "D" | "F" | "P";
 
 type MarkQuality = { qualityPoint: number; grade: Grade };
 

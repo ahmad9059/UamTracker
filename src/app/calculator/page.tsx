@@ -272,6 +272,8 @@ export default function CalculatorPage() {
         return "bg-amber-500/10 text-amber-500";
       case "D":
         return "bg-orange-500/10 text-orange-500";
+      case "P":
+        return "bg-teal-500/10 text-teal-600";
       default:
         return "bg-red-500/10 text-red-500";
     }

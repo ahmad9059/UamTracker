@@ -24,6 +24,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Switch } from "@/components/ui/switch";
 
 import { updateCourse } from "@/app/actions/course-actions";
 import { type TotalMarksType, VALID_TOTAL_MARKS } from "@/lib/quality-points";
@@ -36,6 +37,7 @@ interface EditCourseDialogProps {
     creditHours: number;
     totalMarks: TotalMarksType;
     obtainedMarks: number;
+    isAudit?: boolean;
   };
 }
 
@@ -49,12 +51,14 @@ export function EditCourseDialog({ courseId, semesterId, initialData }: EditCour
   const [creditHours, setCreditHours] = useState(String(initialData.creditHours));
   const [totalMarks, setTotalMarks] = useState<TotalMarksType>(initialData.totalMarks);
   const [obtainedMarks, setObtainedMarks] = useState(String(initialData.obtainedMarks));
+  const [isAudit, setIsAudit] = useState(Boolean(initialData.isAudit));
 
   function resetForm() {
     setName(initialData.name);
     setCreditHours(String(initialData.creditHours));
     setTotalMarks(initialData.totalMarks);
     setObtainedMarks(String(initialData.obtainedMarks));
+    setIsAudit(Boolean(initialData.isAudit));
     setError(null);
   }
 
@@ -64,24 +68,26 @@ export function EditCourseDialog({ courseId, semesterId, initialData }: EditCour
     setError(null);
 
     const creditHoursNum = parseFloat(creditHours);
-    const obtainedMarksNum = parseFloat(obtainedMarks);
+    const obtainedMarksNum = parseFloat(obtainedMarks || "0");
 
-    if (isNaN(creditHoursNum) || creditHoursNum <= 0) {
-      setError("Credit hours must be a positive number");
-      setIsLoading(false);
-      return;
-    }
+    if (!isAudit) {
+      if (isNaN(creditHoursNum) || creditHoursNum <= 0) {
+        setError("Credit hours must be a positive number");
+        setIsLoading(false);
+        return;
+      }
 
-    if (isNaN(obtainedMarksNum) || obtainedMarksNum < 0) {
-      setError("Obtained marks must be 0 or greater");
-      setIsLoading(false);
-      return;
-    }
+      if (isNaN(obtainedMarksNum) || obtainedMarksNum < 0) {
+        setError("Obtained marks must be 0 or greater");
+        setIsLoading(false);
+        return;
+      }
 
-    if (obtainedMarksNum > totalMarks) {
-      setError(`Obtained marks cannot exceed ${totalMarks}`);
-      setIsLoading(false);
-      return;
+      if (obtainedMarksNum > totalMarks) {
+        setError(`Obtained marks cannot exceed ${totalMarks}`);
+        setIsLoading(false);
+        return;
+      }
     }
 
     const result = await updateCourse(courseId, {
@@ -89,6 +95,7 @@ export function EditCourseDialog({ courseId, semesterId, initialData }: EditCour
       creditHours: creditHoursNum,
       totalMarks,
       obtainedMarks: obtainedMarksNum,
+      isAudit,
     });
 
     if (!result.success) {
@@ -138,6 +145,28 @@ export function EditCourseDialog({ courseId, semesterId, initialData }: EditCour
               />
             </div>
 
+            <div className="flex items-center justify-between rounded-lg border border-border/60 bg-muted/20 px-3 py-2.5">
+              <div>
+                <p className="text-sm font-medium">Audit / Pass Course</p>
+                <p className="text-xs text-muted-foreground">No GPA impact. Shows grade as P (Pass).</p>
+              </div>
+              <Switch
+                checked={isAudit}
+                onCheckedChange={(checked) => {
+                  setIsAudit(checked);
+                  if (checked) {
+                    setCreditHours("0");
+                    setObtainedMarks("0");
+                  } else {
+                    setCreditHours(String(initialData.creditHours || 0));
+                    setObtainedMarks(String(initialData.obtainedMarks || 0));
+                  }
+                }}
+                disabled={isLoading}
+                aria-label="Mark as audit course"
+              />
+            </div>
+
             <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-2">
                 <Label htmlFor="edit-creditHours">Credit Hours</Label>
@@ -148,7 +177,7 @@ export function EditCourseDialog({ courseId, semesterId, initialData }: EditCour
                   step="0.5"
                   value={creditHours}
                   onChange={(e) => setCreditHours(e.target.value)}
-                  disabled={isLoading}
+                  disabled={isLoading || isAudit}
                 />
               </div>
 
@@ -192,7 +221,14 @@ export function EditCourseDialog({ courseId, semesterId, initialData }: EditCour
             <Button type="button" variant="outline" onClick={() => setOpen(false)} disabled={isLoading}>
               Cancel
             </Button>
-            <Button type="submit" disabled={isLoading || !name.trim() || !creditHours || !obtainedMarks}>
+            <Button
+              type="submit"
+              disabled={
+                isLoading ||
+                !name.trim() ||
+                (!isAudit && (!creditHours || !obtainedMarks))
+              }
+            >
               {isLoading ? (
                 <>
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />

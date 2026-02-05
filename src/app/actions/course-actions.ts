@@ -61,6 +61,7 @@ export async function createCourse(
     creditHours: number;
     totalMarks: TotalMarksType;
     obtainedMarks: number;
+    isAudit?: boolean;
   }
 ) {
   try {
@@ -82,6 +83,7 @@ export async function createCourse(
         creditHours: data.creditHours,
         totalMarks: data.totalMarks,
         obtainedMarks: data.obtainedMarks,
+        isAudit: data.isAudit ?? false,
         semesterId: semesterId,
       },
     });
@@ -106,6 +108,7 @@ export async function updateCourse(
     creditHours: number;
     totalMarks: TotalMarksType;
     obtainedMarks: number;
+    isAudit: boolean;
   }>
 ) {
   try {
@@ -118,6 +121,7 @@ export async function updateCourse(
       creditHours?: number;
       totalMarks?: number;
       obtainedMarks?: number;
+      isAudit?: boolean;
     } = {};
 
     if (data.name !== undefined) {
@@ -126,6 +130,12 @@ export async function updateCourse(
       }
       updateData.name = data.name;
     }
+
+    if (data.isAudit !== undefined) {
+      updateData.isAudit = data.isAudit;
+    }
+
+    const willBeAudit = updateData.isAudit ?? existingCourse.isAudit;
 
     if (data.creditHours !== undefined) {
       if (data.creditHours <= 0) {
