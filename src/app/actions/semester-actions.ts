@@ -149,13 +149,15 @@ export async function getSemesterWithCourses(semesterId: string) {
     }
 
     // Convert courses to CourseInput format
-    const courseInputs: CourseInput[] = semester.courses.map((course): CourseInput => ({
-      name: course.name,
-      creditHours: course.creditHours,
-      totalMarks: course.totalMarks as TotalMarksType,
-      obtainedMarks: course.obtainedMarks,
-      isAudit: course.isAudit,
-    }));
+    const courseInputs: CourseInput[] = semester.courses.map(
+      (course: typeof semester.courses[number]): CourseInput => ({
+        name: course.name,
+        creditHours: course.creditHours,
+        totalMarks: course.totalMarks as TotalMarksType,
+        obtainedMarks: course.obtainedMarks,
+        isAudit: course.isAudit,
+      })
+    );
 
     // Process semester data with GPA calculation
     const semesterData = processSemesterData(
