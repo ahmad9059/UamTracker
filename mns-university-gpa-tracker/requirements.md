@@ -2,11 +2,11 @@
 
 ## Introduction
 
-The MNS-University GPA Tracker is a Next.js web application designed for students at MNS-University of Agriculture, Multan to track their academic progress through semester-based GPA calculations. The system provides both public GPA calculation tools and authenticated student dashboards with comprehensive course tracking, visual analytics, and personalized academic progress monitoring. The application implements the university's specific grading system with Quality Points based on marks obtained out of different totals (20, 40, 60, 80, 100).
+The UAM-University GPA Tracker is a Next.js web application designed for students at UAM-University of Agriculture, Multan to track their academic progress through semester-based GPA calculations. The system provides both public GPA calculation tools and authenticated student dashboards with comprehensive course tracking, visual analytics, and personalized academic progress monitoring. The application implements the university's specific grading system with Quality Points based on marks obtained out of different totals (20, 40, 60, 80, 100).
 
 ## Glossary
 
-- **System**: The MNS-University GPA Tracker web application
+- **System**: The UAM-University GPA Tracker web application
 - **Student**: An authenticated user who tracks their academic progress
 - **Public_User**: An unauthenticated visitor using the public GPA calculator
 - **Course**: An academic course with a name, credit hours, total marks, and obtained marks
@@ -68,7 +68,7 @@ The MNS-University GPA Tracker is a Next.js web application designed for student
 
 ### Requirement 4: Quality Point Calculation
 
-**User Story:** As a student, I want the system to automatically calculate quality points based on MNS-University's grading system, so that my GPA is accurate according to university standards.
+**User Story:** As a student, I want the system to automatically calculate quality points based on UAM-University's grading system, so that my GPA is accurate according to university standards.
 
 #### Acceptance Criteria
 

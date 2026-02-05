@@ -1,8 +1,8 @@
-# Implementation Plan: MNS-University GPA Tracker
+# Implementation Plan: UAM-University GPA Tracker
 
 ## Overview
 
-This implementation plan breaks down the MNS-University GPA Tracker into discrete coding tasks. The approach follows a bottom-up strategy: first implementing core calculation logic, then data layer, authentication, UI components, and finally integration. Each task builds on previous work to ensure incremental progress with testable milestones.
+This implementation plan breaks down the UAM-University GPA Tracker into discrete coding tasks. The approach follows a bottom-up strategy: first implementing core calculation logic, then data layer, authentication, UI components, and finally integration. Each task builds on previous work to ensure incremental progress with testable milestones.
 
 **CRITICAL**: Task 1 MUST be completed first. All design skills must be loaded and actively used throughout implementation to ensure professional, unique, attractive design (NO "AI slop").
 
