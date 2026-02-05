@@ -149,7 +149,7 @@ export async function getSemesterWithCourses(semesterId: string) {
     }
 
     // Convert courses to CourseInput format
-    const courseInputs: CourseInput[] = semester.courses.map((course) => ({
+    const courseInputs: CourseInput[] = semester.courses.map((course): CourseInput => ({
       name: course.name,
       creditHours: course.creditHours,
       totalMarks: course.totalMarks as TotalMarksType,
