@@ -7,6 +7,10 @@ export const auth = betterAuth({
     provider: "postgresql",
   }),
   basePath: "/api/auth",
+  baseURL:
+    process.env.BETTER_AUTH_URL ||
+    process.env.NEXT_PUBLIC_APP_URL ||
+    "http://localhost:3000",
   socialProviders: {
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -28,6 +32,8 @@ export const auth = betterAuth({
   trustedOrigins: [
     "http://localhost:3000",
     process.env.BETTER_AUTH_URL || "http://localhost:3000",
+    process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
+    "https://uam-tracker.vercel.app",
   ],
 });
 
