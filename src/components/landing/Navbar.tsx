@@ -5,14 +5,21 @@ import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useSession } from "@/lib/auth-client";
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { data: session } = useSession();
+  const userInitials =
+    session?.user?.name
+      ? session.user.name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)
+      : session?.user?.email?.slice(0, 2).toUpperCase() || "U";
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
       <div className="container mx-auto px-4 pt-4">
-        <nav className="glass-strong rounded-xl shadow-soft">
+        <nav className="glass-strong rounded-4xl shadow-soft">
           <div className="px-6 py-4 flex items-center justify-between">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-3 group">
@@ -60,15 +67,32 @@ export function Navbar() {
 
             {/* CTA Buttons */}
             <div className="hidden md:flex items-center gap-3">
-              <Button variant="ghost" asChild className="font-medium">
-                <Link href="/login">Sign In</Link>
-              </Button>
-              <Button
-                asChild
-                className="font-semibold shadow-soft hover:shadow-medium transition-shadow"
-              >
-                <Link href="/register">Get Started</Link>
-              </Button>
+              {session?.user ? (
+                <Link href="/dashboard" className="flex items-center gap-3 hover:opacity-90 transition">
+                  <Avatar className="h-10 w-10 border border-border">
+                    <AvatarImage src={session.user.image || undefined} alt={session.user.name || "Profile"} />
+                    <AvatarFallback className="bg-primary text-primary-foreground font-semibold">
+                      {userInitials}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="text-left leading-tight">
+                    <p className="text-sm font-semibold text-foreground">{session.user.name || "Your account"}</p>
+                    <p className="text-xs text-muted-foreground">Go to dashboard</p>
+                  </div>
+                </Link>
+              ) : (
+                <>
+                  <Button variant="ghost" asChild className="font-medium">
+                    <Link href="/login">Sign In</Link>
+                  </Button>
+                  <Button
+                    asChild
+                    className="font-semibold shadow-soft hover:shadow-medium transition-shadow"
+                  >
+                    <Link href="/register">Get Started</Link>
+                  </Button>
+                </>
+              )}
             </div>
 
             {/* Mobile Menu Button */}
@@ -109,12 +133,22 @@ export function Navbar() {
                 Calculator
               </Link>
               <div className="pt-4 flex flex-col gap-2">
-                <Button variant="outline" asChild className="w-full">
-                  <Link href="/login">Sign In</Link>
-                </Button>
-                <Button asChild className="w-full">
-                  <Link href="/register">Get Started</Link>
-                </Button>
+                {session?.user ? (
+                  <Button asChild className="w-full">
+                    <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)}>
+                      Go to Dashboard
+                    </Link>
+                  </Button>
+                ) : (
+                  <>
+                    <Button variant="outline" asChild className="w-full">
+                      <Link href="/login" onClick={() => setMobileMenuOpen(false)}>Sign In</Link>
+                    </Button>
+                    <Button asChild className="w-full">
+                      <Link href="/register" onClick={() => setMobileMenuOpen(false)}>Get Started</Link>
+                    </Button>
+                  </>
+                )}
               </div>
             </div>
           )}

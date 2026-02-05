@@ -62,7 +62,7 @@ const navigationItems = [
       },
       {
         title: "Calculator",
-        url: "/calculator",
+        url: "/dashboard/calculator",
         icon: Calculator,
       },
     ],
@@ -72,12 +72,12 @@ const navigationItems = [
     items: [
       {
         title: "Help & Support",
-        url: "#",
+        url: "/dashboard/support",
         icon: HelpCircle,
       },
       {
         title: "Settings",
-        url: "#",
+        url: "/dashboard/settings",
         icon: Settings,
       },
     ],
@@ -326,13 +326,13 @@ export default function DashboardLayoutClient({
                         </Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem asChild>
-                        <Link href="/calculator" className="cursor-pointer">
+                        <Link href="/dashboard/calculator" className="cursor-pointer">
                           <Calculator className="mr-2 h-4 w-4" />
                           Calculator
                         </Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem asChild>
-                        <Link href="#" className="cursor-pointer">
+                        <Link href="/dashboard/settings" className="cursor-pointer">
                           <Settings className="mr-2 h-4 w-4" />
                           Settings
                         </Link>
@@ -347,7 +347,7 @@ export default function DashboardLayoutClient({
 
             {/* Main Content */}
             <main className="flex-1 p-6 relative">
-              <div className="max-w-7xl mx-auto">{children}</div>
+              <div className="mx-auto">{children}</div>
             </main>
           </SidebarInset>
         </div>
