@@ -2,15 +2,38 @@ import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { prisma } from "./db";
 
+// Resolve the correct public origin so cookies are issued for the domain the app
+// actually runs on (Vercel preview/prod or localhost). In production, Vercel
+// injects VERCEL_URL (without protocol). Prefer it over a localhost env value to
+// avoid setting cookies for the wrong domain and getting kicked back to /login.
+const vercelUrl = process.env.VERCEL_URL
+  ? `https://${process.env.VERCEL_URL}`
+  : undefined;
+
+const envBaseUrl = process.env.BETTER_AUTH_URL || process.env.NEXT_PUBLIC_APP_URL;
+
+const baseURL =
+  (vercelUrl && envBaseUrl?.includes("localhost") ? vercelUrl : envBaseUrl) ||
+  vercelUrl ||
+  "http://localhost:3000";
+
+const trustedOrigins = Array.from(
+  new Set(
+    [
+      "http://localhost:3000",
+      envBaseUrl,
+      vercelUrl,
+      "https://uam-tracker.vercel.app",
+    ].filter(Boolean)
+  )
+) as string[];
+
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
   basePath: "/api/auth",
-  baseURL:
-    process.env.BETTER_AUTH_URL ||
-    process.env.NEXT_PUBLIC_APP_URL ||
-    "http://localhost:3000",
+  baseURL,
   socialProviders: {
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -29,12 +52,7 @@ export const auth = betterAuth({
       maxAge: 5 * 60, // Cache for 5 minutes
     },
   },
-  trustedOrigins: [
-    "http://localhost:3000",
-    process.env.BETTER_AUTH_URL || "http://localhost:3000",
-    process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
-    "https://uam-tracker.vercel.app",
-  ],
+  trustedOrigins,
 });
 
 export type Session = typeof auth.$Infer.Session;
