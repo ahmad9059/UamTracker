@@ -117,10 +117,10 @@ function AppSidebar({ session }: { session: SessionData }) {
         </div>
       </SidebarHeader>
 
-      <SidebarContent className="px-1 py-6 group-data-[collapsible=icon]:px-2 group-data-[collapsible=icon]:py-4 gap-5">
+      <SidebarContent className="px-1 pt-4 pb-6 group-data-[collapsible=icon]:px-2 group-data-[collapsible=icon]:py-4 gap-5">
         {navigationItems.map((section, index) => (
           <SidebarGroup key={section.title} className={index > 0 ? "pt-2 border-t border-sidebar-border/60" : ""}>
-            <SidebarGroupLabel className="px-2 mb-2 text-[11px] font-semibold text-sidebar-foreground/60 uppercase tracking-[0.14em] group-data-[collapsible=icon]:sr-only">
+            <SidebarGroupLabel className="px-2 mb-1 text-[11px] font-semibold text-sidebar-foreground/60 uppercase tracking-[0.14em] group-data-[collapsible=icon]:sr-only">
               {section.title}
             </SidebarGroupLabel>
             <SidebarGroupContent>
