@@ -51,6 +51,9 @@ export const auth = betterAuth({
       enabled: true,
       maxAge: 5 * 60, // Cache for 5 minutes
     },
+    // Force secure cookies in prod so Better Auth uses __Secure- prefix
+    // and SameSite=Lax+Secure. Keeps login working on Vercel.
+    useSecureCookies: process.env.NODE_ENV === "production",
   },
   trustedOrigins,
 });

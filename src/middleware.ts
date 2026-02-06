@@ -9,12 +9,15 @@ export async function middleware(request: NextRequest) {
     (route) => pathname === route || pathname.startsWith(`${route}/`)
   );
 
-  // Check for an existing Better Auth session
-  const sessionCookie = request.cookies.get("better-auth.session_token");
+  // Better Auth prefixes cookies with __Secure- when useSecureCookies is true
+  // (production HTTPS). Check both to support local and prod.
+  const sessionCookieValue =
+    request.cookies.get("__Secure-better-auth.session_token")?.value ||
+    request.cookies.get("better-auth.session_token")?.value;
 
   // If the user hits login/register while already authenticated, send them back
   if (
-    sessionCookie?.value &&
+    sessionCookieValue &&
     (pathname === "/login" || pathname === "/register")
   ) {
     const target =
@@ -28,7 +31,7 @@ export async function middleware(request: NextRequest) {
 
   // Check for protected routes (dashboard)
   if (pathname.startsWith("/dashboard")) {
-    if (!sessionCookie?.value) {
+    if (!sessionCookieValue) {
       const loginUrl = new URL("/login", request.url);
       loginUrl.searchParams.set("callbackUrl", pathname);
       return NextResponse.redirect(loginUrl);
@@ -42,11 +45,12 @@ export const config = {
   matcher: [
     /*
      * Match all request paths except:
+     * - api/auth (Better Auth endpoints)
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      * - public folder
      */
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    "/((?!api/auth|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };
