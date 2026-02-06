@@ -12,6 +12,8 @@ import {
   Bell,
   Search,
   PanelLeftOpen,
+  Github,
+  ExternalLink,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -155,6 +157,34 @@ function AppSidebar({ session }: { session: SessionData }) {
           </SidebarGroup>
         ))}
 
+        {/* Promo / attribution card pinned near bottom (above workspace) */}
+        <div className="hidden group-data-[collapsible=icon]:hidden md:block mt-auto px-1 ">
+          <div className="rounded-md border border-sidebar-border/70 bg-sidebar/70 p-4  shadow-sm">
+            <div className="mb-3 inline-flex items-center rounded-full bg-emerald-100 px-2 py-1 text-[11px] font-semibold text-emerald-700">
+              New
+            </div>
+            <div className="space-y-1">
+              <p className="text-sm font-semibold text-sidebar-foreground">
+                GitHub · ahmad9059
+              </p>
+              <p className="text-xs text-sidebar-foreground/70">
+                Explore the source, issues, and updates for this GPA Tracker.
+              </p>
+            </div>
+            <div className="mt-3">
+              <Button asChild size="sm" className="h-9 px-3 rounded-lg w-full justify-center gap-2">
+                <a href="https://github.com/ahmad9059" target="_blank" rel="noreferrer">
+                  <span className="inline-flex items-center gap-2">
+                    <Github className="size-4" />
+                    <span>Try it out</span>
+                    <ExternalLink className="size-4" />
+                  </span>
+                </a>
+              </Button>
+            </div>
+          </div>
+        </div>
+
         <div className="hidden group-data-[collapsible=icon]:flex items-center justify-center">
           <Button
             variant="ghost"
@@ -240,7 +270,6 @@ function AppSidebar({ session }: { session: SessionData }) {
           </SidebarMenuItem>
         </SidebarMenu>
 
-        {/* helper card removed for a tighter, icon-first rail */}
       </SidebarFooter>
     </Sidebar>
   );
