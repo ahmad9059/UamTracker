@@ -296,6 +296,63 @@
   }
 }
 
+/* Sidebar enhancements */
+@layer components {
+  /* Smooth transitions for sidebar collapse */
+  [data-slot="sidebar-wrapper"] {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Professional sidebar styling */
+  [data-sidebar="sidebar"] {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Enhanced menu button hover effects */
+  [data-sidebar="menu-button"] {
+    transition: all 0.2s ease-in-out;
+  }
+
+  [data-sidebar="menu-button"]:hover:not([data-active="true"]) {
+    transform: translateX(2px);
+  }
+
+  /* Collapsed state - no transform on hover */
+  .group-data-[collapsible=icon] [data-sidebar="menu-button"]:hover {
+    transform: none;
+  }
+
+  /* Collapsed sidebar header centering */
+  .group-data-[collapsible=icon] [data-sidebar="header"] {
+    justify-content: center;
+  }
+
+  /* Smooth icon transitions */
+  [data-sidebar="menu-button"] svg {
+    transition: all 0.2s ease-in-out;
+  }
+
+  /* Active menu item glow */
+  [data-sidebar="menu-button"][data-active="true"] {
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--primary) 20%, transparent);
+  }
+
+  /* Better spacing for collapsed menu items */
+  .group-data-[collapsible=icon] [data-sidebar="menu"] {
+    gap: 0.5rem;
+  }
+
+  /* Ensure footer avatar looks good in collapsed state */
+  .group-data-[collapsible=icon] [data-sidebar="footer"] {
+    padding: 0.75rem;
+  }
+
+  /* Center align footer content when collapsed */
+  .group-data-[collapsible=icon] [data-sidebar="footer"] [data-sidebar="menu-button"] {
+    justify-content: center;
+  }
+}
+
 /* Shimmer effect for loading states */
 @utility shimmer {
   background: linear-gradient(

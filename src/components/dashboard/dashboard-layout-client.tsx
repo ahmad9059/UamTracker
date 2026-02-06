@@ -11,8 +11,7 @@ import {
   ChevronRight,
   Bell,
   Search,
-  PanelLeft,
-  PanelLeftClose,
+  PanelLeftOpen,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -42,8 +41,9 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarProvider,
-  SidebarTrigger,
   SidebarInset,
+  SidebarTrigger,
+  SidebarRail,
   useSidebar,
 } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
@@ -55,31 +55,15 @@ const navigationItems = [
   {
     title: "Overview",
     items: [
-      {
-        title: "Dashboard",
-        url: "/dashboard",
-        icon: LayoutDashboard,
-      },
-      {
-        title: "Calculator",
-        url: "/dashboard/calculator",
-        icon: Calculator,
-      },
+      { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
+      { title: "Calculator", url: "/dashboard/calculator", icon: Calculator },
     ],
   },
   {
     title: "Resources",
     items: [
-      {
-        title: "Help & Support",
-        url: "/dashboard/support",
-        icon: HelpCircle,
-      },
-      {
-        title: "Settings",
-        url: "/dashboard/settings",
-        icon: Settings,
-      },
+      { title: "Help & Support", url: "/dashboard/support", icon: HelpCircle },
+      { title: "Settings", url: "/dashboard/settings", icon: Settings },
     ],
   },
 ];
@@ -94,64 +78,53 @@ type SessionData = {
 
 function AppSidebar({ session }: { session: SessionData }) {
   const pathname = usePathname();
-  const { open, setOpen, state } = useSidebar();
+  const { toggleSidebar } = useSidebar();
   const userInitials = session.user.name
     ? session.user.name.split(" ").map((n: string) => n[0]).join("").toUpperCase().slice(0, 2)
     : session.user.email?.slice(0, 2).toUpperCase() || "U";
 
-  const handleLogoClick = (e: React.MouseEvent) => {
-    // If sidebar is collapsed, expand it
-    if (state === "collapsed") {
-      e.preventDefault();
-      setOpen(true);
-    }
-    // Otherwise, allow normal navigation to /dashboard
-  };
-
   return (
-    <Sidebar variant="inset" collapsible="icon">
-      <SidebarHeader className="border-b border-sidebar-border">
-        <SidebarMenu>
-          <SidebarMenuItem className="relative">
-            <SidebarMenuButton size="lg" asChild>
-              <Link href="/dashboard" className="group" onClick={handleLogoClick}>
-                <div className="flex aspect-square size-8 items-center justify-center rounded-lg overflow-hidden shadow-sm group-hover:shadow-md transition-all">
-                  <img
-                    src="/icon.svg"
-                    alt="UAM University Logo"
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-bold text-foreground">
-                    UAM-University
-                  </span>
-                  <span className="truncate text-xs text-muted-foreground">
-                    GPA Tracker
-                  </span>
-                </div>
-              </Link>
-            </SidebarMenuButton>
-            {/* Toggle Button */}
-            <SidebarTrigger className="absolute right-2 top-1/2 -translate-y-1/2 h-6 w-6 p-0 hover:bg-sidebar-accent rounded-md group-data-[state=collapsed]/sidebar-wrapper:opacity-0">
-              {open ? (
-                <PanelLeftClose className="h-4 w-4" />
-              ) : (
-                <PanelLeft className="h-4 w-4" />
-              )}
-              <span className="sr-only">Toggle Sidebar</span>
-            </SidebarTrigger>
-          </SidebarMenuItem>
-        </SidebarMenu>
+    <Sidebar variant="sidebar" collapsible="icon" className="border-r bg-sidebar/95 backdrop-blur">
+      <SidebarRail className="group-data-[collapsible=icon]:flex" />
+
+      <SidebarHeader className="border-b border-sidebar-border h-16 px-3 py-3">
+        <div className="flex items-center justify-between w-full h-full gap-2">
+          <Link
+            href="/dashboard"
+            className="flex items-center gap-3 min-w-0 flex-1 h-full group-data-[collapsible=icon]:justify-center transition-all"
+          >
+            <div className="relative size-9 overflow-hidden rounded-full border border-sidebar-border shadow-sm flex-shrink-0">
+              <Image
+                src="/icon.svg"
+                alt="UAM University logo"
+                fill
+                priority
+                className="object-cover"
+              />
+            </div>
+            <div className="grid flex-1 text-left leading-tight group-data-[collapsible=icon]:hidden">
+              <span className="truncate font-semibold text-sm text-sidebar-foreground">
+                UAM University
+              </span>
+              <span className="truncate text-xs text-sidebar-foreground/60">
+                GPA Tracker
+              </span>
+            </div>
+          </Link>
+
+          {/* Collapse trigger moves out of the logo area when collapsed */}
+          <SidebarTrigger className="size-8 text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent transition-colors rounded-lg group-data-[collapsible=icon]:hidden" />
+        </div>
       </SidebarHeader>
 
-      <SidebarContent>
-        {navigationItems.map((section) => (
-          <SidebarGroup key={section.title}>
-            <SidebarGroupLabel>{section.title}</SidebarGroupLabel>
+      <SidebarContent className="px-1 py-6 group-data-[collapsible=icon]:px-2 group-data-[collapsible=icon]:py-4 gap-5">
+        {navigationItems.map((section, index) => (
+          <SidebarGroup key={section.title} className={index > 0 ? "pt-2 border-t border-sidebar-border/60" : ""}>
+            <SidebarGroupLabel className="px-2 mb-2 text-[11px] font-semibold text-sidebar-foreground/60 uppercase tracking-[0.14em] group-data-[collapsible=icon]:sr-only">
+              {section.title}
+            </SidebarGroupLabel>
             <SidebarGroupContent>
-              <SidebarMenu>
+              <SidebarMenu className="gap-2 group-data-[collapsible=icon]:items-center">
                 {section.items.map((item) => {
                   const isActive = pathname === item.url;
                   return (
@@ -160,10 +133,18 @@ function AppSidebar({ session }: { session: SessionData }) {
                         asChild
                         isActive={isActive}
                         tooltip={item.title}
+                        className={`group relative overflow-hidden rounded-xl border border-transparent transition-all group-data-[collapsible=icon]:h-12 group-data-[collapsible=icon]:w-12 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:rounded-full group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:border-sidebar-border ${
+                          isActive
+                            ? "bg-primary/15 text-primary-foreground/90 border-primary/25 shadow-[0_12px_40px_-18px_rgba(59,130,246,0.55)]"
+                            : "text-sidebar-foreground/85 hover:text-sidebar-foreground hover:bg-sidebar-accent/60 hover:border-sidebar-border/70"
+                        }`}
                       >
-                        <Link href={item.url}>
-                          <item.icon className="size-4" />
-                          <span>{item.title}</span>
+                        <Link href={item.url} className="flex items-center gap-3">
+                          <item.icon className="size-4.5" strokeWidth={2} />
+                          <span className="font-medium group-data-[collapsible=icon]:hidden">{item.title}</span>
+                          {isActive && (
+                            <span className="ml-auto h-1.5 w-1.5 rounded-full bg-primary group-data-[collapsible=icon]:hidden" />
+                          )}
                         </Link>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
@@ -173,32 +154,50 @@ function AppSidebar({ session }: { session: SessionData }) {
             </SidebarGroupContent>
           </SidebarGroup>
         ))}
+
+        <div className="hidden group-data-[collapsible=icon]:flex items-center justify-center">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="size-9 rounded-full border border-sidebar-border bg-sidebar/80 text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent"
+            onClick={toggleSidebar}
+          >
+            <PanelLeftOpen className="size-5" />
+            <span className="sr-only">Expand sidebar</span>
+          </Button>
+        </div>
       </SidebarContent>
 
-      <SidebarFooter className="border-t border-sidebar-border">
+      <SidebarFooter className="border-t border-sidebar-border p-3">
         <SidebarMenu>
           <SidebarMenuItem>
+            <div className="flex items-center justify-between text-xs text-sidebar-foreground/60 px-1 pb-2 group-data-[collapsible=icon]:hidden">
+              <span>Workspace</span>
+              <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 text-primary px-2 py-1 text-[11px] font-semibold">
+                Active
+              </span>
+            </div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton
                   size="lg"
-                  className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+                  className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground hover:bg-sidebar-accent/50 transition-all rounded-xl"
                 >
                   <Avatar size="default">
                     <AvatarImage src={session.user.image || undefined} alt={session.user.name || "User"} />
-                    <AvatarFallback className="bg-primary text-primary-foreground font-semibold">
+                    <AvatarFallback className="bg-primary text-primary-foreground font-semibold text-xs">
                       {userInitials}
                     </AvatarFallback>
                   </Avatar>
-                  <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-semibold">
+                  <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
+                    <span className="truncate font-semibold text-sidebar-foreground">
                       {session.user.name || "User"}
                     </span>
-                    <span className="truncate text-xs text-muted-foreground">
+                    <span className="truncate text-xs text-sidebar-foreground/60">
                       {session.user.email}
                     </span>
                   </div>
-                  <ChevronRight className="ml-auto size-4" />
+                  <ChevronRight className="ml-auto size-4 text-sidebar-foreground/60 group-data-[collapsible=icon]:hidden" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent
@@ -223,13 +222,13 @@ function AppSidebar({ session }: { session: SessionData }) {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link href="/calculator" className="cursor-pointer">
+                  <Link href="/dashboard/calculator" className="cursor-pointer">
                     <Calculator className="mr-2 h-4 w-4" />
                     Calculator
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link href="#" className="cursor-pointer">
+                  <Link href="/dashboard/settings" className="cursor-pointer">
                     <Settings className="mr-2 h-4 w-4" />
                     Settings
                   </Link>
@@ -240,6 +239,8 @@ function AppSidebar({ session }: { session: SessionData }) {
             </DropdownMenu>
           </SidebarMenuItem>
         </SidebarMenu>
+
+        {/* helper card removed for a tighter, icon-first rail */}
       </SidebarFooter>
     </Sidebar>
   );
@@ -272,6 +273,8 @@ export default function DashboardLayoutClient({
             {/* Enhanced Header */}
             <header className="sticky top-0 z-40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border">
               <div className="flex h-16 items-center gap-4 px-6">
+                {/* Sidebar Toggle for Collapsed State */}
+                <SidebarToggleButton />
 
                 {/* Search Bar */}
                 <div className="flex-1 max-w-2xl">
@@ -362,5 +365,25 @@ export default function DashboardLayoutClient({
         </div>
       </SidebarProvider>
     </TooltipProvider>
+  );
+}
+
+// Sidebar Toggle Button Component for Header
+function SidebarToggleButton() {
+  const { setOpen, state } = useSidebar();
+
+  // Only show when sidebar is collapsed
+  if (state !== "collapsed") return null;
+
+  return (
+    <Button
+      onClick={() => setOpen(true)}
+      variant="ghost"
+      size="icon"
+      className="size-9 text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors"
+    >
+      <PanelLeftOpen className="size-5" />
+      <span className="sr-only">Expand Sidebar</span>
+    </Button>
   );
 }
