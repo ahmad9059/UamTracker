@@ -9,6 +9,8 @@ import {
   Calculator,
   TrendingUp,
   BookOpen,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 import { Navbar, Footer } from "@/components/landing";
 
@@ -19,6 +21,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 import { calculateGPA, type GPAResult } from "@/lib/gpa-calculator";
 import {
@@ -73,6 +76,7 @@ export default function CalculatorPage() {
   ]);
   const [cgpa, setCgpa] = useState(0);
   const [cgpaErrors, setCgpaErrors] = useState<Record<string, string>>({});
+  const [showCgpa, setShowCgpa] = useState(false);
 
   const calculateResult = useCallback(() => {
     const newErrors: Record<string, string> = {};
@@ -411,17 +415,38 @@ export default function CalculatorPage() {
             </Card>
 
             {/* CGPA Section */}
-            <Card className="glass-card shadow-soft border-border/50">
-              <CardHeader className="pb-3">
-                <CardTitle className="flex items-center gap-2 text-lg">
-                  <TrendingUp className="h-5 w-5 text-primary" />
-                  CGPA Calculator
-                </CardTitle>
-                <CardDescription>
-                  CGPA = (Sum of quality points from all semesters) / (Sum of credit hours from all semesters)
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
+            <Collapsible open={showCgpa} onOpenChange={setShowCgpa}>
+              <Card className="glass-card shadow-soft border-border/50">
+                <CardHeader className="pb-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex-1">
+                      <CardTitle className="flex items-center gap-2 text-lg">
+                        <TrendingUp className="h-5 w-5 text-primary" />
+                        CGPA Calculator
+                      </CardTitle>
+                      <CardDescription className="mt-1">
+                        CGPA = (Sum of quality points from all semesters) / (Sum of credit hours from all semesters)
+                      </CardDescription>
+                    </div>
+                    <CollapsibleTrigger asChild>
+                      <Button variant="outline" size="sm" className="ml-4">
+                        {showCgpa ? (
+                          <>
+                            <ChevronUp className="h-4 w-4 mr-2" />
+                            Hide
+                          </>
+                        ) : (
+                          <>
+                            <ChevronDown className="h-4 w-4 mr-2" />
+                            Show
+                          </>
+                        )}
+                      </Button>
+                    </CollapsibleTrigger>
+                  </div>
+                </CardHeader>
+                <CollapsibleContent>
+                  <CardContent className="space-y-3">
                 {semesters.map((sem, index) => (
                   <div
                     key={sem.id}
@@ -513,8 +538,10 @@ export default function CalculatorPage() {
                     CGPA uses the formula: Σ(total quality points) / Σ(total credit hours)
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+                  </CardContent>
+                </CollapsibleContent>
+              </Card>
+            </Collapsible>
           </div>
 
           {/* Results Section */}
