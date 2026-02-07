@@ -313,7 +313,7 @@ export default function CalculatorPage() {
                 {courses.map((course, index) => (
                   <div
                     key={course.id}
-                    className="grid grid-cols-12 gap-3 items-start p-4 bg-accent/50 rounded-lg border border-border/50 hover:border-primary/30 transition-colors"
+                    className="grid grid-cols-12 gap-3 items-start p-4 bg-background rounded-lg border border-border/50 hover:border-primary/30 transition-colors"
                   >
                     <div className="col-span-12 sm:col-span-1 flex items-center justify-center">
                       <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
