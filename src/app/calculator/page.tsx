@@ -418,13 +418,23 @@ export default function CalculatorPage() {
                   Add Another Course
                 </Button>
 
+                {/* Desktop Calculate Button */}
+                <Button
+                  onClick={() => setShowResultDialog(true)}
+                  className="w-full font-semibold hidden lg:flex mt-3 h-12 text-base shadow-lg items-center justify-center gap-2"
+                  disabled={result.courses.length === 0}
+                >
+                  <Calculator className="h-5 w-5" />
+                  Calculate My GPA
+                </Button>
+
                 {/* Mobile Calculate Button */}
                 <Button 
                   onClick={() => setShowResultDialog(true)}
-                  className="w-full font-semibold lg:hidden mt-4 h-12 text-base shadow-lg"
+                  className="w-full font-semibold lg:hidden mt-4 h-12 text-base shadow-lg flex items-center justify-center gap-2"
                   disabled={result.courses.length === 0}
                 >
-                  <Calculator className="h-5 w-5 mr-2" />
+                  <Calculator className="h-5 w-5" />
                   Calculate My GPA
                 </Button>
               </CardContent>
