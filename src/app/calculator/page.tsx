@@ -295,11 +295,6 @@ export default function CalculatorPage() {
       <Navbar />
 
       <main className="container mx-auto px-4 pt-28 pb-16 max-w-5xl">
-        {/* Page Title - Better visibility */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">GPA Calculator</h1>
-          <p className="text-muted-foreground">Calculate your GPA easily and accurately</p>
-        </div>
 
         <div className="grid lg:grid-cols-3 gap-6">
           {/* Course Input Section */}
@@ -566,82 +561,84 @@ export default function CalculatorPage() {
           </div>
 
           {/* Results Section - Desktop Only */}
-          <div className="space-y-4 hidden lg:block">
-            <Card className="glass-card border-primary/20 bg-gradient-to-br from-primary/5 to-primary/10 shadow-soft sticky top-24">
-              <CardHeader className="pb-2">
-                <CardTitle className="flex items-center gap-2 text-xl">
-                  <Calculator className="h-5 w-5 text-primary" />
-                  Your GPA
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-center py-4">
-                  <div className="text-5xl font-bold text-primary mb-2">
-                    {result.gpa.toFixed(2)}
-                  </div>
-                  <p className="text-sm text-muted-foreground">
-                    out of 4.00
-                  </p>
-                </div>
-                <div className="grid grid-cols-2 gap-4 mt-4 pt-4 border-t">
-                  <div className="text-center">
-                    <div className="text-lg font-semibold">{result.totalCreditHours}</div>
-                    <div className="text-xs text-muted-foreground">Credit Hours</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-lg font-semibold">{result.totalQualityPoints.toFixed(2)}</div>
-                    <div className="text-xs text-muted-foreground">Quality Points</div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {result.courses.length > 0 && (
-              <Card className="glass-card shadow-soft border-border/50">
+          <div className="hidden lg:block lg:sticky lg:top-24 lg:self-start">
+            <div className="space-y-4 pr-1">
+              <Card className="glass-card border-primary/20 bg-gradient-to-br from-primary/5 to-primary/10 shadow-soft">
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-base flex items-center gap-2">
-                    <TrendingUp className="h-4 w-4 text-primary" />
-                    Breakdown
+                  <CardTitle className="flex items-center gap-2 text-xl">
+                    <Calculator className="h-5 w-5 text-primary" />
+                    Your GPA
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-2">
-                    {result.courses.map((course, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center justify-between p-2.5 bg-accent/50 rounded-lg border border-border/50"
-                      >
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm text-muted-foreground">
-                            #{index + 1}
-                          </span>
-                          <Badge variant="outline" className={getGradeColor(course.grade)}>
-                            {course.grade}
-                          </Badge>
-                        </div>
-                        <div className="text-right">
-                          <div className="text-sm font-medium">
-                            QP: {course.qualityPoint.toFixed(2)}
-                          </div>
-                          <div className="text-xs text-muted-foreground">
-                            {course.percentage.toFixed(1)}%
-                          </div>
-                        </div>
-                      </div>
-                    ))}
+                  <div className="text-center py-4">
+                    <div className="text-5xl font-bold text-primary mb-2">
+                      {result.gpa.toFixed(2)}
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      out of 4.00
+                    </p>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4 mt-4 pt-4 border-t">
+                    <div className="text-center">
+                      <div className="text-lg font-semibold">{result.totalCreditHours}</div>
+                      <div className="text-xs text-muted-foreground">Credit Hours</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-lg font-semibold">{result.totalQualityPoints.toFixed(2)}</div>
+                      <div className="text-xs text-muted-foreground">Quality Points</div>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
-            )}
 
-            <Card className="glass-card shadow-soft border-primary/20 bg-primary/5">
-              <CardContent className="pt-6">
-                <p className="text-sm text-foreground leading-relaxed">
-                  <strong className="text-primary">Note:</strong> This calculator uses UAM-University&apos;s
-                  grading system. Sign in to save your courses and track your CGPA over time.
-                </p>
-              </CardContent>
-            </Card>
+              {result.courses.length > 0 && (
+                <Card className="glass-card shadow-soft border-border/50">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-base flex items-center gap-2">
+                      <TrendingUp className="h-4 w-4 text-primary" />
+                      Breakdown
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-2">
+                      {result.courses.map((course, index) => (
+                        <div
+                          key={index}
+                          className="flex items-center justify-between p-2.5 bg-accent/50 rounded-lg border border-border/50"
+                        >
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm text-muted-foreground">
+                              #{index + 1}
+                            </span>
+                            <Badge variant="outline" className={getGradeColor(course.grade)}>
+                              {course.grade}
+                            </Badge>
+                          </div>
+                          <div className="text-right">
+                            <div className="text-sm font-medium">
+                              QP: {course.qualityPoint.toFixed(2)}
+                            </div>
+                            <div className="text-xs text-muted-foreground">
+                              {course.percentage.toFixed(1)}%
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
+              <Card className="glass-card shadow-soft border-primary/20 bg-primary/5">
+                <CardContent className="pt-6">
+                  <p className="text-sm text-foreground leading-relaxed">
+                    <strong className="text-primary">Note:</strong> This calculator uses UAM-University&apos;s
+                    grading system. Sign in to save your courses and track your CGPA over time.
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </div>
 
