@@ -1,6 +1,7 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { prisma } from "./db";
+import { sendVerificationEmail } from "./email";
 
 // Resolve the correct public origin so cookies are issued for the domain the app
 // actually runs on (Vercel preview/prod or localhost). In production, Vercel
@@ -43,6 +44,18 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     minPasswordLength: 8,
+    requireEmailVerification: true,
+  },
+  emailVerification: {
+    sendOnSignUp: true,
+    autoSignInAfterVerification: true,
+    sendVerificationEmail: async ({ user, url }) => {
+      await sendVerificationEmail({
+        to: user.email,
+        userName: user.name,
+        verificationUrl: url,
+      });
+    },
   },
   session: {
     expiresIn: 60 * 60 * 24 * 7, // 7 days

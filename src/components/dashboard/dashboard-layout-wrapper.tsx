@@ -18,6 +18,10 @@ export default async function DashboardLayoutWrapper({
     redirect("/login");
   }
 
+  if (!session.user.emailVerified) {
+    redirect(`/verify-email?email=${encodeURIComponent(session.user.email)}`);
+  }
+
   // Strip non-serializable fields (Dates, symbols) before sending to client.
   const clientSession = {
     user: {

@@ -45,9 +45,17 @@ function LoginForm() {
       const result = await signIn.email({
         email: data.email,
         password: data.password,
+        callbackURL: callbackUrl,
       });
 
       if (result.error) {
+        if (
+          result.error.message?.toLowerCase().includes("email not verified") ||
+          result.error.status === 403
+        ) {
+          router.push(`/verify-email?email=${encodeURIComponent(data.email)}`);
+          return;
+        }
         setError(result.error.message || "Invalid email or password");
         return;
       }

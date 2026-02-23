@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
@@ -25,6 +25,7 @@ export default function RegisterPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const justSignedUp = useRef(false);
 
   const form = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
@@ -44,6 +45,7 @@ export default function RegisterPage() {
         name: data.name,
         email: data.email,
         password: data.password,
+        callbackURL: "/dashboard",
       });
 
       if (result.error) {
@@ -55,8 +57,8 @@ export default function RegisterPage() {
         return;
       }
 
-      router.push("/dashboard");
-      router.refresh();
+      justSignedUp.current = true;
+      router.push(`/verify-email?email=${encodeURIComponent(data.email)}`);
     } catch (err) {
       console.error("Registration error:", err);
       setError("An unexpected error occurred. Please try again.");
@@ -95,7 +97,7 @@ export default function RegisterPage() {
   }
 
   useEffect(() => {
-    if (!sessionLoading && session?.session) {
+    if (!sessionLoading && session?.session && !justSignedUp.current) {
       router.replace("/dashboard");
     }
   }, [session, sessionLoading, router]);
