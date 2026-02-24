@@ -127,7 +127,16 @@ export function Footer() {
             </p>
             <div className="flex items-center gap-6">
               <span className="text-white/40 text-sm">
-                Built with ❤️ for UAM-University students
+                Build with 🤍 by{" "}
+                <a
+                  href="https://github.com/ahmad9059"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white/60 hover:text-white underline underline-offset-2 transition-colors"
+                >
+                  ahmad9059
+                </a>{" "}
+                for UAM students
               </span>
             </div>
           </div>
