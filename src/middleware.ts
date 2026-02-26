@@ -18,8 +18,11 @@ export async function middleware(request: NextRequest) {
   // Public routes pass through
   if (isPublicRoute) return NextResponse.next();
 
-  // Protect dashboard routes: if no session cookie, send to login.
-  if (pathname.startsWith("/dashboard") && !sessionCookieValue) {
+  // Protected routes that require authentication: /dashboard and /onboarding
+  const isProtectedRoute =
+    pathname.startsWith("/dashboard") || pathname.startsWith("/onboarding");
+
+  if (isProtectedRoute && !sessionCookieValue) {
     const loginUrl = new URL("/login", request.url);
     loginUrl.searchParams.set("callbackUrl", pathname);
     return NextResponse.redirect(loginUrl);
