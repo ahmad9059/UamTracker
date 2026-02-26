@@ -137,7 +137,7 @@ function AppSidebar({ session }: { session: SessionData }) {
                         tooltip={item.title}
                         className={`group relative overflow-hidden rounded-xl border border-transparent transition-all group-data-[collapsible=icon]:h-12 group-data-[collapsible=icon]:w-12 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:rounded-full group-data-[collapsible=icon]:p-0 group-data-[collapsible=icon]:border-sidebar-border ${
                           isActive
-                            ? "bg-primary/15 text-primary-foreground/90 border-primary/25 shadow-[0_12px_40px_-18px_rgba(59,130,246,0.55)]"
+                            ? "bg-primary/10 text-primary border-primary/15"
                             : "text-sidebar-foreground/85 hover:text-sidebar-foreground hover:bg-sidebar-accent/60 hover:border-sidebar-border/70"
                         }`}
                       >

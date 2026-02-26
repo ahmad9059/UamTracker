@@ -57,7 +57,7 @@ export function GPAChart({ semesters, type }: GPAChartProps) {
     const value = payload[0]?.value;
 
     return (
-      <div className="glass-premium px-4 py-2.5 rounded-xl shadow-elevated border border-primary/10">
+      <div className="glass-premium px-4 py-2.5 rounded-xl border border-border/60">
         <p className="text-xs font-semibold text-muted-foreground mb-1">{label}</p>
         <p className="text-base font-bold gradient-text">
           GPA: {typeof value === "number" ? value.toFixed(2) : value}
@@ -67,10 +67,7 @@ export function GPAChart({ semesters, type }: GPAChartProps) {
   }
 
   return (
-    <div className="glass-card-elevated rounded-2xl p-6 group hover:shadow-elevated transition-all duration-300 relative overflow-hidden">
-      {/* Glow effect on hover */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
-      
+    <div className="glass-card-elevated rounded-2xl p-6 group hover:shadow-soft transition-all duration-200 relative overflow-hidden">
       <div className="relative">
         <div className="flex items-center justify-between mb-6">
           <div>

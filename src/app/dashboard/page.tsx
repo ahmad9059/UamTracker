@@ -86,7 +86,7 @@ export default async function DashboardPage() {
         {clientSemesters.length === 0 ? (
           <div className="glass-card-elevated rounded-2xl border-2 border-dashed border-primary/20 p-16 text-center">
             <div className="flex flex-col items-center justify-center">
-              <div className="w-16 h-16 bg-gradient-to-br from-primary/20 to-primary/10 rounded-2xl flex items-center justify-center mb-5 shadow-soft">
+              <div className="w-16 h-16 bg-gradient-to-br from-primary/20 to-primary/10 rounded-2xl flex items-center justify-center mb-5">
                 <BookOpen className="h-8 w-8 text-primary" />
               </div>
               <h3 className="text-xl font-bold text-foreground mb-2">No Semesters Yet</h3>
@@ -101,16 +101,13 @@ export default async function DashboardPage() {
             {clientSemesters.map((semester, index) => (
               <div
                 key={semester.id}
-                className="glass-card-elevated rounded-2xl group hover:shadow-elevated transition-all duration-300 hover:scale-[1.02] relative overflow-hidden"
+                className="glass-card-elevated rounded-2xl group hover:shadow-soft transition-all duration-200 relative overflow-hidden"
               >
-                {/* Glow effect on hover */}
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
-                
                 <div className="p-6 relative">
                   {/* Header */}
                   <div className="flex items-start justify-between mb-5">
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 bg-gradient-to-br from-primary/20 to-primary/10 rounded-xl flex items-center justify-center text-primary font-bold text-base border border-primary/10 shadow-soft">
+                      <div className="w-12 h-12 bg-gradient-to-br from-primary/20 to-primary/10 rounded-xl flex items-center justify-center text-primary font-bold text-base border border-primary/10">
                         {index + 1}
                       </div>
                       <div>
@@ -121,7 +118,7 @@ export default async function DashboardPage() {
                         </p>
                       </div>
                     </div>
-                    <span className={`px-3 py-1.5 rounded-xl text-xs font-bold ${getGPAColor(semester.gpa)} shadow-soft`}>
+                    <span className={`px-3 py-1.5 rounded-xl text-xs font-bold ${getGPAColor(semester.gpa)}`}>
                       {semester.gpa.toFixed(2)}
                     </span>
                   </div>
@@ -148,7 +145,7 @@ export default async function DashboardPage() {
                     </div>
                     <div className="h-2 bg-muted/50 rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-gradient-to-r from-primary to-primary/80 rounded-full transition-all duration-700 shadow-sm"
+                        className="h-full bg-gradient-to-r from-primary to-primary/80 rounded-full transition-all duration-700"
                         style={{ width: `${Math.min((semester.gpa / 4) * 100, 100)}%` }}
                       />
                     </div>

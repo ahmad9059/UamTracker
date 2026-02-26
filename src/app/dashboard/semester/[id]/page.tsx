@@ -87,12 +87,11 @@ export default async function SemesterPage({ params }: PageProps) {
 
       {/* Semester Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-        <div className="glass-card-elevated rounded-2xl p-6 group hover:shadow-elevated transition-all duration-300 hover:scale-[1.02] relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
+        <div className="glass-card-elevated rounded-2xl p-6 relative overflow-hidden">
           <div className="relative">
             <div className="flex items-center justify-between mb-4">
               <span className="text-sm font-semibold text-muted-foreground">Semester GPA</span>
-              <div className="w-10 h-10 bg-gradient-to-br from-primary/20 to-primary/10 rounded-xl flex items-center justify-center shadow-soft">
+              <div className="w-10 h-10 bg-gradient-to-br from-primary/20 to-primary/10 rounded-xl flex items-center justify-center">
                 <Award className="h-5 w-5 text-primary" />
               </div>
             </div>
@@ -111,12 +110,11 @@ export default async function SemesterPage({ params }: PageProps) {
           </div>
         </div>
 
-        <div className="glass-card-elevated rounded-2xl p-6 group hover:shadow-elevated transition-all duration-300 hover:scale-[1.02] relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
+        <div className="glass-card-elevated rounded-2xl p-6 relative overflow-hidden">
           <div className="relative">
             <div className="flex items-center justify-between mb-4">
               <span className="text-sm font-semibold text-muted-foreground">Credit Hours</span>
-              <div className="w-10 h-10 bg-gradient-to-br from-chart-3/20 to-chart-3/10 rounded-xl flex items-center justify-center shadow-soft">
+              <div className="w-10 h-10 bg-gradient-to-br from-chart-3/20 to-chart-3/10 rounded-xl flex items-center justify-center">
                 <Clock className="h-5 w-5 text-chart-3" />
               </div>
             </div>
@@ -125,12 +123,11 @@ export default async function SemesterPage({ params }: PageProps) {
           </div>
         </div>
 
-        <div className="glass-card-elevated rounded-2xl p-6 group hover:shadow-elevated transition-all duration-300 hover:scale-[1.02] relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
+        <div className="glass-card-elevated rounded-2xl p-6 relative overflow-hidden">
           <div className="relative">
             <div className="flex items-center justify-between mb-4">
               <span className="text-sm font-semibold text-muted-foreground">Quality Points</span>
-              <div className="w-10 h-10 bg-gradient-to-br from-chart-1/20 to-chart-1/10 rounded-xl flex items-center justify-center shadow-soft">
+              <div className="w-10 h-10 bg-gradient-to-br from-chart-1/20 to-chart-1/10 rounded-xl flex items-center justify-center">
                 <TrendingUp className="h-5 w-5 text-chart-1" />
               </div>
             </div>
@@ -139,12 +136,11 @@ export default async function SemesterPage({ params }: PageProps) {
           </div>
         </div>
 
-        <div className="glass-card-elevated rounded-2xl p-6 group hover:shadow-elevated transition-all duration-300 hover:scale-[1.02] relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
+        <div className="glass-card-elevated rounded-2xl p-6 relative overflow-hidden">
           <div className="relative">
             <div className="flex items-center justify-between mb-4">
               <span className="text-sm font-semibold text-muted-foreground">Total Courses</span>
-              <div className="w-10 h-10 bg-gradient-to-br from-chart-4/20 to-chart-4/10 rounded-xl flex items-center justify-center shadow-soft">
+              <div className="w-10 h-10 bg-gradient-to-br from-chart-4/20 to-chart-4/10 rounded-xl flex items-center justify-center">
                 <BookOpen className="h-5 w-5 text-chart-4" />
               </div>
             </div>
@@ -173,7 +169,7 @@ export default async function SemesterPage({ params }: PageProps) {
         <div className="p-6">
           {semester.courses.length === 0 ? (
             <div className="text-center py-16">
-              <div className="w-16 h-16 bg-gradient-to-br from-primary/20 to-primary/10 rounded-2xl flex items-center justify-center mb-5 mx-auto shadow-soft">
+              <div className="w-16 h-16 bg-gradient-to-br from-primary/20 to-primary/10 rounded-2xl flex items-center justify-center mb-5 mx-auto">
                 <BookOpen className="h-8 w-8 text-primary" />
               </div>
               <h3 className="text-xl font-bold text-foreground mb-2">No Courses Yet</h3>
@@ -226,7 +222,7 @@ export default async function SemesterPage({ params }: PageProps) {
                           </div>
                         </TableCell>
                         <TableCell className="text-center">
-                          <Badge className={`${getGradeColor(course.grade)} shadow-soft font-bold text-sm px-3 py-1.5`}>
+                          <Badge className={`${getGradeColor(course.grade)} font-bold text-sm px-3 py-1.5`}>
                             {course.grade}
                           </Badge>
                         </TableCell>

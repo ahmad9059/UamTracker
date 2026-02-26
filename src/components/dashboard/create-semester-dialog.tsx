@@ -55,7 +55,7 @@ export function CreateSemesterDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm" className="h-10 bg-gradient-to-r from-primary to-primary/90 hover:shadow-medium transition-all duration-300 text-white shadow-soft rounded-xl font-semibold">
+        <Button size="sm" className="h-10 bg-gradient-to-r from-primary to-primary/90 transition-all duration-200 text-white rounded-xl font-semibold">
           <Plus className="h-4 w-4 mr-1.5" />
           Add Semester
         </Button>
@@ -108,7 +108,7 @@ export function CreateSemesterDialog() {
               type="submit"
               disabled={isLoading || !name.trim()}
               size="sm"
-              className="bg-gradient-to-r from-primary to-primary/90 hover:shadow-medium transition-all duration-300 rounded-xl"
+              className="bg-gradient-to-r from-primary to-primary/90 transition-all duration-200 rounded-xl"
             >
               {isLoading ? (
                 <>

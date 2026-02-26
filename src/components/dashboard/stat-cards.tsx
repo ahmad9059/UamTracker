@@ -89,14 +89,11 @@ export function StatCards({
       {stats.map((stat, index) => (
         <div
           key={index}
-          className="glass-card-elevated rounded-2xl p-6 group hover:shadow-elevated transition-all duration-300 hover:scale-[1.02] relative overflow-hidden"
+          className="glass-card-elevated rounded-2xl p-6 group hover:shadow-soft transition-all duration-200 relative overflow-hidden"
         >
-          {/* Glow effect on hover */}
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
-          
           <div className="relative">
             <div className="flex items-start justify-between mb-4">
-              <div className={`w-14 h-14 bg-gradient-to-br ${stat.iconBg} rounded-xl flex items-center justify-center border border-${stat.iconColor}/10 shadow-soft group-hover:shadow-medium transition-shadow`}>
+              <div className={`w-14 h-14 bg-gradient-to-br ${stat.iconBg} rounded-xl flex items-center justify-center border border-${stat.iconColor}/10`}>
                 <stat.icon className={`h-7 w-7 ${stat.iconColor}`} />
               </div>
               <div className="text-right">
@@ -112,7 +109,7 @@ export function StatCards({
               </div>
               <div className="h-2 bg-muted/50 rounded-full overflow-hidden">
                 <div
-                  className={`h-full ${stat.progressColor} rounded-full transition-all duration-700 shadow-sm`}
+                  className={`h-full ${stat.progressColor} rounded-full transition-all duration-700`}
                   style={{ width: `${stat.progress}%` }}
                 />
               </div>
