@@ -254,17 +254,17 @@ export default function DashboardCalculatorPage() {
   const getGradeColor = (grade: string) => {
     switch (grade) {
       case "A":
-        return "bg-emerald-500/10 text-emerald-500";
+        return "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400";
       case "B":
-        return "bg-blue-500/10 text-blue-500";
+        return "bg-blue-500/10 text-blue-600 dark:text-blue-400";
       case "C":
-        return "bg-amber-500/10 text-amber-500";
+        return "bg-amber-500/10 text-amber-600 dark:text-amber-400";
       case "D":
-        return "bg-orange-500/10 text-orange-500";
+        return "bg-orange-500/10 text-orange-600 dark:text-orange-400";
       case "P":
-        return "bg-teal-500/10 text-teal-600";
+        return "bg-teal-500/10 text-teal-600 dark:text-teal-400";
       default:
-        return "bg-red-500/10 text-red-500";
+        return "bg-red-500/10 text-red-600 dark:text-red-400";
     }
   };
 

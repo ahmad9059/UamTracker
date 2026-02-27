@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useSession } from "@/lib/auth-client";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -70,6 +71,7 @@ export function Navbar() {
 
             {/* CTA Buttons */}
             <div className="hidden md:flex items-center gap-3">
+              <ThemeToggle />
               {session?.user ? (
                 <Link href="/dashboard" className="flex items-center gap-3 hover:opacity-90 transition">
                   <Avatar className="h-10 w-10 border border-border">
@@ -99,16 +101,19 @@ export function Navbar() {
             </div>
 
             {/* Mobile Menu Button */}
-            <button
-              className="md:hidden p-2 hover:bg-accent/50 rounded-lg transition-colors"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            >
+            <div className="flex md:hidden items-center gap-2">
+              <ThemeToggle />
+              <button
+                className="p-2 hover:bg-accent/50 rounded-lg transition-colors"
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              >
               {mobileMenuOpen ? (
                 <X className="h-6 w-6" />
               ) : (
                 <Menu className="h-6 w-6" />
               )}
-            </button>
+              </button>
+            </div>
           </div>
 
           {/* Mobile Menu */}

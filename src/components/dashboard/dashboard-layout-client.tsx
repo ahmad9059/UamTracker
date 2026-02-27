@@ -51,6 +51,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { LogoutButton } from "@/components/dashboard/logout-button";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 // Navigation items
 const navigationItems = [
@@ -160,7 +161,7 @@ function AppSidebar({ session }: { session: SessionData }) {
         {/* Promo / attribution card pinned near bottom (above workspace) */}
         <div className="hidden group-data-[collapsible=icon]:hidden md:block mt-auto px-1 ">
           <div className="rounded-md border border-sidebar-border/70 bg-sidebar/70 p-4  shadow-sm">
-            <div className="mb-3 inline-flex items-center rounded-full bg-emerald-100 px-2 py-1 text-[11px] font-semibold text-emerald-700">
+            <div className="mb-3 inline-flex items-center rounded-full bg-emerald-100 dark:bg-emerald-900/50 px-2 py-1 text-[11px] font-semibold text-emerald-700 dark:text-emerald-300">
               New
             </div>
             <div className="space-y-1">
@@ -319,6 +320,7 @@ export default function DashboardLayoutClient({
 
                 {/* Right Section */}
                 <div className="ml-auto flex items-center gap-3">
+                  <ThemeToggle />
                   <Button
                     variant="ghost"
                     size="icon"

@@ -19,10 +19,10 @@ export function StatCards({
     Math.max(min, Math.min(max, value));
 
   const getGPAStatus = (gpa: number) => {
-    if (gpa >= 3.5) return { label: "Excellent", color: "text-emerald-600" };
-    if (gpa >= 3.0) return { label: "Good", color: "text-blue-600" };
-    if (gpa >= 2.5) return { label: "Average", color: "text-amber-600" };
-    return { label: "Needs Work", color: "text-red-600" };
+    if (gpa >= 3.5) return { label: "Excellent", color: "text-emerald-600 dark:text-emerald-400" };
+    if (gpa >= 3.0) return { label: "Good", color: "text-blue-600 dark:text-blue-400" };
+    if (gpa >= 2.5) return { label: "Average", color: "text-amber-600 dark:text-amber-400" };
+    return { label: "Needs Work", color: "text-red-600 dark:text-red-400" };
   };
 
   const safeCgpa = clamp(cgpa, 0, 4);

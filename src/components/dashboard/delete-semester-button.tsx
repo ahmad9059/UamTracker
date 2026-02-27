@@ -47,7 +47,7 @@ export function DeleteSemesterButton({ semesterId, semesterName }: DeleteSemeste
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <Button variant="outline" size="sm" className="h-9 w-9 p-0 text-slate-400 hover:text-red-500 hover:border-red-200 hover:bg-red-50">
+        <Button variant="outline" size="sm" className="h-9 w-9 p-0 text-muted-foreground hover:text-destructive hover:border-destructive/30 hover:bg-destructive/10">
           <Trash2 className="h-4 w-4" />
         </Button>
       </AlertDialogTrigger>

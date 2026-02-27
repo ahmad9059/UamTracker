@@ -17,8 +17,8 @@ export default async function DashboardPage() {
   if (!result.success || !result.data) {
     return (
       <div className="text-center py-12">
-        <p className="text-slate-500">Failed to load dashboard data.</p>
-        <p className="text-sm text-red-500 mt-2">{result.error}</p>
+        <p className="text-muted-foreground">Failed to load dashboard data.</p>
+        <p className="text-sm text-destructive mt-2">{result.error}</p>
       </div>
     );
   }

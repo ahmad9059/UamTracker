@@ -204,7 +204,7 @@ export default function OnboardingPage() {
 
   // ========== RENDER ==========
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
       {/* Progress bar */}
       <div className="fixed top-0 left-0 right-0 z-50 h-1 bg-muted">
         <div
@@ -221,7 +221,7 @@ export default function OnboardingPage() {
               <div
                 className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
                   i === step
-                    ? "bg-primary text-white shadow-md"
+                    ? "bg-primary text-primary-foreground shadow-md"
                     : i < step
                     ? "bg-primary/10 text-primary"
                     : "bg-muted text-muted-foreground"
@@ -351,7 +351,7 @@ export default function OnboardingPage() {
                   onClick={() => setActiveSemesterIndex(i)}
                   className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
                     i === activeSemesterIndex
-                      ? "bg-primary text-white shadow-md"
+                    ? "bg-primary text-primary-foreground shadow-md"
                       : "bg-muted hover:bg-muted/80 text-foreground"
                   }`}
                 >
@@ -690,7 +690,7 @@ export default function OnboardingPage() {
                               <BookOpen className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
                               <span className="truncate">{course.name}</span>
                               {course.isAudit && (
-                                <span className="text-[10px] bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded-full font-medium shrink-0">
+                                <span className="text-[10px] bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-300 px-1.5 py-0.5 rounded-full font-medium shrink-0">
                                   Audit
                                 </span>
                               )}

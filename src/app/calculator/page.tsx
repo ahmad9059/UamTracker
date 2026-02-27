@@ -276,22 +276,22 @@ export default function CalculatorPage() {
   const getGradeColor = (grade: string) => {
     switch (grade) {
       case "A":
-        return "bg-emerald-500/10 text-emerald-500";
+        return "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400";
       case "B":
-        return "bg-blue-500/10 text-blue-500";
+        return "bg-blue-500/10 text-blue-600 dark:text-blue-400";
       case "C":
-        return "bg-amber-500/10 text-amber-500";
+        return "bg-amber-500/10 text-amber-600 dark:text-amber-400";
       case "D":
-        return "bg-orange-500/10 text-orange-500";
+        return "bg-orange-500/10 text-orange-600 dark:text-orange-400";
       case "P":
-        return "bg-teal-500/10 text-teal-600";
+        return "bg-teal-500/10 text-teal-600 dark:text-teal-400";
       default:
-        return "bg-red-500/10 text-red-500";
+        return "bg-red-500/10 text-red-600 dark:text-red-400";
     }
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-background">
       <Navbar />
 
       <main className="container mx-auto px-4 pt-28 pb-16 max-w-5xl">
@@ -755,7 +755,7 @@ export default function CalculatorPage() {
               <TableBody>
                 <TableRow>
                   <TableCell>
-                    <Badge variant="outline" className="bg-emerald-500/10 text-emerald-500 font-bold">A</Badge>
+                    <Badge variant="outline" className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold">A</Badge>
                   </TableCell>
                   <TableCell className="font-medium">80% - 100%</TableCell>
                   <TableCell className="font-medium">4.00</TableCell>
@@ -763,7 +763,7 @@ export default function CalculatorPage() {
                 </TableRow>
                 <TableRow>
                   <TableCell>
-                    <Badge variant="outline" className="bg-blue-500/10 text-blue-500 font-bold">B</Badge>
+                    <Badge variant="outline" className="bg-blue-500/10 text-blue-600 dark:text-blue-400 font-bold">B</Badge>
                   </TableCell>
                   <TableCell className="font-medium">65% - 79%</TableCell>
                   <TableCell className="font-medium">3.00 - 3.70</TableCell>
@@ -771,7 +771,7 @@ export default function CalculatorPage() {
                 </TableRow>
                 <TableRow>
                   <TableCell>
-                    <Badge variant="outline" className="bg-amber-500/10 text-amber-500 font-bold">C</Badge>
+                    <Badge variant="outline" className="bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold">C</Badge>
                   </TableCell>
                   <TableCell className="font-medium">50% - 64%</TableCell>
                   <TableCell className="font-medium">2.00 - 2.70</TableCell>
@@ -779,7 +779,7 @@ export default function CalculatorPage() {
                 </TableRow>
                 <TableRow>
                   <TableCell>
-                    <Badge variant="outline" className="bg-orange-500/10 text-orange-500 font-bold">D</Badge>
+                    <Badge variant="outline" className="bg-orange-500/10 text-orange-600 dark:text-orange-400 font-bold">D</Badge>
                   </TableCell>
                   <TableCell className="font-medium">40% - 49%</TableCell>
                   <TableCell className="font-medium">1.00 - 1.50</TableCell>
@@ -787,7 +787,7 @@ export default function CalculatorPage() {
                 </TableRow>
                 <TableRow>
                   <TableCell>
-                    <Badge variant="outline" className="bg-red-500/10 text-red-500 font-bold">F</Badge>
+                    <Badge variant="outline" className="bg-red-500/10 text-red-600 dark:text-red-400 font-bold">F</Badge>
                   </TableCell>
                   <TableCell className="font-medium">Below 40%</TableCell>
                   <TableCell className="font-medium">0.00</TableCell>

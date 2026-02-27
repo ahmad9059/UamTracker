@@ -74,7 +74,7 @@ export function Hero() {
                 size="lg"
                 variant="outline"
                 asChild
-                className="text-base px-7 h-12 rounded-xl font-semibold glass-premium hover:bg-white/95 shadow-soft hover:shadow-medium transition-all duration-300 border-border/60"
+                className="text-base px-7 h-12 rounded-xl font-semibold glass-premium hover:bg-accent/80 shadow-soft hover:shadow-medium transition-all duration-300 border-border/60"
               >
                 <Link href="/calculator">
                   <Calculator className="mr-2 h-5 w-5" />
@@ -90,7 +90,7 @@ export function Hero() {
                   {["A", "B", "C", "D"].map((letter, i) => (
                     <div
                       key={letter}
-                      className={`w-9 h-9 rounded-full border-2 border-white flex items-center justify-center text-xs font-bold text-white shadow-soft ${
+                      className={`w-9 h-9 rounded-full border-2 border-background flex items-center justify-center text-xs font-bold text-primary-foreground shadow-soft ${
                         i === 0
                           ? "bg-gradient-to-br from-primary to-primary/80"
                           : i === 1

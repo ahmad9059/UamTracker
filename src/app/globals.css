@@ -83,6 +83,15 @@
   --sidebar-accent-foreground: #0f162c;
   --sidebar-border: #e2e8f8;
   --sidebar-ring: #155dfb;
+  /* Aurora / glass custom vars */
+  --aurora-1: #e5edff;
+  --aurora-2: #d5e4ff;
+  --aurora-3: #f0f5ff;
+  --aurora-4: #d9e7ff;
+  --aurora-5: #c7dbff;
+  --glass-bg: rgba(255, 255, 255, 0.82);
+  --glass-strong-bg: rgba(255, 255, 255, 0.94);
+  --glass-card-bg: rgba(255, 255, 255, 0.9);
 }
 
 .dark {
@@ -117,6 +126,15 @@
   --sidebar-accent-foreground: #f5f7ff;
   --sidebar-border: rgba(255, 255, 255, 0.08);
   --sidebar-ring: #6da3ff;
+  /* Aurora / glass custom vars */
+  --aurora-1: #0e1830;
+  --aurora-2: #111e3a;
+  --aurora-3: #0c1224;
+  --aurora-4: #101b35;
+  --aurora-5: #0a1020;
+  --glass-bg: rgba(18, 26, 49, 0.82);
+  --glass-strong-bg: rgba(18, 26, 49, 0.94);
+  --glass-card-bg: rgba(18, 26, 49, 0.9);
 }
 
 @layer base {
@@ -141,11 +159,11 @@
 @utility aurora-bg {
   background: linear-gradient(
     135deg,
-    #e5edff 0%,
-    #d5e4ff 25%,
-    #f0f5ff 50%,
-    #d9e7ff 75%,
-    #c7dbff 100%
+    var(--aurora-1) 0%,
+    var(--aurora-2) 25%,
+    var(--aurora-3) 50%,
+    var(--aurora-4) 75%,
+    var(--aurora-5) 100%
   );
   background-size: 400% 400%;
   animation: aurora 15s ease infinite;
@@ -155,42 +173,42 @@
   background:
     radial-gradient(
       ellipse 80% 50% at 50% -20%,
-      color-mix(in srgb, #155dfb 40%, transparent),
+      color-mix(in srgb, var(--primary) 40%, transparent),
       transparent
     ),
     radial-gradient(
       ellipse 60% 40% at 80% 50%,
-      color-mix(in srgb, #1f7bff 30%, transparent),
+      color-mix(in srgb, var(--chart-2) 30%, transparent),
       transparent
     ),
     radial-gradient(
       ellipse 50% 30% at 20% 80%,
-      color-mix(in srgb, #4e8dff 25%, transparent),
+      color-mix(in srgb, var(--chart-4) 25%, transparent),
       transparent
     ),
-    linear-gradient(to bottom, #eff4ff, #dbe7ff);
+    linear-gradient(to bottom, var(--aurora-3), var(--aurora-2));
 }
 
 /* Glassmorphism effects - refined for professional look */
 @utility glass {
-  background: rgba(255, 255, 255, 0.82);
+  background: var(--glass-bg);
   backdrop-filter: blur(10px);
-  border: 1px solid #e2e8f8;
+  border: 1px solid var(--border);
 }
 
 @utility glass-strong {
-  background: rgba(255, 255, 255, 0.94);
+  background: var(--glass-strong-bg);
   backdrop-filter: blur(16px);
-  border: 1px solid #dde5f8;
+  border: 1px solid var(--border);
   box-shadow:
     0 1px 3px oklch(0 0 0 / 0.04),
     0 1px 2px oklch(0 0 0 / 0.03);
 }
 
 @utility glass-card {
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--glass-card-bg);
   backdrop-filter: blur(12px);
-  border: 1px solid #e2e8f8;
+  border: 1px solid var(--border);
   box-shadow:
     0 1px 3px oklch(0 0 0 / 0.05),
     0 4px 12px oklch(0 0 0 / 0.04);
@@ -347,9 +365,9 @@
 @utility shimmer {
   background: linear-gradient(
     90deg,
-    oklch(0.95 0.01 240) 0%,
-    oklch(0.98 0.005 240) 50%,
-    oklch(0.95 0.01 240) 100%
+    var(--muted) 0%,
+    var(--card) 50%,
+    var(--muted) 100%
   );
   background-size: 200% 100%;
   animation: shimmer 2s infinite;
@@ -380,9 +398,9 @@
     ),
     linear-gradient(
       180deg,
-      #eef4ff 0%,
-      #e3ecff 50%,
-      #f5f8ff 100%
+      var(--aurora-3) 0%,
+      var(--aurora-2) 50%,
+      var(--aurora-1) 100%
     );
 }
 
@@ -594,16 +612,16 @@
 
 /* Enhanced glass effects */
 @utility glass-premium {
-  background: oklch(1 0 0 / 0.85);
+  background: var(--glass-strong-bg);
   backdrop-filter: blur(12px);
-  border: 1px solid oklch(0 0 0 / 0.06);
+  border: 1px solid var(--border);
   box-shadow: 0 1px 3px oklch(0 0 0 / 0.04);
 }
 
 @utility glass-card-elevated {
-  background: oklch(1 0 0 / 0.95);
+  background: var(--glass-card-bg);
   backdrop-filter: blur(8px);
-  border: 1px solid oklch(0 0 0 / 0.06);
+  border: 1px solid var(--border);
   box-shadow: 0 1px 3px oklch(0 0 0 / 0.03), 0 1px 2px oklch(0 0 0 / 0.02);
 }
 

@@ -52,7 +52,7 @@ export default async function SemesterPage({ params }: PageProps) {
       case "D":
         return "bg-gradient-to-br from-chart-5/20 to-chart-5/10 text-chart-5 border border-chart-5/20";
       case "P":
-        return "bg-gradient-to-br from-emerald-400/20 to-emerald-500/10 text-emerald-600 border border-emerald-400/30";
+        return "bg-gradient-to-br from-emerald-400/20 to-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-400/30";
       default:
         return "bg-gradient-to-br from-destructive/20 to-destructive/10 text-destructive border border-destructive/20";
     }
@@ -71,7 +71,7 @@ export default async function SemesterPage({ params }: PageProps) {
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <Button variant="ghost" asChild className="mb-4 -ml-4 hover:bg-white/50">
+          <Button variant="ghost" asChild className="mb-4 -ml-4 hover:bg-accent/50">
             <Link href="/dashboard">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Dashboard

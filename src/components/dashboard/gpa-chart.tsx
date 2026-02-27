@@ -80,10 +80,10 @@ export function GPAChart({ semesters, type }: GPAChartProps) {
             </div>
           </div>
           <div className="flex items-center gap-1 bg-muted/50 rounded-xl p-1">
-            <button className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all duration-300 ${type === "bar" ? "bg-white text-foreground shadow-soft" : "text-muted-foreground hover:text-foreground"}`}>
+            <button className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all duration-300 ${type === "bar" ? "bg-background text-foreground shadow-soft" : "text-muted-foreground hover:text-foreground"}`}>
               Bar
             </button>
-            <button className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all duration-300 ${type === "line" ? "bg-white text-foreground shadow-soft" : "text-muted-foreground hover:text-foreground"}`}>
+            <button className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all duration-300 ${type === "line" ? "bg-background text-foreground shadow-soft" : "text-muted-foreground hover:text-foreground"}`}>
               Line
             </button>
           </div>
@@ -154,7 +154,7 @@ export function GPAChart({ semesters, type }: GPAChartProps) {
                   strokeWidth={3}
                   fill="url(#areaGradient)"
                   dot={{ fill: "var(--chart-1)", strokeWidth: 0, r: 5 }}
-                  activeDot={{ r: 7, fill: "var(--chart-1)", stroke: "#fff", strokeWidth: 3 }}
+                  activeDot={{ r: 7, fill: "var(--chart-1)", stroke: "var(--background)", strokeWidth: 3 }}
                 />
               </AreaChart>
             )}

@@ -29,7 +29,7 @@ export function LogoutButton() {
     <DropdownMenuItem
       onClick={handleLogout}
       disabled={isLoading}
-      className="text-red-600 focus:text-red-600 cursor-pointer"
+      className="text-destructive focus:text-destructive cursor-pointer"
     >
       {isLoading ? (
         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
