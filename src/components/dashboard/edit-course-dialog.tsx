@@ -27,7 +27,12 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Switch } from "@/components/ui/switch";
 
 import { updateCourse } from "@/app/actions/course-actions";
-import { type TotalMarksType, VALID_TOTAL_MARKS } from "@/lib/quality-points";
+import {
+  type TotalMarksType,
+  VALID_TOTAL_MARKS,
+  creditToTotalMarks,
+  totalToCreditHours,
+} from "@/lib/quality-points";
 
 interface EditCourseDialogProps {
   courseId: string;
@@ -60,6 +65,28 @@ export function EditCourseDialog({ courseId, semesterId, initialData }: EditCour
     setObtainedMarks(String(initialData.obtainedMarks));
     setIsAudit(Boolean(initialData.isAudit));
     setError(null);
+  }
+
+  // Credit hours and total marks are linked: 1->20, 2->40, 3->60, 4->80, 5->100.
+  function handleCreditHoursChange(value: string) {
+    const mappedTotal = creditToTotalMarks(value);
+    if (mappedTotal) {
+      setCreditHours(String(mappedTotal / 20));
+      setTotalMarks(mappedTotal);
+      setObtainedMarks((prev) =>
+        prev && parseFloat(prev) > mappedTotal ? "" : prev
+      );
+    } else {
+      setCreditHours(value);
+    }
+  }
+
+  function handleTotalMarksChange(value: string) {
+    const total = parseInt(value) as TotalMarksType;
+    setTotalMarks(total);
+    const mappedCredit = totalToCreditHours(total);
+    if (mappedCredit) setCreditHours(mappedCredit);
+    setObtainedMarks((prev) => (prev && parseFloat(prev) > total ? "" : prev));
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -164,10 +191,11 @@ export function EditCourseDialog({ courseId, semesterId, initialData }: EditCour
                 <Input
                   id="edit-creditHours"
                   type="number"
-                  min="0.5"
-                  step="0.5"
+                  min="1"
+                  max="5"
+                  step="1"
                   value={creditHours}
-                  onChange={(e) => setCreditHours(e.target.value)}
+                  onChange={(e) => handleCreditHoursChange(e.target.value)}
                   disabled={isLoading}
                 />
               </div>
@@ -176,7 +204,7 @@ export function EditCourseDialog({ courseId, semesterId, initialData }: EditCour
                 <Label htmlFor="edit-totalMarks">Total Marks</Label>
                 <Select
                   value={String(totalMarks)}
-                  onValueChange={(value) => setTotalMarks(parseInt(value) as TotalMarksType)}
+                  onValueChange={handleTotalMarksChange}
                   disabled={isLoading}
                 >
                   <SelectTrigger>

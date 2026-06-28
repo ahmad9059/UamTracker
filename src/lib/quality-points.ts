@@ -207,3 +207,26 @@ export function getQualityPoint(
 export function isValidTotalMarks(marks: number): marks is TotalMarksType {
   return VALID_TOTAL_MARKS_LIST.includes(marks as TotalMarksType);
 }
+
+/**
+ * Credit hours map directly to total marks: 1 -> 20, 2 -> 40, 3 -> 60, 4 -> 80, 5 -> 100.
+ * Returns the mapped total marks for a given credit hours value, or null if out of range.
+ */
+export function creditToTotalMarks(
+  credit: string | number
+): TotalMarksType | null {
+  const num = typeof credit === "number" ? credit : parseFloat(credit);
+  if (!Number.isFinite(num)) return null;
+  const rounded = Math.round(num);
+  if (rounded < 1 || rounded > 5) return null;
+  const mapped = rounded * 20;
+  return isValidTotalMarks(mapped) ? (mapped as TotalMarksType) : null;
+}
+
+/**
+ * Inverse of creditToTotalMarks: 20 -> "1", 40 -> "2", ... 100 -> "5".
+ */
+export function totalToCreditHours(total: TotalMarksType): string | null {
+  const credit = total / 20;
+  return credit >= 1 && credit <= 5 ? String(credit) : null;
+}
