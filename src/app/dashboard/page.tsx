@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic';
 
 import Link from "next/link";
-import { BookOpen, ChevronRight, Calendar } from "lucide-react";
+import { BookOpen, ChevronRight, Calendar, LibraryBig } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
@@ -98,7 +98,7 @@ export default async function DashboardPage() {
           </div>
         ) : (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {clientSemesters.map((semester, index) => (
+            {clientSemesters.map((semester) => (
               <div
                 key={semester.id}
                 className="glass-card-elevated rounded-2xl group hover:shadow-soft transition-all duration-200 relative overflow-hidden"
@@ -107,8 +107,8 @@ export default async function DashboardPage() {
                   {/* Header */}
                   <div className="flex items-start justify-between mb-5">
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 bg-gradient-to-br from-primary/20 to-primary/10 rounded-xl flex items-center justify-center text-primary font-bold text-base border border-primary/10">
-                        {index + 1}
+                      <div className="w-12 h-12 bg-gradient-to-br from-primary/20 to-primary/10 rounded-xl flex items-center justify-center text-primary border border-primary/10">
+                        <LibraryBig className="h-5 w-5" />
                       </div>
                       <div>
                         <h3 className="font-bold text-foreground text-base">{semester.name}</h3>
