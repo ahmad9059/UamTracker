@@ -67,6 +67,12 @@ export function Navbar() {
               >
                 Calculator
               </Link>
+              <Link
+                href="/grades"
+                className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent/50 rounded-lg transition-all"
+              >
+                Grades Tables
+              </Link>
             </div>
 
             {/* CTA Buttons */}
@@ -139,6 +145,13 @@ export function Navbar() {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Calculator
+              </Link>
+              <Link
+                href="/grades"
+                className="block px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent/50 rounded-lg transition-all"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Grades Tables
               </Link>
               <div className="pt-4 flex flex-col gap-2">
                 {session?.user ? (
