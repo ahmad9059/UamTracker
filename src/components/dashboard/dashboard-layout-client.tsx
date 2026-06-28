@@ -10,14 +10,12 @@ import {
   HelpCircle,
   ChevronRight,
   Bell,
-  Search,
   PanelLeftOpen,
   Github,
   ExternalLink,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Avatar,
   AvatarFallback,
@@ -51,6 +49,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { LogoutButton } from "@/components/dashboard/logout-button";
+import { DashboardSearch } from "@/components/dashboard/dashboard-search";
 import { ThemeToggle } from "@/components/theme-toggle";
 
 // Navigation items
@@ -306,17 +305,8 @@ export default function DashboardLayoutClient({
                 {/* Sidebar Toggle for Collapsed State */}
                 <SidebarToggleButton />
 
-                {/* Search Bar */}
-                <div className="flex-1 max-w-2xl">
-                  <div className="relative">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      type="search"
-                      placeholder="Search courses, semesters..."
-                      className="pl-10 bg-muted/50 border-muted focus-visible:ring-1 focus-visible:ring-primary/20 h-10 rounded-lg"
-                    />
-                  </div>
-                </div>
+                {/* Search */}
+                <DashboardSearch />
 
                 {/* Right Section */}
                 <div className="ml-auto flex items-center gap-3">

@@ -243,3 +243,82 @@ export async function getAllSemesters() {
     };
   }
 }
+
+export type SearchResults = {
+  semesters: { id: string; name: string; courseCount: number }[];
+  courses: {
+    id: string;
+    name: string;
+    semesterId: string;
+    semesterName: string;
+  }[];
+};
+
+export async function searchDashboard(query: string): Promise<{
+  success: boolean;
+  data: SearchResults;
+  error?: string;
+}> {
+  const empty: SearchResults = { semesters: [], courses: [] };
+  try {
+    const user = await getAuthenticatedUser();
+    const q = query.trim();
+
+    if (!q) {
+      return { success: true, data: empty };
+    }
+
+    const [semesters, courses] = await Promise.all([
+      prisma.semester.findMany({
+        where: {
+          userId: user.id,
+          name: { contains: q, mode: "insensitive" },
+        },
+        select: {
+          id: true,
+          name: true,
+          _count: { select: { courses: true } },
+        },
+        orderBy: { createdAt: "asc" },
+        take: 6,
+      }),
+      prisma.course.findMany({
+        where: {
+          semester: { userId: user.id },
+          name: { contains: q, mode: "insensitive" },
+        },
+        select: {
+          id: true,
+          name: true,
+          semester: { select: { id: true, name: true } },
+        },
+        orderBy: { createdAt: "asc" },
+        take: 10,
+      }),
+    ]);
+
+    return {
+      success: true,
+      data: {
+        semesters: semesters.map((s) => ({
+          id: s.id,
+          name: s.name,
+          courseCount: s._count.courses,
+        })),
+        courses: courses.map((c) => ({
+          id: c.id,
+          name: c.name,
+          semesterId: c.semester.id,
+          semesterName: c.semester.name,
+        })),
+      },
+    };
+  } catch (error) {
+    console.error("Error searching dashboard:", error);
+    return {
+      success: false,
+      data: empty,
+      error: error instanceof Error ? error.message : "Search failed",
+    };
+  }
+}
