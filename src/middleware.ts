@@ -18,9 +18,11 @@ export async function middleware(request: NextRequest) {
   // Public routes pass through
   if (isPublicRoute) return NextResponse.next();
 
-  // Protected routes that require authentication: /dashboard and /onboarding
+  // Protected routes that require authentication: /dashboard, /onboarding, and /admin
   const isProtectedRoute =
-    pathname.startsWith("/dashboard") || pathname.startsWith("/onboarding");
+    pathname.startsWith("/dashboard") ||
+    pathname.startsWith("/onboarding") ||
+    pathname.startsWith("/admin");
 
   if (isProtectedRoute && !sessionCookieValue) {
     const loginUrl = new URL("/login", request.url);

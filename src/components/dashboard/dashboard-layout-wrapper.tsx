@@ -2,6 +2,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/db";
+import { isAdminEmail } from "@/lib/admin";
 import DashboardLayoutClient from "./dashboard-layout-client";
 
 export default async function DashboardLayoutWrapper({
@@ -35,6 +36,7 @@ export default async function DashboardLayoutWrapper({
 
   // Strip non-serializable fields (Dates, symbols) before sending to client.
   const clientSession = {
+    isAdmin: isAdminEmail(session.user.email),
     user: {
       name: session.user.name ?? null,
       email: session.user.email ?? null,

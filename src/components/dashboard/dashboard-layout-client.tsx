@@ -13,6 +13,7 @@ import {
   PanelLeftOpen,
   Github,
   ExternalLink,
+  ShieldCheck,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -71,6 +72,7 @@ const navigationItems = [
 ];
 
 type SessionData = {
+  isAdmin?: boolean;
   user: {
     name?: string | null;
     email?: string | null;
@@ -81,6 +83,15 @@ type SessionData = {
 function AppSidebar({ session }: { session: SessionData }) {
   const pathname = usePathname();
   const { toggleSidebar } = useSidebar();
+  const sections = session.isAdmin
+    ? [
+        ...navigationItems,
+        {
+          title: "Administration",
+          items: [{ title: "Admin Console", url: "/admin", icon: ShieldCheck }],
+        },
+      ]
+    : navigationItems;
   const userInitials = session.user.name
     ? session.user.name.split(" ").map((n: string) => n[0]).join("").toUpperCase().slice(0, 2)
     : session.user.email?.slice(0, 2).toUpperCase() || "U";
@@ -120,7 +131,7 @@ function AppSidebar({ session }: { session: SessionData }) {
       </SidebarHeader>
 
       <SidebarContent className="px-1 pt-4 pb-6 group-data-[collapsible=icon]:px-2 group-data-[collapsible=icon]:py-4 gap-5">
-        {navigationItems.map((section, index) => (
+        {sections.map((section, index) => (
           <SidebarGroup key={section.title} className={index > 0 ? "pt-2 border-t border-sidebar-border/60" : ""}>
             <SidebarGroupLabel className="px-2 mb-1 text-[11px] font-semibold text-sidebar-foreground/60 uppercase tracking-[0.14em] group-data-[collapsible=icon]:sr-only">
               {section.title}
@@ -263,6 +274,14 @@ function AppSidebar({ session }: { session: SessionData }) {
                     Settings
                   </Link>
                 </DropdownMenuItem>
+                {session.isAdmin && (
+                  <DropdownMenuItem asChild>
+                    <Link href="/admin" className="cursor-pointer">
+                      <ShieldCheck className="mr-2 h-4 w-4" />
+                      Admin Console
+                    </Link>
+                  </DropdownMenuItem>
+                )}
                 <DropdownMenuSeparator />
                 <LogoutButton />
               </DropdownMenuContent>
@@ -370,6 +389,14 @@ export default function DashboardLayoutClient({
                           Settings
                         </Link>
                       </DropdownMenuItem>
+                      {session.isAdmin && (
+                        <DropdownMenuItem asChild>
+                          <Link href="/admin" className="cursor-pointer">
+                            <ShieldCheck className="mr-2 h-4 w-4" />
+                            Admin Console
+                          </Link>
+                        </DropdownMenuItem>
+                      )}
                       <DropdownMenuSeparator />
                       <LogoutButton />
                     </DropdownMenuContent>

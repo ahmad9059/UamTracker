@@ -73,6 +73,7 @@ BETTER_AUTH_URL=http://localhost:3000          # or your deployed base URL
 NEXT_PUBLIC_APP_URL=http://localhost:3000       # used by client auth
 GOOGLE_CLIENT_ID=your_google_client_id
 GOOGLE_CLIENT_SECRET=your_google_client_secret
+ADMIN_EMAILS=uam@ahmadx.dev                    # comma-separated admin dashboard allowlist
 # Optional: VERCEL_URL is injected on Vercel; Better Auth will prefer it for cookies.
 ```
 
