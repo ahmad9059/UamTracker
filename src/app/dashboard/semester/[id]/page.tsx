@@ -1,6 +1,7 @@
 export const dynamic = 'force-dynamic';
 
 import Link from "next/link";
+import { headers } from "next/headers";
 import { ArrowLeft, BookOpen, Award, Clock, TrendingUp, Percent } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -15,9 +16,11 @@ import {
 } from "@/components/ui/table";
 
 import { getSemesterWithCourses } from "@/app/actions/semester-actions";
+import { auth } from "@/lib/auth";
 import { AddCourseDialog } from "@/components/dashboard/add-course-dialog";
 import { EditCourseDialog } from "@/components/dashboard/edit-course-dialog";
 import { DeleteCourseButton } from "@/components/dashboard/delete-course-button";
+import { ExportSemesterPdfButton } from "@/components/dashboard/export-semester-pdf-button";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -25,7 +28,13 @@ interface PageProps {
 
 export default async function SemesterPage({ params }: PageProps) {
   const { id } = await params;
-  const result = await getSemesterWithCourses(id);
+  const cookieHeader = (await headers()).get("cookie") ?? undefined;
+  const [result, session] = await Promise.all([
+    getSemesterWithCourses(id),
+    auth.api.getSession(
+      cookieHeader ? { headers: { cookie: cookieHeader } } : undefined
+    ),
+  ]);
 
   if (!result.success || !result.data) {
     return (
@@ -40,6 +49,23 @@ export default async function SemesterPage({ params }: PageProps) {
   }
 
   const semester = result.data;
+  const reportSemester = {
+    name: semester.name,
+    gpa: semester.gpa,
+    totalCreditHours: semester.totalCreditHours,
+    totalQualityPoints: semester.totalQualityPoints,
+    courses: semester.courses.map((course) => ({
+      id: course.id,
+      name: course.name,
+      creditHours: course.creditHours,
+      totalMarks: course.totalMarks,
+      obtainedMarks: course.obtainedMarks,
+      percentage: course.percentage,
+      grade: course.grade,
+      qualityPoint: course.qualityPoint,
+      isAudit: course.isAudit,
+    })),
+  };
 
   const getGradeColor = (grade: string) => {
     switch (grade) {
@@ -58,14 +84,6 @@ export default async function SemesterPage({ params }: PageProps) {
     }
   };
 
-  const getGPAColor = (gpa: number) => {
-    if (gpa >= 3.5) return "bg-gradient-to-br from-chart-2/20 to-chart-2/10 text-chart-2 border border-chart-2/20";
-    if (gpa >= 3.0) return "bg-gradient-to-br from-primary/20 to-primary/10 text-primary border border-primary/20";
-    if (gpa >= 2.5) return "bg-gradient-to-br from-chart-4/20 to-chart-4/10 text-chart-4 border border-chart-4/20";
-    if (gpa >= 2.0) return "bg-gradient-to-br from-chart-5/20 to-chart-5/10 text-chart-5 border border-chart-5/20";
-    return "bg-gradient-to-br from-destructive/20 to-destructive/10 text-destructive border border-destructive/20";
-  };
-
   return (
     <div className="space-y-8">
       {/* Page Header */}
@@ -82,7 +100,13 @@ export default async function SemesterPage({ params }: PageProps) {
             Manage your courses and track your performance
           </p>
         </div>
-        <AddCourseDialog semesterId={id} />
+        <ExportSemesterPdfButton
+          semester={reportSemester}
+          student={{
+            name: session?.user?.name ?? null,
+            email: session?.user?.email ?? null,
+          }}
+        />
       </div>
 
       {/* Semester Stats */}

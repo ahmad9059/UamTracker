@@ -1,18 +1,27 @@
 export const dynamic = 'force-dynamic';
 
 import Link from "next/link";
+import { headers } from "next/headers";
 import { BookOpen, ChevronRight, Calendar, LibraryBig } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
 import { getAllSemesters } from "@/app/actions/semester-actions";
+import { auth } from "@/lib/auth";
 import { CreateSemesterDialog } from "@/components/dashboard/create-semester-dialog";
 import { DeleteSemesterButton } from "@/components/dashboard/delete-semester-button";
+import { ExportDmcPdfButton } from "@/components/dashboard/export-dmc-pdf-button";
 import { GPAChart } from "@/components/dashboard/gpa-chart";
 import { StatCards } from "@/components/dashboard/stat-cards";
 
 export default async function DashboardPage() {
-  const result = await getAllSemesters();
+  const cookieHeader = (await headers()).get("cookie") ?? undefined;
+  const [result, session] = await Promise.all([
+    getAllSemesters(),
+    auth.api.getSession(
+      cookieHeader ? { headers: { cookie: cookieHeader } } : undefined
+    ),
+  ]);
 
   if (!result.success || !result.data) {
     return (
@@ -31,6 +40,29 @@ export default async function DashboardPage() {
     createdAt: s.createdAt?.toISOString?.() ?? null,
     updatedAt: s.updatedAt?.toISOString?.() ?? null,
   }));
+  const dmcReport = {
+    semesters: clientSemesters.map((semester) => ({
+      id: semester.id,
+      name: semester.name,
+      gpa: semester.gpa,
+      totalCreditHours: semester.totalCreditHours,
+      totalQualityPoints: semester.totalQualityPoints,
+      courseCount: semester.courseCount,
+      courses: semester.courses.map((course) => ({
+        name: course.name,
+        creditHours: course.creditHours,
+        totalMarks: course.totalMarks,
+        obtainedMarks: course.obtainedMarks,
+        percentage: course.percentage,
+        grade: course.grade,
+        qualityPoint: course.qualityPoint,
+        isAudit: course.isAudit,
+      })),
+    })),
+    cgpa,
+    totalCreditHours,
+    totalQualityPoints,
+  };
 
   const getGPAColor = (gpa: number) => {
     if (gpa >= 3.5) return "bg-gradient-to-br from-chart-2/20 to-chart-2/10 text-chart-2 border border-chart-2/20";
@@ -50,7 +82,16 @@ export default async function DashboardPage() {
             Welcome back! Track your academic progress.
           </p>
         </div>
-        <CreateSemesterDialog />
+        <div className="flex flex-wrap items-center gap-2">
+          <CreateSemesterDialog />
+          <ExportDmcPdfButton
+            report={dmcReport}
+            student={{
+              name: session?.user?.name ?? null,
+              email: session?.user?.email ?? null,
+            }}
+          />
+        </div>
       </div>
 
       {/* Stat Cards */}
