@@ -25,7 +25,14 @@ const bandStyles: Record<Band, string> = {
   A: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
   B: "bg-blue-500/10 text-blue-600 dark:text-blue-400",
   C: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
-  D: "bg-orange-500/10 text-orange-600 dark:text-orange-400",
+  D: "bg-red-500/10 text-red-600 dark:text-red-400",
+};
+
+const rowStyles: Record<Band, string> = {
+  A: "bg-emerald-500/15 hover:bg-emerald-500/25",
+  B: "bg-blue-500/15 hover:bg-blue-500/25",
+  C: "bg-amber-500/15 hover:bg-amber-500/25",
+  D: "bg-red-500/15 hover:bg-red-500/25",
 };
 
 const gradingScale: { band: Band; range: string; label: string }[] = [
@@ -198,35 +205,6 @@ export default function GradesPage() {
           </div>
         </div>
 
-        {/* Grading Scale */}
-        <Card className="glass-card shadow-soft border-border/50 mb-8">
-          <CardHeader>
-            <CardTitle className="text-xl">Grading Scale</CardTitle>
-            <CardDescription>Letter grades by percentage band</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-              {gradingScale.map((g) => (
-                <div
-                  key={g.band}
-                  className="flex flex-col gap-2 p-4 bg-background rounded-xl border border-border/50 hover:border-primary/30 transition-colors"
-                >
-                  <Badge
-                    variant="outline"
-                    className={`w-fit font-bold text-base px-3 ${bandStyles[g.band]}`}
-                  >
-                    {g.band}
-                  </Badge>
-                  <span className="text-sm font-semibold text-foreground">
-                    {g.range}
-                  </span>
-                  <span className="text-xs text-muted-foreground">{g.label}</span>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
         {/* Quality Point Tables */}
         <div className="columns-1 lg:columns-2 gap-6">
           {TOTALS.map((t) => (
@@ -241,25 +219,30 @@ export default function GradesPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <Table>
+                <Table className="text-base [&_td]:py-3 [&_th]:py-3 [&_th]:h-auto">
                   <TableHeader>
                     <TableRow>
-                      <TableHead className="font-semibold">Grade</TableHead>
-                      <TableHead className="font-semibold">
+                      <TableHead className="text-base font-semibold">
+                        Grade
+                      </TableHead>
+                      <TableHead className="text-base font-semibold">
                         Marks (out of {t})
                       </TableHead>
-                      <TableHead className="text-right font-semibold">
+                      <TableHead className="text-right text-base font-semibold">
                         Quality Points
                       </TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {qpTables[t].map((row) => (
-                      <TableRow key={`${row.band}-${row.marks}`}>
+                      <TableRow
+                        key={`${row.band}-${row.marks}`}
+                        className={rowStyles[row.band]}
+                      >
                         <TableCell>
                           <Badge
                             variant="outline"
-                            className={`font-bold ${bandStyles[row.band]}`}
+                            className={`text-sm font-bold ${bandStyles[row.band]}`}
                           >
                             {row.band}
                           </Badge>
@@ -276,6 +259,35 @@ export default function GradesPage() {
             </Card>
           ))}
         </div>
+
+        {/* Grading Scale */}
+        <Card className="glass-card shadow-soft border-border/50 mt-8">
+          <CardHeader>
+            <CardTitle className="text-xl">Grading Scale</CardTitle>
+            <CardDescription>Letter grades by percentage band</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+              {gradingScale.map((g) => (
+                <div
+                  key={g.band}
+                  className="flex flex-col gap-2 p-4 bg-background rounded-xl border border-border/50 hover:border-primary/30 transition-colors"
+                >
+                  <Badge
+                    variant="outline"
+                    className={`w-fit font-bold text-lg px-3 ${bandStyles[g.band]}`}
+                  >
+                    {g.band}
+                  </Badge>
+                  <span className="text-base font-semibold text-foreground">
+                    {g.range}
+                  </span>
+                  <span className="text-sm text-muted-foreground">{g.label}</span>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Formula */}
         <Card className="glass-card shadow-soft border-border/50 mt-8">
