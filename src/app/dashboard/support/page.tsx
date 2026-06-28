@@ -138,7 +138,7 @@ export default function SupportPage() {
               <Mail className="h-5 w-5 text-primary" />
               <div>
                 <CardTitle className="text-base">Email</CardTitle>
-                <CardDescription>support@gpa-tracker.app</CardDescription>
+                <CardDescription>uam@ahmadx.dev</CardDescription>
               </div>
             </CardHeader>
             <CardContent className="text-sm text-muted-foreground">
