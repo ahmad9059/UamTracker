@@ -87,12 +87,36 @@ export const loginSchema = z.object({
     .min(1, "Password is required"),
 });
 
+export const supportSchema = z.object({
+  name: z
+    .string()
+    .trim()
+    .min(2, "Name must be at least 2 characters")
+    .max(80, "Name is too long"),
+  email: z
+    .string()
+    .trim()
+    .email("Please enter a valid email address")
+    .max(120, "Email is too long"),
+  subject: z
+    .string()
+    .trim()
+    .min(5, "Subject must be at least 5 characters")
+    .max(120, "Subject is too long"),
+  message: z
+    .string()
+    .trim()
+    .min(5, "Message must be at least 5 characters")
+    .max(2000, "Message is too long"),
+});
+
 // Infer types from schemas
 export type CourseFormData = z.infer<typeof courseSchema>;
 export type PublicCourseFormData = z.infer<typeof publicCourseSchema>;
 export type SemesterFormData = z.infer<typeof semesterSchema>;
 export type RegisterFormData = z.infer<typeof registerSchema>;
 export type LoginFormData = z.infer<typeof loginSchema>;
+export type SupportFormData = z.infer<typeof supportSchema>;
 
 // Validation helper functions
 export function validateCourse(data: unknown) {
@@ -113,4 +137,8 @@ export function validateRegister(data: unknown) {
 
 export function validateLogin(data: unknown) {
   return loginSchema.safeParse(data);
+}
+
+export function validateSupport(data: unknown) {
+  return supportSchema.safeParse(data);
 }

@@ -137,7 +137,7 @@ function getSemesterTableOptions(
   logoDataUrl: string | null
 ): UserOptions {
   return {
-    startY: 190,
+    startY: 218,
     margin: { top: 86, right: 36, bottom: 58, left: 36 },
     theme: "grid",
     showHead: "everyPage",
@@ -408,7 +408,7 @@ function drawSemesterIntro(doc: PdfDocument, semester: DmcSemester) {
   doc.setFont("helvetica", "bold");
   doc.setFontSize(12);
   doc.setTextColor(...TEXT_DARK);
-  doc.text("Course Result Table", 36, 180);
+  doc.text("Course Result Table", 36, 198);
 }
 
 function drawFooter(
