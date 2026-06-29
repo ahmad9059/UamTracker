@@ -45,15 +45,15 @@ export function AddCourseDialog({ semesterId }: AddCourseDialogProps) {
   const [error, setError] = useState<string | null>(null);
 
   const [name, setName] = useState("");
-  const [creditHours, setCreditHours] = useState("");
-  const [totalMarks, setTotalMarks] = useState<TotalMarksType>(100);
+  const [creditHours, setCreditHours] = useState("3");
+  const [totalMarks, setTotalMarks] = useState<TotalMarksType>(60);
   const [obtainedMarks, setObtainedMarks] = useState("");
   const [isAudit, setIsAudit] = useState(false);
 
   function resetForm() {
     setName("");
-    setCreditHours("");
-    setTotalMarks(100);
+    setCreditHours("3");
+    setTotalMarks(60);
     setObtainedMarks("");
     setIsAudit(false);
     setError(null);

@@ -143,6 +143,12 @@ export default async function DashboardPage() {
                 key={semester.id}
                 className="glass-card-elevated rounded-2xl group hover:shadow-soft transition-all duration-200 relative overflow-hidden"
               >
+                <Link
+                  href={`/dashboard/semester/${semester.id}`}
+                  prefetch
+                  aria-label={`Open ${semester.name}`}
+                  className="absolute inset-0 z-10 rounded-2xl"
+                />
                 <div className="p-6 relative">
                   {/* Header */}
                   <div className="flex items-start justify-between mb-5">
@@ -192,7 +198,7 @@ export default async function DashboardPage() {
                   </div>
 
                   {/* Actions */}
-                  <div className="flex gap-2">
+                  <div className="relative z-20 flex gap-2">
                     <Button
                       asChild
                       variant="outline"

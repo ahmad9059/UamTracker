@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -11,17 +12,24 @@ import { ThemeToggle } from "@/components/theme-toggle";
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
   const { data: session } = useSession();
+  const useSolidBackground = pathname === "/calculator" || pathname === "/grades";
   const userInitials =
     session?.user?.name
       ? session.user.name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)
       : session?.user?.email?.slice(0, 2).toUpperCase() || "U";
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50">
-      <div className="container mx-auto px-4 pt-4">
-        <nav className="glass-strong rounded-4xl shadow-soft">
-          <div className="px-6 py-4 flex items-center justify-between">
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 shadow-[0_1px_0_color-mix(in_srgb,var(--primary)_10%,transparent)] backdrop-blur-xl ${
+        useSolidBackground
+          ? "bg-card"
+          : "bg-[color-mix(in_srgb,var(--aurora-2)_88%,var(--background))]"
+      }`}
+    >
+      <nav className="container mx-auto px-10 sm:px-12 lg:px-20 xl:px-24">
+        <div className="flex h-16 items-center justify-between gap-4">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-3 group">
               <div className="relative">
@@ -50,13 +58,13 @@ export function Navbar() {
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-1">
               <Link
-                href="#features"
+                href="/#features"
                 className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent/50 rounded-lg transition-all"
               >
                 Features
               </Link>
               <Link
-                href="#how-it-works"
+                href="/#how-it-works"
                 className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent/50 rounded-lg transition-all"
               >
                 How It Works
@@ -122,18 +130,18 @@ export function Navbar() {
             </div>
           </div>
 
-          {/* Mobile Menu */}
-          {mobileMenuOpen && (
-            <div className="md:hidden border-t border-border/50 px-6 py-4 space-y-2">
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+            <div className="md:hidden border-t border-border/50 py-4 space-y-2">
               <Link
-                href="#features"
+                href="/#features"
                 className="block px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent/50 rounded-lg transition-all"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Features
               </Link>
               <Link
-                href="#how-it-works"
+                href="/#how-it-works"
                 className="block px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent/50 rounded-lg transition-all"
                 onClick={() => setMobileMenuOpen(false)}
               >
@@ -172,9 +180,8 @@ export function Navbar() {
                 )}
               </div>
             </div>
-          )}
-        </nav>
-      </div>
+        )}
+      </nav>
     </header>
   );
 }
