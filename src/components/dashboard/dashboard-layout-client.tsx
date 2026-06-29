@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { useEffect } from "react";
 import {
   LayoutDashboard,
   Calculator,
@@ -301,9 +302,14 @@ export default function DashboardLayoutClient({
   children: React.ReactNode;
   session: SessionData;
 }) {
+  const pathname = usePathname();
   const userInitials = session.user.name
     ? session.user.name.split(" ").map((n: string) => n[0]).join("").toUpperCase().slice(0, 2)
     : session.user.email?.slice(0, 2).toUpperCase() || "U";
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  }, [pathname]);
 
   return (
     <TooltipProvider>
