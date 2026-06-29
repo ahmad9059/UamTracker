@@ -27,8 +27,8 @@ export function Hero() {
       {/* Subtle mesh pattern overlay */}
       <div className="absolute inset-0 mesh-pattern opacity-30" />
 
-      <div className="container mx-auto px-4 pt-32 lg:pt-40 pb-20 relative min-h-[calc(100vh-5rem)] flex items-center">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center w-full">
+      <div className="container mx-auto px-6 sm:px-8 lg:px-10 xl:px-12 pt-32 lg:pt-40 pb-20 relative min-h-[calc(100vh-5rem)] flex items-center">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-14 xl:gap-16 items-center w-full">
           {/* Left Content */}
           <div className="space-y-8">
             {/* Badge */}
@@ -44,7 +44,7 @@ export function Hero() {
 
             {/* Heading */}
             <div className="space-y-6 animate-fade-in-up-delay-1">
-              <h1 className="text-5xl md:text-6xl lg:text-[4.5rem] xl:text-[5rem] font-extrabold leading-[1.05] tracking-tight">
+              <h1 className="text-5xl md:text-6xl lg:text-[4rem] xl:text-[4.5rem] font-extrabold leading-[1.05] tracking-tight">
                 Track Your
                 <br />
                 <span className="gradient-text-animated">Academic Journey</span>
