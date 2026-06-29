@@ -24,12 +24,12 @@ type UserDetailPageProps = {
   params: Promise<{ id: string }>;
 };
 
-function formatDate(date: Date) {
+function formatDate(date: Date | string) {
   return new Intl.DateTimeFormat("en", {
     month: "short",
     day: "numeric",
     year: "numeric",
-  }).format(date);
+  }).format(new Date(date));
 }
 
 function isTotalMarksType(totalMarks: number): totalMarks is TotalMarksType {

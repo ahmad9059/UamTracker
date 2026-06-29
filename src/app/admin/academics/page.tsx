@@ -18,12 +18,12 @@ import {
 } from "@/components/ui/table";
 import { getAdminDashboardData } from "@/lib/admin-data";
 
-function formatDate(date: Date) {
+function formatDate(date: Date | string) {
   return new Intl.DateTimeFormat("en", {
     month: "short",
     day: "numeric",
     year: "numeric",
-  }).format(date);
+  }).format(new Date(date));
 }
 
 export default async function AdminAcademicsPage() {

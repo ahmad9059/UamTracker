@@ -32,12 +32,12 @@ const statusOptions: Array<{ value: "all" | AcademicStatus; label: string }> = [
   { value: "excellent", label: "Excellent" },
 ];
 
-function formatDate(date: Date) {
+function formatDate(date: Date | string) {
   return new Intl.DateTimeFormat("en", {
     month: "short",
     day: "numeric",
     year: "numeric",
-  }).format(date);
+  }).format(new Date(date));
 }
 
 export default async function AdminUsersPage({ searchParams }: UsersPageProps) {

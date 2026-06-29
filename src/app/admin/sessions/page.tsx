@@ -15,13 +15,13 @@ import {
 } from "@/components/ui/table";
 import { getAdminDashboardData } from "@/lib/admin-data";
 
-function formatDateTime(date: Date) {
+function formatDateTime(date: Date | string) {
   return new Intl.DateTimeFormat("en", {
     month: "short",
     day: "numeric",
     hour: "numeric",
     minute: "2-digit",
-  }).format(date);
+  }).format(new Date(date));
 }
 
 function compactUserAgent(userAgent: string | null) {
