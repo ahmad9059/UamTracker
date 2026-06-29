@@ -1,4 +1,5 @@
 import { Prisma } from "@prisma/client";
+import { unstable_cache } from "next/cache";
 
 import { prisma } from "@/lib/db";
 import { processDashboardData, type CourseInput } from "@/lib/gpa-calculator";
@@ -354,7 +355,8 @@ function buildRecentActivity(
     .slice(0, 10);
 }
 
-export async function getAdminDashboardData(): Promise<AdminDashboardData> {
+const getCachedAdminDashboardData = unstable_cache(
+  async (): Promise<AdminDashboardData> => {
   const now = new Date();
   const sevenDaysAgo = new Date(now);
   sevenDaysAgo.setDate(now.getDate() - 7);
@@ -445,9 +447,17 @@ export async function getAdminDashboardData(): Promise<AdminDashboardData> {
     userGrowth: buildUserGrowth(summaries),
     recentActivity: buildRecentActivity(summaries, semesters, courses, activeSessionSummaries),
   };
+  },
+  ["admin-dashboard-data"],
+  { revalidate: 30, tags: ["admin-data"] }
+);
+
+export async function getAdminDashboardData(): Promise<AdminDashboardData> {
+  return getCachedAdminDashboardData();
 }
 
-export async function getAdminUserProfile(userId: string) {
+const getCachedAdminUserProfile = unstable_cache(
+  async (userId: string) => {
   const now = new Date();
   const user = await prisma.user.findUnique({
     where: { id: userId },
@@ -482,4 +492,11 @@ export async function getAdminUserProfile(userId: string) {
       academic: processedById.get(semester.id),
     })),
   };
+  },
+  ["admin-user-profile"],
+  { revalidate: 60, tags: ["admin-data"] }
+);
+
+export async function getAdminUserProfile(userId: string) {
+  return getCachedAdminUserProfile(userId);
 }

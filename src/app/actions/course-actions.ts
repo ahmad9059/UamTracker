@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { headers } from "next/headers";
 import { prisma } from "@/lib/db";
 import { auth } from "@/lib/auth";
@@ -18,6 +18,11 @@ async function getAuthenticatedUser() {
   }
 
   return session.user;
+}
+
+function invalidateAcademicCaches() {
+  updateTag("dashboard-data");
+  updateTag("admin-data");
 }
 
 async function verifySemesterOwnership(semesterId: string, userId: string) {
@@ -89,6 +94,7 @@ export async function createCourse(
       },
     });
 
+    invalidateAcademicCaches();
     revalidatePath("/dashboard");
     revalidatePath(`/dashboard/semester/${semesterId}`);
 
@@ -166,6 +172,7 @@ export async function updateCourse(
       data: updateData,
     });
 
+    invalidateAcademicCaches();
     revalidatePath("/dashboard");
     revalidatePath(`/dashboard/semester/${existingCourse.semesterId}`);
 
@@ -188,6 +195,7 @@ export async function deleteCourse(courseId: string) {
       where: { id: courseId },
     });
 
+    invalidateAcademicCaches();
     revalidatePath("/dashboard");
     revalidatePath(`/dashboard/semester/${course.semesterId}`);
 
