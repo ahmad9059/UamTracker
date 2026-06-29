@@ -1,7 +1,6 @@
-import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-import { auth } from "@/lib/auth";
+import { getSessionFromCookies } from "@/lib/session";
 
 const FALLBACK_ADMIN_EMAILS = ["uam@ahmadx.dev"];
 
@@ -16,14 +15,6 @@ function getConfiguredAdminEmails() {
 export function isAdminEmail(email?: string | null) {
   if (!email) return false;
   return getConfiguredAdminEmails().includes(email.toLowerCase());
-}
-
-export async function getSessionFromCookies() {
-  const cookieHeader = (await headers()).get("cookie") ?? undefined;
-
-  return auth.api.getSession(
-    cookieHeader ? { headers: { cookie: cookieHeader } } : undefined
-  );
 }
 
 export async function requireAdminSession(callbackUrl = "/admin") {

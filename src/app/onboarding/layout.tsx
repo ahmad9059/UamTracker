@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
-import { prisma } from "@/lib/db";
+import { getUserOnboardingStatus } from "@/lib/session";
 
 export default async function OnboardingLayout({
   children,
@@ -24,12 +24,9 @@ export default async function OnboardingLayout({
   }
 
   // If onboarding is already completed, redirect to dashboard
-  const dbUser = await prisma.user.findUnique({
-    where: { id: session.user.id },
-    select: { onboardingCompleted: true },
-  });
+  const onboardingCompleted = await getUserOnboardingStatus(session.user.id);
 
-  if (dbUser?.onboardingCompleted) {
+  if (onboardingCompleted) {
     redirect("/dashboard");
   }
 

@@ -1,26 +1,23 @@
 export const dynamic = 'force-dynamic';
 
 import Link from "next/link";
-import { headers } from "next/headers";
 import { BookOpen, ChevronRight, Calendar, LibraryBig } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
 import { getAllSemesters } from "@/app/actions/semester-actions";
-import { auth } from "@/lib/auth";
+import { getSessionFromCookies } from "@/lib/session";
 import { CreateSemesterDialog } from "@/components/dashboard/create-semester-dialog";
 import { DeleteSemesterButton } from "@/components/dashboard/delete-semester-button";
 import { ExportDmcPdfButton } from "@/components/dashboard/export-dmc-pdf-button";
 import { GPAChart } from "@/components/dashboard/gpa-chart";
 import { StatCards } from "@/components/dashboard/stat-cards";
+import { SemesterRoutePrefetcher } from "@/components/dashboard/semester-route-prefetcher";
 
 export default async function DashboardPage() {
-  const cookieHeader = (await headers()).get("cookie") ?? undefined;
   const [result, session] = await Promise.all([
     getAllSemesters(),
-    auth.api.getSession(
-      cookieHeader ? { headers: { cookie: cookieHeader } } : undefined
-    ),
+    getSessionFromCookies(),
   ]);
 
   if (!result.success || !result.data) {
@@ -74,6 +71,8 @@ export default async function DashboardPage() {
 
   return (
     <div className="space-y-8">
+      <SemesterRoutePrefetcher semesterIds={clientSemesters.map((semester) => semester.id)} />
+
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
@@ -200,7 +199,7 @@ export default async function DashboardPage() {
                       size="sm"
                       className="flex-1 text-xs h-10 font-semibold rounded-xl hover:bg-primary/5 border-border/60 transition-all duration-300"
                     >
-                      <Link href={`/dashboard/semester/${semester.id}`}>
+                      <Link href={`/dashboard/semester/${semester.id}`} prefetch>
                         View Details
                         <ChevronRight className="h-4 w-4 ml-1" />
                       </Link>

@@ -1,7 +1,6 @@
 export const dynamic = 'force-dynamic';
 
 import Link from "next/link";
-import { headers } from "next/headers";
 import { ArrowLeft, BookOpen, Award, Clock, TrendingUp, Percent } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -16,7 +15,7 @@ import {
 } from "@/components/ui/table";
 
 import { getSemesterWithCourses } from "@/app/actions/semester-actions";
-import { auth } from "@/lib/auth";
+import { getSessionFromCookies } from "@/lib/session";
 import { AddCourseDialog } from "@/components/dashboard/add-course-dialog";
 import { EditCourseDialog } from "@/components/dashboard/edit-course-dialog";
 import { DeleteCourseButton } from "@/components/dashboard/delete-course-button";
@@ -28,12 +27,9 @@ interface PageProps {
 
 export default async function SemesterPage({ params }: PageProps) {
   const { id } = await params;
-  const cookieHeader = (await headers()).get("cookie") ?? undefined;
   const [result, session] = await Promise.all([
     getSemesterWithCourses(id),
-    auth.api.getSession(
-      cookieHeader ? { headers: { cookie: cookieHeader } } : undefined
-    ),
+    getSessionFromCookies(),
   ]);
 
   if (!result.success || !result.data) {

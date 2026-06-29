@@ -1,24 +1,10 @@
 "use server";
 
 import { revalidatePath, updateTag } from "next/cache";
-import { headers } from "next/headers";
 import { prisma } from "@/lib/db";
-import { auth } from "@/lib/auth";
+import { getAuthenticatedUser } from "@/lib/session";
 import { courseSchema } from "@/lib/validation";
 import type { TotalMarksType } from "@/lib/quality-points";
-
-async function getAuthenticatedUser() {
-  const cookieHeader = (await headers()).get("cookie");
-  const session = await auth.api.getSession(
-    cookieHeader ? { headers: { cookie: cookieHeader } } : undefined
-  );
-
-  if (!session?.user?.id) {
-    throw new Error("Unauthorized: Please log in to continue");
-  }
-
-  return session.user;
-}
 
 function invalidateAcademicCaches() {
   updateTag("dashboard-data");

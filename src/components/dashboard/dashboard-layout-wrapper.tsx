@@ -1,8 +1,6 @@
-import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { auth } from "@/lib/auth";
-import { prisma } from "@/lib/db";
 import { isAdminEmail } from "@/lib/admin";
+import { getSessionFromCookies, getUserOnboardingStatus } from "@/lib/session";
 import DashboardLayoutClient from "./dashboard-layout-client";
 
 export default async function DashboardLayoutWrapper({
@@ -10,11 +8,7 @@ export default async function DashboardLayoutWrapper({
 }: {
   children: React.ReactNode;
 }) {
-  // `headers()` is async in Next 16; grab the raw cookie header for Better Auth
-  const cookieHeader = (await headers()).get("cookie") ?? undefined;
-  const session = await auth.api.getSession(
-    cookieHeader ? { headers: { cookie: cookieHeader } } : undefined
-  );
+  const session = await getSessionFromCookies();
 
   if (!session) {
     redirect("/login");
@@ -24,13 +18,9 @@ export default async function DashboardLayoutWrapper({
     redirect(`/verify-email?email=${encodeURIComponent(session.user.email)}`);
   }
 
-  // Check if user has completed onboarding
-  const dbUser = await prisma.user.findUnique({
-    where: { id: session.user.id },
-    select: { onboardingCompleted: true },
-  });
+  const onboardingCompleted = await getUserOnboardingStatus(session.user.id);
 
-  if (!dbUser?.onboardingCompleted) {
+  if (!onboardingCompleted) {
     redirect("/onboarding");
   }
 
