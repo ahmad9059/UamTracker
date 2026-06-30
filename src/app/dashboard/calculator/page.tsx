@@ -293,7 +293,7 @@ export default function DashboardCalculatorPage() {
                 <BookOpen className="h-5 w-5 text-primary" />
                 Enter Your Courses
               </CardTitle>
-              <CardDescription>
+              <CardDescription className="text-base">
                 Add courses and enter marks to calculate your GPA
               </CardDescription>
             </CardHeader>
@@ -305,14 +305,14 @@ export default function DashboardCalculatorPage() {
                 >
                   <div className="col-span-12 sm:col-span-1 flex items-center justify-center">
                     <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                      <span className="text-sm font-bold text-primary">
+                      <span className="text-base font-bold text-primary">
                         {index + 1}
                       </span>
                     </div>
                   </div>
 
                   <div className="col-span-6 sm:col-span-3">
-                    <label className="text-xs font-medium text-foreground mb-1.5 block">
+                    <label className="text-sm font-medium text-foreground mb-1.5 block">
                       Credit Hours
                     </label>
                     <Input
@@ -326,20 +326,20 @@ export default function DashboardCalculatorPage() {
                           e.target.value
                         )
                       }
-                      className={`h-11 text-base ${errors[`${course.id}-creditHours`] ? "border-red-500" : ""}`}
+                      className={`h-12 text-lg ${errors[`${course.id}-creditHours`] ? "border-red-500" : ""}`}
                       min="1"
                       max="5"
                       step="1"
                     />
                     {errors[`${course.id}-creditHours`] && (
-                      <span className="text-xs text-red-500 mt-1 block">
+                      <span className="text-sm text-red-500 mt-1 block">
                         {errors[`${course.id}-creditHours`]}
                       </span>
                     )}
                   </div>
 
                   <div className="col-span-6 sm:col-span-3">
-                    <label className="text-xs font-medium text-foreground mb-1.5 block">
+                    <label className="text-sm font-medium text-foreground mb-1.5 block">
                       Total Marks
                     </label>
                     <Select
@@ -352,7 +352,7 @@ export default function DashboardCalculatorPage() {
                         )
                       }
                     >
-                      <SelectTrigger className="h-11 text-base">
+                      <SelectTrigger className="h-12 text-lg">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -366,7 +366,7 @@ export default function DashboardCalculatorPage() {
                   </div>
 
                   <div className="col-span-10 sm:col-span-4">
-                    <label className="text-xs font-medium text-foreground mb-1.5 block">
+                    <label className="text-sm font-medium text-foreground mb-1.5 block">
                       Obtained Marks
                     </label>
                     <Input
@@ -376,12 +376,12 @@ export default function DashboardCalculatorPage() {
                       onChange={(e) =>
                         updateCourse(course.id, "obtainedMarks", e.target.value)
                       }
-                      className={`h-11 text-base ${errors[`${course.id}-obtainedMarks`] ? "border-red-500" : ""}`}
+                      className={`h-12 text-lg ${errors[`${course.id}-obtainedMarks`] ? "border-red-500" : ""}`}
                       min="0"
                       max={course.totalMarks}
                     />
                     {errors[`${course.id}-obtainedMarks`] && (
-                      <span className="text-xs text-red-500 mt-1 block">
+                      <span className="text-sm text-red-500 mt-1 block">
                         {errors[`${course.id}-obtainedMarks`]}
                       </span>
                     )}
@@ -393,7 +393,7 @@ export default function DashboardCalculatorPage() {
                       size="icon"
                       onClick={() => removeCourse(course.id)}
                       disabled={courses.length === 1}
-                      className="text-muted-foreground hover:text-destructive h-11 w-11"
+                      className="text-muted-foreground hover:text-destructive h-12 w-12"
                     >
                       <Trash2 className="h-5 w-5" />
                     </Button>
@@ -401,7 +401,7 @@ export default function DashboardCalculatorPage() {
                 </div>
               ))}
 
-              <Button variant="outline" onClick={addCourse} className="w-full font-semibold h-11 text-base">
+              <Button variant="outline" onClick={addCourse} className="w-full font-semibold h-12 text-lg">
                 <Plus className="h-5 w-5 mr-2" />
                 Add Another Course
               </Button>
@@ -409,7 +409,7 @@ export default function DashboardCalculatorPage() {
               {/* Desktop Calculate Button */}
               <Button
                 onClick={() => setShowResultDialog(true)}
-                className="w-full font-semibold hidden lg:flex mt-3 h-12 text-base shadow-lg items-center justify-center gap-2"
+                className="w-full font-semibold hidden lg:flex mt-3 h-12 text-lg shadow-lg items-center justify-center gap-2"
                 disabled={result.courses.length === 0}
               >
                 <Calculator className="h-5 w-5" />
@@ -419,7 +419,7 @@ export default function DashboardCalculatorPage() {
               {/* Mobile Calculate Button */}
               <Button
                 onClick={() => setShowResultDialog(true)}
-                className="w-full font-semibold lg:hidden mt-4 h-12 text-base shadow-lg flex items-center justify-center gap-2"
+                className="w-full font-semibold lg:hidden mt-4 h-12 text-lg shadow-lg flex items-center justify-center gap-2"
                 disabled={result.courses.length === 0}
               >
                 <Calculator className="h-5 w-5" />
@@ -434,11 +434,11 @@ export default function DashboardCalculatorPage() {
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
-                    <CardTitle className="flex items-center gap-2 text-lg">
+                    <CardTitle className="flex items-center gap-2 text-xl">
                       <TrendingUp className="h-5 w-5 text-primary" />
                       CGPA Calculator
                     </CardTitle>
-                    <CardDescription className="mt-1">
+                    <CardDescription className="mt-1 text-base">
                       CGPA = (Sum of quality points from all semesters) / (Sum of credit hours from all semesters)
                     </CardDescription>
                   </div>
@@ -467,7 +467,7 @@ export default function DashboardCalculatorPage() {
                       className="grid grid-cols-12 gap-3 items-start p-4 bg-accent/40 rounded-lg border border-border/50"
                     >
                       <div className="col-span-12 sm:col-span-3">
-                        <label className="text-xs text-muted-foreground mb-1 block">
+                        <label className="text-sm font-medium text-foreground mb-1.5 block">
                           Semester
                         </label>
                         <Input
@@ -480,7 +480,7 @@ export default function DashboardCalculatorPage() {
                       </div>
 
                       <div className="col-span-6 sm:col-span-3">
-                        <label className="text-xs text-muted-foreground mb-1 block">
+                        <label className="text-sm font-medium text-foreground mb-1.5 block">
                           Credit Hours
                         </label>
                         <Input
@@ -495,14 +495,14 @@ export default function DashboardCalculatorPage() {
                           placeholder="15"
                         />
                         {cgpaErrors[`${sem.id}-ch`] && (
-                          <span className="text-xs text-red-500">
+                          <span className="text-sm text-red-500">
                             {cgpaErrors[`${sem.id}-ch`]}
                           </span>
                         )}
                       </div>
 
                       <div className="col-span-6 sm:col-span-3">
-                        <label className="text-xs text-muted-foreground mb-1 block">
+                        <label className="text-sm font-medium text-foreground mb-1.5 block">
                           GPA
                         </label>
                         <Input
@@ -518,7 +518,7 @@ export default function DashboardCalculatorPage() {
                           placeholder="3.5"
                         />
                         {cgpaErrors[`${sem.id}-gpa`] && (
-                          <span className="text-xs text-red-500">
+                          <span className="text-sm text-red-500">
                             {cgpaErrors[`${sem.id}-gpa`]}
                           </span>
                         )}
@@ -544,11 +544,11 @@ export default function DashboardCalculatorPage() {
                   </Button>
 
                   <div className="p-4 rounded-lg bg-primary/5 border border-primary/20">
-                    <div className="text-sm font-semibold text-primary">Your CGPA</div>
+                    <div className="text-base font-semibold text-primary">Your CGPA</div>
                     <div className="text-4xl font-bold text-primary mt-1">
                       {cgpa.toFixed(2)}
                     </div>
-                    <div className="text-xs text-muted-foreground mt-1">
+                    <div className="text-sm text-muted-foreground mt-1">
                       CGPA uses the formula: Σ(total quality points) / Σ(total credit hours)
                     </div>
                   </div>
@@ -573,18 +573,18 @@ export default function DashboardCalculatorPage() {
                   <div className="text-5xl font-bold text-primary mb-2">
                     {result.gpa.toFixed(2)}
                   </div>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-base text-muted-foreground">
                     out of 4.00
                   </p>
                 </div>
                 <div className="grid grid-cols-2 gap-4 mt-4 pt-4 border-t">
                   <div className="text-center">
-                    <div className="text-lg font-semibold">{result.totalCreditHours}</div>
-                    <div className="text-xs text-muted-foreground">Credit Hours</div>
+                    <div className="text-xl font-semibold">{result.totalCreditHours}</div>
+                    <div className="text-sm text-muted-foreground">Credit Hours</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-lg font-semibold">{result.totalQualityPoints.toFixed(2)}</div>
-                    <div className="text-xs text-muted-foreground">Quality Points</div>
+                    <div className="text-xl font-semibold">{result.totalQualityPoints.toFixed(2)}</div>
+                    <div className="text-sm text-muted-foreground">Quality Points</div>
                   </div>
                 </div>
               </CardContent>
@@ -593,7 +593,7 @@ export default function DashboardCalculatorPage() {
             {result.courses.length > 0 && (
               <Card className="glass-card shadow-soft border-border/50">
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-base flex items-center gap-2">
+                  <CardTitle className="text-lg flex items-center gap-2">
                     <TrendingUp className="h-4 w-4 text-primary" />
                     Breakdown
                   </CardTitle>
@@ -606,7 +606,7 @@ export default function DashboardCalculatorPage() {
                         className="flex items-center justify-between p-2.5 bg-accent/50 rounded-lg border border-border/50"
                       >
                         <div className="flex items-center gap-2">
-                          <span className="text-sm text-muted-foreground">
+                          <span className="text-base text-muted-foreground">
                             #{index + 1}
                           </span>
                           <Badge variant="outline" className={getGradeColor(course.grade)}>
@@ -614,10 +614,10 @@ export default function DashboardCalculatorPage() {
                           </Badge>
                         </div>
                         <div className="text-right">
-                          <div className="text-sm font-medium">
+                          <div className="text-base font-medium">
                             QP: {course.qualityPoint.toFixed(2)}
                           </div>
-                          <div className="text-xs text-muted-foreground">
+                          <div className="text-sm text-muted-foreground">
                             {course.percentage.toFixed(1)}%
                           </div>
                         </div>
@@ -630,7 +630,7 @@ export default function DashboardCalculatorPage() {
 
             <Card className="glass-card shadow-soft border-primary/20 bg-primary/5">
               <CardContent className="pt-6">
-                <p className="text-sm text-foreground leading-relaxed">
+                <p className="text-base text-foreground leading-relaxed">
                   <strong className="text-primary">Note:</strong> This calculator uses UamTracker&apos;s
                   grading system. Sign in to save your courses and track your CGPA over time.
                 </p>
@@ -659,7 +659,7 @@ export default function DashboardCalculatorPage() {
                 <div className="text-6xl font-bold text-primary mb-2">
                   {result.gpa.toFixed(2)}
                 </div>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-base text-muted-foreground">
                   out of 4.00
                 </p>
               </div>
@@ -669,18 +669,18 @@ export default function DashboardCalculatorPage() {
             <div className="grid grid-cols-2 gap-4">
               <div className="text-center p-4 bg-accent rounded-lg">
                 <div className="text-2xl font-bold text-foreground">{result.totalCreditHours}</div>
-                <div className="text-xs text-muted-foreground mt-1">Credit Hours</div>
+                <div className="text-sm text-muted-foreground mt-1">Credit Hours</div>
               </div>
               <div className="text-center p-4 bg-accent rounded-lg">
                 <div className="text-2xl font-bold text-foreground">{result.totalQualityPoints.toFixed(2)}</div>
-                <div className="text-xs text-muted-foreground mt-1">Quality Points</div>
+                <div className="text-sm text-muted-foreground mt-1">Quality Points</div>
               </div>
             </div>
 
             {/* Breakdown */}
             {result.courses.length > 0 && (
               <div className="space-y-2">
-                <h4 className="font-semibold text-sm text-foreground flex items-center gap-2">
+                <h4 className="font-semibold text-base text-foreground flex items-center gap-2">
                   <TrendingUp className="h-4 w-4 text-primary" />
                   Grade Breakdown
                 </h4>
@@ -691,7 +691,7 @@ export default function DashboardCalculatorPage() {
                       className="flex items-center justify-between p-3 bg-accent/50 rounded-lg border border-border/50"
                     >
                       <div className="flex items-center gap-2">
-                        <span className="text-sm text-muted-foreground">
+                        <span className="text-base text-muted-foreground">
                           #{index + 1}
                         </span>
                         <Badge variant="outline" className={getGradeColor(course.grade)}>
@@ -699,10 +699,10 @@ export default function DashboardCalculatorPage() {
                         </Badge>
                       </div>
                       <div className="text-right">
-                        <div className="text-sm font-medium">
+                        <div className="text-base font-medium">
                           QP: {course.qualityPoint.toFixed(2)}
                         </div>
-                        <div className="text-xs text-muted-foreground">
+                        <div className="text-sm text-muted-foreground">
                           {course.percentage.toFixed(1)}%
                         </div>
                       </div>
@@ -726,18 +726,18 @@ export default function DashboardCalculatorPage() {
       <Card className="mt-12 glass-card shadow-soft border-border/50">
         <CardHeader>
           <CardTitle className="text-xl">Grade Reference</CardTitle>
-          <CardDescription>
+          <CardDescription className="text-base">
             UamTracker grading criteria based on percentage
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Table>
+          <Table className="text-base">
             <TableHeader>
               <TableRow>
-                <TableHead className="font-semibold">Grade</TableHead>
-                <TableHead className="font-semibold">Percentage Range</TableHead>
-                <TableHead className="font-semibold">Quality Points</TableHead>
-                <TableHead className="font-semibold">Status</TableHead>
+                <TableHead className="text-base font-semibold">Grade</TableHead>
+                <TableHead className="text-base font-semibold">Percentage Range</TableHead>
+                <TableHead className="text-base font-semibold">Quality Points</TableHead>
+                <TableHead className="text-base font-semibold">Status</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
