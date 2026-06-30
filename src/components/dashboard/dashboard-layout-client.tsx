@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import {
   LayoutDashboard,
   Calculator,
+  BookOpen,
   Settings,
   HelpCircle,
   ChevronRight,
@@ -61,6 +62,7 @@ const navigationItems = [
     items: [
       { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
       { title: "Calculator", url: "/dashboard/calculator", icon: Calculator },
+      { title: "Grades Tables", url: "/dashboard/grades", icon: BookOpen },
     ],
   },
   {
@@ -110,7 +112,7 @@ function AppSidebar({ session }: { session: SessionData }) {
             <div className="relative size-9 overflow-hidden rounded-full border border-sidebar-border shadow-sm flex-shrink-0">
               <Image
                 src="/icon.svg"
-                alt="UAM University logo"
+                alt="UamTracker logo"
                 fill
                 priority
                 className="object-cover"
@@ -118,10 +120,10 @@ function AppSidebar({ session }: { session: SessionData }) {
             </div>
             <div className="grid flex-1 text-left leading-tight group-data-[collapsible=icon]:hidden">
               <span className="truncate font-semibold text-sm text-sidebar-foreground">
-                UAM University
+                UamTracker
               </span>
               <span className="truncate text-xs text-sidebar-foreground/60">
-                GPA Tracker
+                GPA Records
               </span>
             </div>
           </Link>
@@ -180,7 +182,7 @@ function AppSidebar({ session }: { session: SessionData }) {
                 GitHub · ahmad9059
               </p>
               <p className="text-xs text-sidebar-foreground/70">
-                Explore the source, issues, and updates for this GPA Tracker.
+                Explore the source, issues, and updates for UamTracker.
               </p>
             </div>
             <div className="mt-3">

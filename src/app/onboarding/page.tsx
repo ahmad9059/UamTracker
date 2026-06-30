@@ -254,7 +254,7 @@ export default function OnboardingPage() {
 
             <div className="space-y-3">
               <h1 className="text-3xl sm:text-4xl font-bold text-foreground">
-                Welcome to GPA Tracker
+                Welcome to UamTracker
               </h1>
               <p className="text-muted-foreground text-base sm:text-lg leading-relaxed">
                 Let&apos;s set up your academic record. You can add your

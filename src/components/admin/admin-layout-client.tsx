@@ -103,11 +103,11 @@ function AdminSidebar({ session }: { session: SessionData }) {
         <div className="flex h-full w-full items-center justify-between gap-2">
           <Link href="/admin" className="flex h-full min-w-0 flex-1 items-center gap-3 transition-all group-data-[collapsible=icon]:justify-center">
             <div className="relative size-9 flex-shrink-0 overflow-hidden rounded-full border border-sidebar-border shadow-sm">
-              <Image src="/icon.svg" alt="UAM University logo" fill priority className="object-cover" />
+              <Image src="/icon.svg" alt="UamTracker logo" fill priority className="object-cover" />
             </div>
             <div className="grid flex-1 text-left leading-tight group-data-[collapsible=icon]:hidden">
-              <span className="truncate text-sm font-semibold text-sidebar-foreground">UAM Admin</span>
-              <span className="truncate text-xs text-sidebar-foreground/60">GPA Tracker</span>
+              <span className="truncate text-sm font-semibold text-sidebar-foreground">UamTracker</span>
+              <span className="truncate text-xs text-sidebar-foreground/60">GPA Records</span>
             </div>
           </Link>
           <SidebarTrigger className="size-8 rounded-lg text-sidebar-foreground/70 transition-colors hover:bg-sidebar-accent hover:text-sidebar-foreground group-data-[collapsible=icon]:hidden" />

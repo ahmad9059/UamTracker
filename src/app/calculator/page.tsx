@@ -643,7 +643,7 @@ export default function CalculatorPage() {
               <Card className="glass-card shadow-soft border-primary/20 bg-primary/5">
                 <CardContent className="pt-6">
                   <p className="text-sm text-foreground leading-relaxed">
-                    <strong className="text-primary">Note:</strong> This calculator uses UAM-University&apos;s
+                    <strong className="text-primary">Note:</strong> This calculator uses UamTracker&apos;s
                     grading system. Sign in to save your courses and track your CGPA over time.
                   </p>
                 </CardContent>
@@ -739,7 +739,7 @@ export default function CalculatorPage() {
           <CardHeader>
             <CardTitle className="text-xl">Grade Reference</CardTitle>
             <CardDescription>
-              UAM-University grading criteria based on percentage
+              UamTracker grading criteria based on percentage
             </CardDescription>
           </CardHeader>
           <CardContent>

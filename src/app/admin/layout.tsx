@@ -6,8 +6,8 @@ import AdminLayoutClient from "@/components/admin/admin-layout-client";
 import { requireAdminSession } from "@/lib/admin";
 
 export const metadata: Metadata = {
-  title: "Admin Dashboard | UAM GPA Tracker",
-  description: "Admin oversight for UAM GPA Tracker users, academics, and sessions.",
+  title: "Admin Dashboard | UamTracker",
+  description: "Admin oversight for UamTracker users, GPA records, academics, and sessions.",
 };
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {

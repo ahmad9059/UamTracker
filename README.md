@@ -1,4 +1,4 @@
-# GPA Tracker (UAM University)
+# UamTracker
 
 A production‑ready Next.js application that helps UAM‑University students calculate GPA and CGPA, manage semesters and courses, and visualize academic progress. The app combines a public calculator with an authenticated dashboard backed by Prisma, PostgreSQL, and Better Auth (email/password plus Google).
 

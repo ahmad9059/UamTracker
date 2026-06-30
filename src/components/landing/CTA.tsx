@@ -31,7 +31,7 @@ export function CTA() {
 
           {/* Description */}
           <p className="text-xl text-primary-foreground/85 mb-10 max-w-xl mx-auto leading-relaxed">
-            Join students who are already using UAM-University GPA Tracker to
+            Join students who are already using UamTracker GPA Records to
             achieve their academic goals and visualize their progress.
           </p>
 

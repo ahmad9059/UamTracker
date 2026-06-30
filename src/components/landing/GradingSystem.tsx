@@ -24,12 +24,12 @@ export function GradingSystem() {
               Official Grading System
             </div>
             <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-              UAM-University{" "}
+              UamTracker{" "}
               <span className="gradient-text">Grading System</span>
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Understanding how your grades are calculated using the official
-              quality point system of UAM-University of Agriculture, Multan.
+              Understanding how your grades are calculated using the supported
+              quality point system in GPA Records.
             </p>
           </div>
 

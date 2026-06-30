@@ -1,8 +1,8 @@
-# Design Document: UAM-University GPA Tracker
+# Design Document: UamTracker
 
 ## Overview
 
-The UAM-University GPA Tracker is a full-stack Next.js application that provides GPA calculation and academic progress tracking for students at UAM-University of Agriculture, Multan. The system consists of three main user-facing components: a public GPA calculator, an authentication system, and a comprehensive student dashboard with visual analytics.
+UamTracker is a full-stack Next.js application that provides GPA calculation and academic progress tracking through GPA Records. The system consists of three main user-facing components: a public GPA calculator, an authentication system, and a comprehensive student dashboard with visual analytics.
 
 The application implements the university's specific grading system with Quality Points mapped to marks obtained out of different totals (20, 40, 60, 80, 100). The architecture follows Next.js App Router conventions with server components, server actions for data mutations, and client components for interactive features.
 
@@ -382,7 +382,7 @@ async function deleteSemester(semesterId: string): Promise<void>;
 1. **Hero Section**: Headline, subheadline, CTA buttons (Login, Register, Try Calculator)
 2. **Features Section**: Cards highlighting key features (GPA tracking, visual analytics, public calculator)
 3. **How It Works**: Step-by-step guide with icons
-4. **About Section**: Information about UAM-University grading system
+4. **About Section**: Information about the UamTracker GPA Records system
 5. **Footer**: Links, contact info, copyright
 
 **Design Principles:**

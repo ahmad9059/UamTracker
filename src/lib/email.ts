@@ -68,7 +68,7 @@ export async function sendSupportEmail({
       from,
       to,
       replyTo: { name, address: email },
-      subject: `[UAM GPA Tracker Support] ${subject}`,
+      subject: `[UamTracker Support] ${subject}`,
       text: buildSupportEmailText({ name, email, subject, message, accountEmail }),
       html: buildSupportEmailHtml({ name, email, subject, message, accountEmail }),
     });
@@ -92,7 +92,7 @@ function buildVerificationEmailHtml(name: string, url: string): string {
           <table width="100%" cellpadding="0" cellspacing="0" style="max-width:480px;background-color:#ffffff;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,0.1);overflow:hidden;">
             <tr>
               <td style="background-color:#1d4ed8;padding:32px 40px;text-align:center;">
-                <h1 style="margin:0;color:#ffffff;font-size:20px;font-weight:700;">UAM GPA Tracker</h1>
+                <h1 style="margin:0;color:#ffffff;font-size:20px;font-weight:700;">UamTracker</h1>
               </td>
             </tr>
             <tr>
@@ -118,7 +118,7 @@ function buildVerificationEmailHtml(name: string, url: string): string {
             </tr>
             <tr>
               <td style="padding:24px 40px;border-top:1px solid #e2e8f0;text-align:center;">
-                <p style="margin:0;color:#94a3b8;font-size:12px;">UAM GPA Tracker</p>
+                <p style="margin:0;color:#94a3b8;font-size:12px;">GPA Records</p>
               </td>
             </tr>
           </table>
@@ -137,7 +137,7 @@ function buildSupportEmailText({
   accountEmail,
 }: SendSupportEmailParams): string {
   return [
-    "New support request from UAM GPA Tracker",
+    "New support request from UamTracker",
     "",
     `Name: ${name}`,
     `Reply-to email: ${email}`,
@@ -169,7 +169,7 @@ function buildSupportEmailHtml({
           <table width="100%" cellpadding="0" cellspacing="0" style="max-width:640px;background-color:#ffffff;border-radius:16px;box-shadow:0 12px 30px rgba(15,23,42,0.08);overflow:hidden;border:1px solid #dbeafe;">
             <tr>
               <td style="background-color:#155dfb;padding:28px 36px;">
-                <h1 style="margin:0;color:#ffffff;font-size:20px;font-weight:800;">UAM GPA Tracker</h1>
+                <h1 style="margin:0;color:#ffffff;font-size:20px;font-weight:800;">UamTracker</h1>
                 <p style="margin:6px 0 0;color:#dbeafe;font-size:13px;">New support request</p>
               </td>
             </tr>
@@ -187,7 +187,7 @@ function buildSupportEmailHtml({
             </tr>
             <tr>
               <td style="padding:20px 36px;border-top:1px solid #e2e8f0;text-align:center;">
-                <p style="margin:0;color:#94a3b8;font-size:12px;">UAM GPA Tracker Support</p>
+                <p style="margin:0;color:#94a3b8;font-size:12px;">GPA Records Support</p>
               </td>
             </tr>
           </table>

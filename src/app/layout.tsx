@@ -15,9 +15,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "UAM-University GPA Tracker",
-  description: "Track your academic progress with UAM-University's official grading system. Calculate GPA, CGPA, and visualize your performance.",
-  keywords: ["GPA", "CGPA", "UAM-University", "GPA Calculator", "Academic Progress"],
+  title: "UamTracker | GPA Records",
+  description: "Track academic progress with GPA records. Calculate GPA, CGPA, and visualize your performance.",
+  keywords: ["GPA", "CGPA", "UamTracker", "GPA Records", "GPA Calculator", "Academic Progress"],
   manifest: "/manifest.webmanifest",
   themeColor: "#1d4ed8",
   icons: {

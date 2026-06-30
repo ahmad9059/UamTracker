@@ -38,7 +38,7 @@ export function Hero() {
               </span>
 
               <span className="text-sm font-semibold tracking-tight text-foreground/90">
-                Built for UAM-University Students
+                Built for MNSUA Students
               </span>
             </div>
 
@@ -52,8 +52,8 @@ export function Hero() {
                 with Precision
               </h1>
               <p className="text-lg md:text-xl text-muted-foreground max-w-xl leading-relaxed">
-                Calculate your GPA and CGPA using UAM-University&apos;s official
-                grading system. Visualize progress, manage courses, and achieve
+                Calculate your GPA and CGPA using supported quality point
+                records. Visualize progress, manage courses, and achieve
                 your goals.
               </p>
             </div>

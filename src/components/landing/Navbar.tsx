@@ -37,7 +37,7 @@ export function Navbar() {
                 <div className="relative w-10 h-10 rounded-lg shadow-sm overflow-hidden">
                   <Image
                     src="/icon.svg"
-                    alt="UAM University Logo"
+                    alt="UamTracker Logo"
                     className="w-full h-full object-cover"
                     width={40}
                     height={40}
@@ -47,10 +47,10 @@ export function Navbar() {
               </div>
               <div className="flex flex-col">
                 <span className="text-lg font-bold text-foreground leading-tight">
-                  UAM-University
+                  UamTracker
                 </span>
                 <span className="text-xs text-muted-foreground -mt-0.5">
-                  GPA Tracker
+                  GPA Records
                 </span>
               </div>
             </Link>

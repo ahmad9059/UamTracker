@@ -235,12 +235,12 @@ function drawHeader(
   doc.setFont("helvetica", "bold");
   doc.setFontSize(14);
   doc.setTextColor(...TEXT_DARK);
-  doc.text("UAM-University", 80, 36);
+  doc.text("UamTracker", 80, 36);
 
   doc.setFont("helvetica", "normal");
   doc.setFontSize(9.5);
   doc.setTextColor(...TEXT_MUTED);
-  doc.text("GPA Tracker", 80, 51);
+  doc.text("GPA Records", 80, 51);
 
   doc.setFont("helvetica", "bold");
   doc.setFontSize(12);
@@ -427,7 +427,7 @@ function drawFooter(
   doc.setFont("helvetica", "bold");
   doc.setFontSize(8.5);
   doc.setTextColor(...BRAND_BLUE);
-  doc.text("UAM-University GPA Tracker", 36, y);
+  doc.text("UamTracker GPA Records", 36, y);
 
   doc.setFont("helvetica", "normal");
   doc.setTextColor(...TEXT_MUTED);

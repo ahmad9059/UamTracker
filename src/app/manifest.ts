@@ -2,10 +2,10 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "GPA Tracker",
-    short_name: "GPA Tracker",
+    name: "UamTracker",
+    short_name: "UamTracker",
     description:
-      "Calculate GPA and CGPA, track courses, and monitor your academic progress with UAM-University's grading system.",
+      "Calculate GPA and CGPA, track courses, and monitor your academic progress with GPA Records.",
     start_url: "/",
     display: "standalone",
     background_color: "#ffffff",
