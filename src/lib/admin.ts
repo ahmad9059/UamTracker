@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 
 import { getSessionFromCookies } from "@/lib/session";
 
-const FALLBACK_ADMIN_EMAILS = ["uam@ahmadx.dev"];
+const FALLBACK_ADMIN_EMAILS = ["uam@ahmadx.dev", "ahmadhassan9059@gmail.com"];
 
 function getConfiguredAdminEmails() {
   const configured = process.env.ADMIN_EMAILS?.split(",") ?? FALLBACK_ADMIN_EMAILS;
