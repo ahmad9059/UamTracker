@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { isAdminEmail } from "@/lib/admin";
+import { getDashboardNotifications } from "@/lib/dashboard-notifications";
 import { getSessionFromCookies, getUserOnboardingStatus } from "@/lib/session";
 import DashboardLayoutClient from "./dashboard-layout-client";
 
@@ -24,10 +25,13 @@ export default async function DashboardLayoutWrapper({
     redirect("/onboarding");
   }
 
+  const notifications = await getDashboardNotifications(session.user.id);
+
   // Strip non-serializable fields (Dates, symbols) before sending to client.
   const clientSession = {
     isAdmin: isAdminEmail(session.user.email),
     user: {
+      id: session.user.id,
       name: session.user.name ?? null,
       email: session.user.email ?? null,
       image: session.user.image ?? null,
@@ -35,7 +39,7 @@ export default async function DashboardLayoutWrapper({
   };
 
   return (
-    <DashboardLayoutClient session={clientSession}>
+    <DashboardLayoutClient session={clientSession} notifications={notifications}>
       {children}
     </DashboardLayoutClient>
   );

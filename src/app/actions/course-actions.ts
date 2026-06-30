@@ -2,6 +2,7 @@
 
 import { revalidatePath, updateTag } from "next/cache";
 import { prisma } from "@/lib/db";
+import { createNotification } from "@/lib/dashboard-notifications";
 import { getAuthenticatedUser } from "@/lib/session";
 import { courseSchema } from "@/lib/validation";
 import type { TotalMarksType } from "@/lib/quality-points";
@@ -58,7 +59,7 @@ export async function createCourse(
 ) {
   try {
     const user = await getAuthenticatedUser();
-    await verifySemesterOwnership(semesterId, user.id);
+    const semester = await verifySemesterOwnership(semesterId, user.id);
 
     // Validate input
     const validationResult = courseSchema.safeParse(data);
@@ -78,6 +79,15 @@ export async function createCourse(
         isAudit: data.isAudit ?? false,
         semesterId: semesterId,
       },
+    });
+
+    await createNotification({
+      userId: user.id,
+      sourceKey: `course-created-${course.id}`,
+      title: `${course.name} added`,
+      description: `Added to ${semester.name}. Your GPA calculations now include this course.`,
+      href: `/dashboard/semester/${semesterId}`,
+      tone: "success",
     });
 
     invalidateAcademicCaches();
@@ -158,6 +168,15 @@ export async function updateCourse(
       data: updateData,
     });
 
+    await createNotification({
+      userId: user.id,
+      sourceKey: `course-updated-${course.id}`,
+      title: `${course.name} updated`,
+      description: `Saved changes in ${existingCourse.semester.name}.`,
+      href: `/dashboard/semester/${existingCourse.semesterId}`,
+      tone: "info",
+    });
+
     invalidateAcademicCaches();
     revalidatePath("/dashboard");
     revalidatePath(`/dashboard/semester/${existingCourse.semesterId}`);
@@ -179,6 +198,15 @@ export async function deleteCourse(courseId: string) {
 
     await prisma.course.delete({
       where: { id: courseId },
+    });
+
+    await createNotification({
+      userId: user.id,
+      sourceKey: `course-deleted-${courseId}`,
+      title: `${course.name} deleted`,
+      description: `Removed from ${course.semester.name}. Your GPA calculations were updated.`,
+      href: `/dashboard/semester/${course.semesterId}`,
+      tone: "warning",
     });
 
     invalidateAcademicCaches();

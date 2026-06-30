@@ -19,6 +19,7 @@ model User {
   semesters           Semester[]
   sessions            Session[]
   accounts            Account[]
+  notifications       Notification[]
 
   @@index([createdAt(sort: Desc)])
 }
@@ -101,4 +102,22 @@ model Course {
   @@index([semesterId])
   @@index([semesterId, createdAt])
   @@index([updatedAt(sort: Desc)])
+}
+
+model Notification {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title       String
+  description String
+  href        String
+  tone        String    @default("info")
+  sourceKey   String?
+  readAt      DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([userId, sourceKey])
+  @@index([userId, readAt, createdAt(sort: Desc)])
+  @@index([userId, createdAt(sort: Desc)])
 }

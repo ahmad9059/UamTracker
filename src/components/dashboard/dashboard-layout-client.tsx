@@ -11,7 +11,6 @@ import {
   Settings,
   HelpCircle,
   ChevronRight,
-  Bell,
   PanelLeftOpen,
   Github,
   ExternalLink,
@@ -53,7 +52,9 @@ import { Separator } from "@/components/ui/separator";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { LogoutButton } from "@/components/dashboard/logout-button";
 import { DashboardSearch } from "@/components/dashboard/dashboard-search";
+import { DashboardNotifications } from "@/components/dashboard/dashboard-notifications";
 import { ThemeToggle } from "@/components/theme-toggle";
+import type { DashboardNotification } from "@/lib/dashboard-notifications";
 
 // Navigation items
 const navigationItems = [
@@ -77,6 +78,7 @@ const navigationItems = [
 type SessionData = {
   isAdmin?: boolean;
   user: {
+    id: string;
     name?: string | null;
     email?: string | null;
     image?: string | null;
@@ -300,9 +302,11 @@ function AppSidebar({ session }: { session: SessionData }) {
 export default function DashboardLayoutClient({
   children,
   session,
+  notifications,
 }: {
   children: React.ReactNode;
   session: SessionData;
+  notifications: DashboardNotification[];
 }) {
   const pathname = usePathname();
   const userInitials = session.user.name
@@ -338,17 +342,7 @@ export default function DashboardLayoutClient({
                 {/* Right Section */}
                 <div className="ml-auto flex items-center gap-3">
                   <ThemeToggle />
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="relative h-9 w-9 rounded-lg hover:bg-muted"
-                  >
-                    <Bell className="h-5 w-5" />
-                    <span className="absolute top-1.5 right-1.5 flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-                    </span>
-                  </Button>
+                  <DashboardNotifications notifications={notifications} />
 
                   <Separator orientation="vertical" className="h-6" />
 

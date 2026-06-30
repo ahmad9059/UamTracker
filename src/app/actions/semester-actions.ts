@@ -2,6 +2,7 @@
 
 import { revalidatePath, unstable_cache, updateTag } from "next/cache";
 import { prisma } from "@/lib/db";
+import { createNotification } from "@/lib/dashboard-notifications";
 import { getAuthenticatedUser } from "@/lib/session";
 import { semesterSchema } from "@/lib/validation";
 import { processSemesterData, processDashboardData, type CourseInput } from "@/lib/gpa-calculator";
@@ -121,6 +122,15 @@ export async function createSemester(name: string) {
       },
     });
 
+    await createNotification({
+      userId: user.id,
+      sourceKey: `semester-created-${semester.id}`,
+      title: `${semester.name} created`,
+      description: "Add courses to start calculating this semester's GPA.",
+      href: `/dashboard/semester/${semester.id}`,
+      tone: "success",
+    });
+
     invalidateAcademicCaches();
     revalidatePath("/dashboard");
 
@@ -164,6 +174,15 @@ export async function updateSemester(semesterId: string, name: string) {
       data: { name: name.trim() },
     });
 
+    await createNotification({
+      userId: user.id,
+      sourceKey: `semester-updated-${semester.id}`,
+      title: `${semester.name} updated`,
+      description: "Your semester details were saved successfully.",
+      href: `/dashboard/semester/${semester.id}`,
+      tone: "info",
+    });
+
     invalidateAcademicCaches();
     revalidatePath("/dashboard");
     revalidatePath(`/dashboard/semester/${semesterId}`);
@@ -197,6 +216,15 @@ export async function deleteSemester(semesterId: string) {
     // Delete semester (courses will be cascade deleted)
     await prisma.semester.delete({
       where: { id: semesterId },
+    });
+
+    await createNotification({
+      userId: user.id,
+      sourceKey: `semester-deleted-${semesterId}`,
+      title: `${existing.name} deleted`,
+      description: "The semester and its courses were removed from your dashboard.",
+      href: "/dashboard",
+      tone: "warning",
     });
 
     invalidateAcademicCaches();
