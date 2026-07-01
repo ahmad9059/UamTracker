@@ -13,6 +13,7 @@ import {
   CheckCircle2,
   SkipForward,
   Sparkles,
+  FileUp,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -32,6 +33,7 @@ import {
 import { type TotalMarksType, VALID_TOTAL_MARKS } from "@/lib/quality-points";
 import {
   completeOnboarding,
+  parseOnboardingTranscript,
   skipOnboarding,
   type OnboardingSemester,
   type OnboardingCourse,
@@ -65,6 +67,7 @@ export default function OnboardingPage() {
   const [activeSemesterIndex, setActiveSemesterIndex] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSkipping, setIsSkipping] = useState(false);
+  const [isImporting, setIsImporting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // --- Semester handlers ---
@@ -194,6 +197,28 @@ export default function OnboardingPage() {
     }
     router.push("/dashboard");
     router.refresh();
+  }
+
+  async function handleTranscriptUpload(file: File | null) {
+    if (!file) return;
+
+    setIsImporting(true);
+    setError(null);
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const result = await parseOnboardingTranscript(formData);
+
+    if (!result.success || !result.data) {
+      setError(result.error || "Failed to import transcript PDF");
+      setIsImporting(false);
+      return;
+    }
+
+    setSemesters(result.data);
+    setActiveSemesterIndex(0);
+    setIsImporting(false);
   }
 
   const totalCourses = semesters.reduce(
@@ -336,6 +361,46 @@ export default function OnboardingPage() {
                 always edit these later.
               </p>
             </div>
+
+            <Card className="border-primary/20 bg-primary/5 shadow-sm">
+              <CardContent className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex items-start gap-3">
+                  <div className="rounded-xl bg-primary/10 p-2.5 text-primary">
+                    <FileUp className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <p className="font-semibold text-foreground">Import from appraisal PDF</p>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      Upload your Academic Work Results PDF to auto-create semesters and courses in order.
+                    </p>
+                  </div>
+                </div>
+                <div className="shrink-0">
+                  <Input
+                    id="transcript-upload"
+                    type="file"
+                    accept="application/pdf,.pdf"
+                    className="hidden"
+                    disabled={isImporting || isLoading}
+                    onChange={(event) => {
+                      const file = event.target.files?.[0] ?? null;
+                      void handleTranscriptUpload(file);
+                      event.target.value = "";
+                    }}
+                  />
+                  <Button asChild variant="outline" className="rounded-xl bg-background">
+                    <label htmlFor="transcript-upload" className="cursor-pointer">
+                      {isImporting ? (
+                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                      ) : (
+                        <FileUp className="h-4 w-4 mr-2" />
+                      )}
+                      {isImporting ? "Importing..." : "Upload PDF"}
+                    </label>
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
 
             {error && (
               <Alert variant="destructive">

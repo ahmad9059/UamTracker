@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { prisma } from "@/lib/db";
 import { auth } from "@/lib/auth";
+import { parseTranscriptPdfBuffer } from "@/lib/transcript-import";
 import type { TotalMarksType } from "@/lib/quality-points";
 import { VALID_TOTAL_MARKS } from "@/lib/quality-points";
 
@@ -134,6 +135,46 @@ export async function completeOnboarding(semesters: OnboardingSemester[]) {
     return {
       success: false,
       error: error instanceof Error ? error.message : "Failed to complete onboarding",
+    };
+  }
+}
+
+export async function parseOnboardingTranscript(formData: FormData) {
+  try {
+    await getAuthenticatedUser();
+
+    const file = formData.get("file");
+
+    if (!(file instanceof File)) {
+      return { success: false, error: "Please upload a PDF transcript" };
+    }
+
+    if (file.size === 0) {
+      return { success: false, error: "The uploaded PDF is empty" };
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
+      return { success: false, error: "PDF must be smaller than 10 MB" };
+    }
+
+    if (file.type && file.type !== "application/pdf") {
+      return { success: false, error: "Only PDF files are supported" };
+    }
+
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const semesters = await parseTranscriptPdfBuffer(buffer);
+    const validationError = validateOnboardingData(semesters);
+
+    if (validationError) {
+      return { success: false, error: validationError };
+    }
+
+    return { success: true, data: semesters };
+  } catch (error) {
+    console.error("Error parsing onboarding transcript:", error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Failed to parse transcript PDF",
     };
   }
 }

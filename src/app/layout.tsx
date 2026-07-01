@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -19,7 +19,6 @@ export const metadata: Metadata = {
   description: "Track academic progress with GPA records. Calculate GPA, CGPA, and visualize your performance.",
   keywords: ["GPA", "CGPA", "UamTracker", "GPA Records", "GPA Calculator", "Academic Progress"],
   manifest: "/manifest.webmanifest",
-  themeColor: "#1d4ed8",
   icons: {
     icon: [
       { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
@@ -28,6 +27,10 @@ export const metadata: Metadata = {
     apple: "/icons/icon-192.png",
     shortcut: ["/icons/icon-192.png", "/icons/icon-512.png"],
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#1d4ed8",
 };
 
 export default function RootLayout({
